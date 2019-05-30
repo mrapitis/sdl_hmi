@@ -24,7 +24,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
- SDL.IPodModel=Em.Object.create({
+ SDL.IPodModel=Em.Object.extend({
 active: false,
 selectedIndex:0,
 optionsEnabled:false,

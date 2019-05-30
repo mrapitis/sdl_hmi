@@ -253,10 +253,10 @@ var StateManager = Em.StateManager.extend(
                 enter: function() {
                   SDL.MediaController.set('activeState', SDL.States.nextState);
                   if (!FFW.RC.isSetVdInProgress) {
-                    SDL.RadioModel.sendAudioNotification();
+                    SDL.AudioModel.radioModel.sendAudioNotification();
                   }
-                  if (!SDL.RadioModel.radioControlStruct.radioEnable) {
-                    SDL.RadioModel.radioEnableKeyPress();
+                  if (!SDL.AudioModel.radioModel.radioControlStruct.radioEnable) {
+                    SDL.AudioModel.radioModel.radioEnableKeyPress();
                   }
                   this._super();
                 },
@@ -276,7 +276,7 @@ var StateManager = Em.StateManager.extend(
                 enter: function() {
                   SDL.MediaController.set('activeState', SDL.States.nextState);
                   if (!FFW.RC.isSetVdInProgress) {
-                    SDL.CDModel.sendAudioNotification();
+                    SDL.AudioModel.cdModel.sendAudioNotification();
                   }
                   this._super();
                 },
@@ -299,7 +299,7 @@ var StateManager = Em.StateManager.extend(
                 enter: function() {
                   SDL.MediaController.set('activeState', SDL.States.nextState);
                   if (!FFW.RC.isSetVdInProgress) {
-                    SDL.USBModel.sendAudioNotification();
+                    SDL.AudioModel.usbModel.sendAudioNotification();
                   }
                   this._super();
                 },
@@ -325,7 +325,7 @@ var StateManager = Em.StateManager.extend(
               {
                 SDL.MediaController.set('activeState', SDL.States.nextState);
                 if (!FFW.RC.isSetVdInProgress) {
-                  SDL.BluetoothModel.sendAudioNotification();
+                  SDL.AudioModel.bluetoothModel.sendAudioNotification();
                 }
                 this._super();
               },
@@ -349,7 +349,7 @@ var StateManager = Em.StateManager.extend(
               {
                 SDL.MediaController.set('activeState', SDL.States.nextState);
                 if (!FFW.RC.isSetVdInProgress) {
-                  SDL.LineInModel.sendAudioNotification();
+                  SDL.AudioModel.lineInModel.sendAudioNotification();
                 }
                 this._super();
               },
@@ -374,7 +374,7 @@ var StateManager = Em.StateManager.extend(
               {
                 SDL.MediaController.set('activeState', SDL.States.nextState);
                 if (!FFW.RC.isSetVdInProgress) {
-                  SDL.IPodModel.sendAudioNotification();
+                  SDL.AudioModel.ipodModel.sendAudioNotification();
                 }
                 this._super();
               },

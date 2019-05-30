@@ -73,7 +73,7 @@ SDL.bluetoothView = Em.ContainerView.create(
             elementId: 'media_bluetooth_rightmenu_repeatButton',
             classNames: ['rs-item'],
             onRepeatPressed: function() {
-              switch (SDL.BluetoothModel.player.repeat) {
+              switch (SDL.AudioModel.bluetoothModel.player.repeat) {
                 case 'NONE':
                   return SDL.locale.label.view_media_repeat_no;
                 case 'ALL':
@@ -82,7 +82,7 @@ SDL.bluetoothView = Em.ContainerView.create(
                   return SDL.locale.label.view_media_repeat_one;
               }
             }.property(
-              'SDL.BluetoothModel.player.repeat'
+              'SDL.AudioModel.bluetoothModel.player.repeat'
             ),
             textBinding: 'onRepeatPressed',
             target: 'SDL.MediaController',
@@ -95,10 +95,10 @@ SDL.bluetoothView = Em.ContainerView.create(
             classNames: ['rs-item'],
             onIconChange: function() {
               return SDL.SDLController.getLedIndicatorImagePath(
-                SDL.BluetoothModel.player.shuffle
+                SDL.AudioModel.bluetoothModel.player.shuffle
               );
             }.property(
-              'SDL.BluetoothModel.player.shuffle'
+              'SDL.AudioModel.bluetoothModel.player.shuffle'
             ),
             iconBinding: 'onIconChange',
             textBinding: Ember.Binding.oneWay(

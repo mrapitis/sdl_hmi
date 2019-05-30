@@ -24,7 +24,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
- SDL.LineInModel=Em.Object.create({
+ SDL.LineInModel=Em.Object.extend({
 active: false,
 selectedIndex:0,
 optionsEnabled:false,

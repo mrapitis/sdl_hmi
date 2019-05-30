@@ -24,7 +24,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
- SDL.BluetoothModel=Em.Object.create({
+ SDL.BluetoothModel=Em.Object.extend({
 active: false,
 selectedIndex: 0,
 optionsEnabled:false,

@@ -31,7 +31,7 @@
  * @version 1.0
  */
 
-SDL.USBModel = Em.Object.create({
+SDL.USBModel = Em.Object.extend({
     active: false,
     optionsEnabled:false,
     statusBar: 'Luk Marko',

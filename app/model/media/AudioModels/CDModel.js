@@ -31,7 +31,7 @@
  * @version 1.0
  */
 
-SDL.CDModel = Em.Object.create({
+SDL.CDModel = Em.Object.extend({
 
   active: true,
 

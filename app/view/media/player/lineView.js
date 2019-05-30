@@ -72,7 +72,7 @@ SDL.lineInView = Em.ContainerView.create(
             elementId: 'media_lineIn_rightmenu_repeatButton',
             classNames: ['rs-item'],
             onRepeatPressed: function() {
-              switch (SDL.LineInModel.player.repeat) {
+              switch (SDL.AudioModel.lineInModel.player.repeat) {
                 case 'NONE':
                   return SDL.locale.label.view_media_repeat_no;
                 case 'ALL':
@@ -81,7 +81,7 @@ SDL.lineInView = Em.ContainerView.create(
                   return SDL.locale.label.view_media_repeat_one;
               }
             }.property(
-              'SDL.LineInModel.player.repeat'
+              'SDL.AudioModel.lineInModel.player.repeat'
             ),
             textBinding: 'onRepeatPressed',
             target: 'SDL.MediaController',
@@ -94,10 +94,10 @@ SDL.lineInView = Em.ContainerView.create(
             classNames: ['rs-item'],
             onIconChange: function() {
               return SDL.SDLController.getLedIndicatorImagePath(
-                SDL.LineInModel.player.shuffle
+                SDL.AudioModel.lineInModel.player.shuffle
               );
             }.property(
-              'SDL.LineInModel.player.shuffle'
+              'SDL.AudioModel.lineInModel.player.shuffle'
             ),
             iconBinding: 'onIconChange',
             textBinding: Ember.Binding.oneWay(

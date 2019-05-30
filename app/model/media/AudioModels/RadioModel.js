@@ -31,7 +31,7 @@
  * @version 1.0
  */
 
-SDL.RadioModel = Em.Object.create({
+SDL.RadioModel = Em.Object.extend({
 
   init: function() {
 
@@ -1291,7 +1291,7 @@ SDL.RadioModel = Em.Object.create({
       this.toggleOptions();
     }
 
-    SDL.RadioModel.toggleProperty('radioControlStruct.radioEnable');
+    SDL.AudioModel.radioModel.toggleProperty('radioControlStruct.radioEnable');
     var data = this.getRadioControlData(true);
     data = SDL.SDLController.filterObjectProperty(data, 'band');
     if (data.band == 'FM') {
