@@ -104,7 +104,7 @@ SDL.usbView = Em.ContainerView.create(
             elementId: 'media_usb_rightmenu_repeatButton',
             classNames: ['rs-item'],
             onRepeatPressed: function() {
-              switch (SDL.AudioModel.usbModel.player.repeat) {
+              switch (SDL.RCModulesController.currentAudioModel.usbModel.player.repeat) {
                 case 'NONE':
                   return SDL.locale.label.view_media_repeat_no;
                 case 'ALL':
@@ -113,7 +113,7 @@ SDL.usbView = Em.ContainerView.create(
                   return SDL.locale.label.view_media_repeat_one;
               }
             }.property(
-              'SDL.AudioModel.usbModel.player.repeat'
+              'SDL.RCModulesController.currentAudioModel.usbModel.player.repeat'
             ),
             textBinding: 'onRepeatPressed',
             target: 'SDL.MediaController',
@@ -126,10 +126,10 @@ SDL.usbView = Em.ContainerView.create(
             classNames: ['rs-item'],
             onIconChange: function() {
               return SDL.SDLController.getLedIndicatorImagePath(
-                SDL.AudioModel.usbModel.player.shuffle
+                SDL.RCModulesController.currentAudioModel.usbModel.player.shuffle
               );
             }.property(
-              'SDL.AudioModel.usbModel.player.shuffle'
+              'SDL.RCModulesController.currentAudioModel.usbModel.player.shuffle'
             ),
             iconBinding: 'onIconChange',
             textBinding: Ember.Binding.oneWay(

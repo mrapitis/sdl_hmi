@@ -1,4 +1,4 @@
-SDL.AudioModel = Em.Object.create({
+SDL.AudioModel = Em.Object.extend({
 
     bluetoothModel: null,
     radioModel: null,

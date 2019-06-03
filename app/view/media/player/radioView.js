@@ -51,20 +51,20 @@ SDL.RadioView = Em.ContainerView
       ],
 
       setHD:function(){
-        if (SDL.AudioModel.radioControlStruct.band != 'XM') {
-          SDL.AudioModel.setHDRadioEnable(SDL.RadioModel.radioControlStruct.hdRadioEnable ?
+        if (SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band != 'XM') {
+          SDL.RCModulesController.currentAudioModel.radioModel.setHDRadioEnable(SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.hdRadioEnable ?
           false : true);
-          SDL.AudioModel.set('radioControlCheckboxes.availableHdChannels',
-            SDL.AudioModel.radioControlStruct.hdRadioEnable);
-          SDL.AudioModel.set('radioControlCheckboxes.hdChannel',
-            SDL.AudioModel.radioControlStruct.hdRadioEnable);
-          if(SDL.AudioModel.radioControlStruct.hdRadioEnable){
-            SDL.AudioModel.sendRadioChangeNotification(['hdRadioEnable',
+          SDL.RCModulesController.currentAudioModel.radioModel.set('radioControlCheckboxes.availableHdChannels',
+            SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.hdRadioEnable);
+          SDL.RCModulesController.currentAudioModel.radioModel.set('radioControlCheckboxes.hdChannel',
+            SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.hdRadioEnable);
+          if(SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.hdRadioEnable){
+            SDL.RCModulesController.currentAudioModel.radioModel.sendRadioChangeNotification(['hdRadioEnable',
               'availableHdChannels','hdChannel', 'sisData.*',
               'stationIDNumber.*', 'stationLocation.*']);
           }
           else{
-            SDL.RadioModel.sendRadioChangeNotification(['hdRadioEnable']);
+            SDL.RCModulesController.currentAudioModel.radioModel.sendRadioChangeNotification(['hdRadioEnable']);
           }
           
         }
@@ -75,7 +75,7 @@ SDL.RadioView = Em.ContainerView
           elementId: 'radio_options_view_container',
           classNames: 'options',
           classNameBindings: [
-            'SDL.RadioModel.optionsEnabled:active_state:inactive_state'
+            'SDL.RCModulesController.currentAudioModel.radioModel.optionsEnabled:active_state:inactive_state'
           ],
           /**
            * View Components
@@ -158,7 +158,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'fccCheckBox',
               classNames: 'fccCheckBox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationIDNumber.fccFacilityId'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationIDNumber.fccFacilityId'
             }
           ),
          fccLabel: SDL.Label.extend(
@@ -173,11 +173,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'fccInput',
               classNames: 'fccInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.sisData.stationIDNumber.fccFacilityId',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.sisData.stationIDNumber.fccFacilityId',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationIDNumber.fccFacilityId;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationIDNumber.fccFacilityId;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationIDNumber.fccFacilityId'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationIDNumber.fccFacilityId'
               ),
               
               disabledBinding: 'isDisabled'
@@ -189,7 +189,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'countryCodeCheckBox',
               classNames: 'countryCodeCheckBox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationIDNumber.countryCode'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationIDNumber.countryCode'
             }
           ),
          countryCodeLabel: SDL.Label.extend(
@@ -204,11 +204,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'countryCodeInput',
               classNames: 'countryCodeInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.sisData.stationIDNumber.countryCode',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.sisData.stationIDNumber.countryCode',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationIDNumber.countryCode;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationIDNumber.countryCode;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationIDNumber.countryCode'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationIDNumber.countryCode'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -228,11 +228,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'altitudeCheckBox',
               classNames: 'altitudeCheckBox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.altitude',
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.altitude',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -249,14 +249,14 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'altitudeInput',
               classNames: 'altitudeInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.sisData.stationLocation.altitude',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.sisData.stationLocation.altitude',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData ? 
-                !SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData
-                :!SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.altitude;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData ? 
+                !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData
+                :!SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.altitude;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData',
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.altitude'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData',
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.altitude'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -275,11 +275,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'latitudeInput',
               classNames: 'latitudeInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.sisData.stationLocation.latitudeDegrees',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.sisData.stationLocation.latitudeDegrees',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -298,11 +298,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'longitudeInput',
               classNames: 'longitudeInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.sisData.stationLocation.longitudeDegrees',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.sisData.stationLocation.longitudeDegrees',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -311,14 +311,14 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'gpsDataCheckBox',
               classNames: 'gpsDataCheckBox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLocation.gpsData'
             }
           ),
           stationLongNameCheckBox: Em.Checkbox.extend(
             {
               elementId: 'stationLongNameCheckBox',
               classNames: 'stationLongNameCheckBox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLongName'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLongName'
             }
           ),
          stationLongNameLabel: SDL.Label.extend(
@@ -333,11 +333,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'stationLongNameInput',
               classNames: 'stationLongNameInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.sisData.stationLongName',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.sisData.stationLongName',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLongName;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLongName;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationLongName'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationLongName'
               ),
               disabledBinding: 'isDisabled',
               
@@ -348,7 +348,7 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'stationMessageCheckBox',
               classNames: 'stationMessageCheckBox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationMessage'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationMessage'
             }
           ),
          stationMessageLabel: SDL.Label.extend(
@@ -363,11 +363,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'stationMessageInput',
               classNames: 'stationMessageInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.sisData.stationMessage', 
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.sisData.stationMessage', 
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationMessage;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationMessage;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationMessage'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationMessage'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -390,7 +390,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'stationShortNameCheckbox',
               classNames: 'stationShortNameCheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationShortName'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationShortName'
             }
           ),
           stationShortNameLabel: SDL.Label.extend(
@@ -405,11 +405,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'stationShortNameInput',
               classNames: 'stationShortNameInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.sisData.stationShortName',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.sisData.stationShortName',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationShortName;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationShortName;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.sisData.stationShortName'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.sisData.stationShortName'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -418,7 +418,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'bandCheckbox',
               classNames: 'bandCheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.band'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.band'
             }
           ),
           bandLabel: SDL.Label.extend(
@@ -433,12 +433,12 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'bandSelect',
               classNames: 'bandSelect',
-              contentBinding: 'SDL.AudioModel.radioModel.bandStruct',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.band',
+              contentBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.bandStruct',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.band',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.band;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.band;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.band'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.band'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -454,7 +454,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'PSCheckbox',
               classNames: 'PSCheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.PS'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.PS'
             }
           ),
           PSLabel: SDL.Label.extend(
@@ -472,11 +472,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'PSInput',
               classNames: 'PSInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.rdsData.PS',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.rdsData.PS',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.PS;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.PS;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.PS'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.PS'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -485,7 +485,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'RTCheckbox',
               classNames: 'RTCheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.RT'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.RT'
             }
           ),
           RTLabel: SDL.Label.extend(
@@ -503,11 +503,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'RTInput',
               classNames: 'RTInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.rdsData.RT',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.rdsData.RT',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.RT;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.RT;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.RT'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.RT'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -516,7 +516,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'CTCheckbox',
               classNames: 'CTCheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.CT'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.CT'
             }
           ),
           CTLabel: SDL.Label.extend(
@@ -534,11 +534,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'CTInput',
               classNames: 'CTInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.rdsData.CT',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.rdsData.CT',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.CT;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.CT;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.CT'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.CT'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -547,7 +547,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'PICheckbox',
               classNames: 'PICheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.PI'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.PI'
             }
           ),
           PILabel: SDL.Label.extend(
@@ -565,11 +565,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'PIInput',
               classNames: 'PIInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.rdsData.PI',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.rdsData.PI',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.PI;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.PI;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.PI'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.PI'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -578,7 +578,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'PTYCheckbox',
               classNames: 'PTYCheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.PTY'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.PTY'
             }
           ),
           PTYLabel: SDL.Label.extend(
@@ -596,11 +596,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'PTYInput',
               classNames: 'PTYInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.rdsData.PTY',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.rdsData.PTY',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.PTY;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.PTY;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.PTY'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.PTY'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -609,7 +609,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'TPCheckbox',
               classNames: 'TPCheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.TP'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.TP'
             }
           ),
           TPLabel: SDL.Label.extend(
@@ -627,12 +627,12 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'TPSelect',
               classNames: 'TPSelect',
-              contentBinding: 'SDL.AudioModel.radioModel.boolStruct',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.rdsData.TP',
+              contentBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.boolStruct',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.rdsData.TP',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.TP;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.TP;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.TP'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.TP'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -641,7 +641,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'TACheckbox',
               classNames: 'TACheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.TA'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.TA'
             }
           ),
           TALabel: SDL.Label.extend(
@@ -659,12 +659,12 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'TASelect',
               classNames: 'TASelect',
-              contentBinding: 'SDL.AudioModel.radioModel.boolStruct',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.rdsData.TA',
+              contentBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.boolStruct',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.rdsData.TA',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.TA;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.TA;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.TA'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.TA'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -673,7 +673,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'REGCheckbox',
               classNames: 'REGCheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.REG'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.REG'
             }
           ),
           REGLabel: SDL.Label.extend(
@@ -691,11 +691,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'REGInput',
               classNames: 'REGInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.rdsData.REG',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.rdsData.REG',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.REG;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.REG;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.rdsData.REG'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.rdsData.REG'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -707,8 +707,8 @@ SDL.RadioView = Em.ContainerView
               classNames: 'channel',
               disabledBinding: 'isDisabled',
               isDisabled: function() {
-                return !SDL.RadioModel.radioControlCheckboxes.availableHdChannels;
-              }.property('SDL.RadioModel.radioControlCheckboxes.availableHdChannels'),
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHdChannels;
+              }.property('SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHdChannels'),
 
               childViews: [
                 'availableHdChannelsCheckBox_0',
@@ -734,9 +734,9 @@ SDL.RadioView = Em.ContainerView
                   elementId: 'availableHdChannelsCheckBox_0',
                   classNames: 'availableHdChannelsCheckBox_0',
                   disabledBinding: 'parentView.disabled',
-                  checkedBinding: 'SDL.RadioModel.hdChannelAvailable.0',
+                  checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.0',
                   change: function(event) {
-                    SDL.RadioModel.changeAvailableHDsTempData(event,0);
+                    SDL.RCModulesController.currentAudioModel.radioModel.changeAvailableHDsTempData(event,0);
                   }
                 }
               ),
@@ -754,11 +754,11 @@ SDL.RadioView = Em.ContainerView
                   classNames: 'availableHdChannelsCheckBox_1',
                   disabledBinding: 'parentView.disabled',
                   isDisabled: function() {
-                    return !SDL.RadioModel.radioControlCheckboxes.availableHDsChannel;
-                  }.property('SDL.RadioModel.radioControlCheckboxes.availableHDsChannel'),
-                  checkedBinding: 'SDL.RadioModel.hdChannelAvailable.1',
+                    return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel;
+                  }.property('SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel'),
+                  checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.1',
                   change: function(event) {
-                    SDL.RadioModel.changeAvailableHDsTempData(event, 1);
+                    SDL.RCModulesController.currentAudioModel.radioModel.changeAvailableHDsTempData(event, 1);
                   }
                 }
               ),
@@ -776,11 +776,11 @@ SDL.RadioView = Em.ContainerView
                   classNames: 'availableHdChannelsCheckBox_2',
                   disabledBinding: 'parentView.disabled',
                   isDisabled: function() {
-                    return !SDL.RadioModel.radioControlCheckboxes.availableHDsChannel;
-                  }.property('SDL.RadioModel.radioControlCheckboxes.availableHDsChannel'),
-                  checkedBinding: 'SDL.RadioModel.hdChannelAvailable.2',
+                    return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel;
+                  }.property('SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel'),
+                  checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.2',
                   change: function(event) {
-                    SDL.RadioModel.changeAvailableHDsTempData(event, 2);
+                    SDL.RCModulesController.currentAudioModel.radioModel.changeAvailableHDsTempData(event, 2);
                   }
                 }
               ),
@@ -798,12 +798,12 @@ SDL.RadioView = Em.ContainerView
                   classNames: 'availableHdChannelsCheckBox_3',
                   disabledBinding: 'parentView.disabled',
                   change: function(event) {
-                    SDL.RadioModel.changeAvailableHDsTempData(event,3);
+                    SDL.RCModulesController.currentAudioModel.radioModel.changeAvailableHDsTempData(event,3);
                   },
                   isDisabled: function() {
-                    return !SDL.RadioModel.radioControlCheckboxes.availableHDsChannel;
-                  }.property('SDL.RadioModel.radioControlCheckboxes.availableHDsChannel'),
-                  checkedBinding: 'SDL.RadioModel.hdChannelAvailable.3'
+                    return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel;
+                  }.property('SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel'),
+                  checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.3'
                 }
               ),
               availableHdChannelsLabel_3: SDL.Label.extend(
@@ -820,11 +820,11 @@ SDL.RadioView = Em.ContainerView
                   classNames: 'availableHdChannelsCheckBox_4',
                   disabledBinding: 'parentView.disabled',
                   isDisabled: function() {
-                    return !SDL.RadioModel.radioControlCheckboxes.availableHDsChannel;
-                  }.property('SDL.RadioModel.radioControlCheckboxes.availableHDsChannel'),
-                  checkedBinding: 'SDL.RadioModel.hdChannelAvailable.4',
+                    return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel;
+                  }.property('SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel'),
+                  checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.4',
                   change: function(event) {
-                    SDL.RadioModel.changeAvailableHDsTempData(event,4);
+                    SDL.RCModulesController.currentAudioModel.radioModel.changeAvailableHDsTempData(event,4);
                   }
                 }
               ),
@@ -842,12 +842,12 @@ SDL.RadioView = Em.ContainerView
                   classNames: 'availableHdChannelsCheckBox_5',
                   disabledBinding: 'parentView.disabled',
                   change: function(event) {
-                    SDL.RadioModel.changeAvailableHDsTempData(event,5);
+                    SDL.RCModulesController.currentAudioModel.radioModel.changeAvailableHDsTempData(event,5);
                   },
                   isDisabled: function() {
-                    return !SDL.RadioModel.radioControlCheckboxes.availableHDsChannel;
-                  }.property('SDL.RadioModel.radioControlCheckboxes.availableHDsChannel'),
-                  checkedBinding: 'SDL.RadioModel.hdChannelAvailable.5'
+                    return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel;
+                  }.property('SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel'),
+                  checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.5'
                 }
               ),
               availableHdChannelsLabel_5: SDL.Label.extend(
@@ -864,12 +864,12 @@ SDL.RadioView = Em.ContainerView
                   classNames: 'availableHdChannelsCheckBox_6',
                   disabledBinding: 'parentView.disabled',
                   change: function(event) {
-                    SDL.RadioModel.changeAvailableHDsTempData(event,6);
+                    SDL.RCModulesController.currentAudioModel.radioModel.changeAvailableHDsTempData(event,6);
                   },
                   isDisabled: function() {
-                    return !SDL.RadioModel.radioControlCheckboxes.availableHDsChannel;
-                  }.property('SDL.RadioModel.radioControlCheckboxes.availableHDsChannel'),
-                  checkedBinding: 'SDL.RadioModel.hdChannelAvailable.6'
+                    return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel;
+                  }.property('SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel'),
+                  checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.6'
                 }
               ),
               availableHdChannelsLabel_6: SDL.Label.extend(
@@ -886,12 +886,12 @@ SDL.RadioView = Em.ContainerView
                   classNames: 'availableHdChannelsCheckBox_7',
                   disabledBinding: 'parentView.disabled',
                   change: function(event) {
-                    SDL.RadioModel.changeAvailableHDsTempData(event,7);
+                    SDL.RCModulesController.currentAudioModel.radioModel.changeAvailableHDsTempData(event,7);
                   },
                   isDisabled: function() {
-                    return !SDL.RadioModel.radioControlCheckboxes.availableHDsChannel;
-                  }.property('SDL.RadioModel.radioControlCheckboxes.availableHDsChannel'),
-                  checkedBinding: 'SDL.RadioModel.hdChannelAvailable.7'
+                    return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel;
+                  }.property('SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDsChannel'),
+                  checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.7'
                 }
               ),
               availableHdChannelsLabel_7: SDL.Label.extend(
@@ -910,11 +910,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'availableHDsCheckbox',
               classNames: 'availableHDsCheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.availableHDs',
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.availableHDs',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.lastOptionParams.hdRadioEnable;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.hdRadioEnable;
               }.property(
-                'SDL.AudioModel.radioModel.lastOptionParams.hdRadioEnable'
+                'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.hdRadioEnable'
               ),
               disabledBinding: 'isDisabled',
               
@@ -932,11 +932,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'hdChannelCheckbox',
               classNames: 'hdChannelCheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.hdChannel',
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.hdChannel',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.lastOptionParams.hdRadioEnable;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.hdRadioEnable;
               }.property(
-                'SDL.AudioModel.radioModel.lastOptionParams.hdRadioEnable'
+                'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.hdRadioEnable'
               ),
               disabledBinding: 'isDisabled',
             }
@@ -956,15 +956,15 @@ SDL.RadioView = Em.ContainerView
               availableHDValueChanged: function() {
                 var count = 0;
                 var result = [];
-                SDL.RadioModel.availableHdChannels = [];
-                for(var key in SDL.AudioModel.radioModel.hdChannelAvailable) {
-                  if(SDL.AudioModel.radioModel.hdChannelAvailable[key]) {
+                SDL.RCModulesController.currentAudioModel.radioModel.availableHdChannels = [];
+                for(var key in SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable) {
+                  if(SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable[key]) {
                     result.push(count);
-                    SDL.AudioModel.radioModel.availableHdChannels.push(count);
+                    SDL.RCModulesController.currentAudioModel.radioModel.availableHdChannels.push(count);
                   }
                   ++count;
                 }
-                SDL.AudioModel.radioModel.set('lastOptionParams.hdChannel', result[0]);
+                SDL.RCModulesController.currentAudioModel.radioModel.set('lastOptionParams.hdChannel', result[0]);
                 this.set('content', result);
               }.observes(
                 'SDL.AudioModel.radioModel.lastOptionParams.availableHdChannels.@each',
@@ -976,11 +976,11 @@ SDL.RadioView = Em.ContainerView
                 'SDL.AudioModel.radioModel.hdChannelAvailable.5',
                 'SDL.AudioModel.radioModel.hdChannelAvailable.6',
                 'SDL.AudioModel.radioModel.hdChannelAvailable.7'),
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.hdChannel',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.hdChannel',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.hdChannel;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.hdChannel;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.hdChannel'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.hdChannel'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -989,7 +989,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'signalStrengthCheckbox',
               classNames: 'signalStrengthCheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.signalStrength'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.signalStrength'
             }
           ),
           signalStrengthLabel: SDL.Label.extend(
@@ -1007,11 +1007,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'signalStrengthInput',
               classNames: 'signalStrengthInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.signalStrength',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.signalStrength',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.signalStrength;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.signalStrength;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.signalStrength'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.signalStrength'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -1020,7 +1020,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'signalChangeThresholdCheckbox',
               classNames: 'signalChangeThresholdCheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.signalChangeThreshold'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.signalChangeThreshold'
             }
           ),
           signalChangeThresholdLabel: SDL.Label.extend(
@@ -1038,11 +1038,11 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'signalChangeThresholdInput',
               classNames: 'signalChangeThresholdInput',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.signalChangeThreshold',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.signalChangeThreshold',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.signalChangeThreshold;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.signalChangeThreshold;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.signalChangeThreshold'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.signalChangeThreshold'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -1051,7 +1051,7 @@ SDL.RadioView = Em.ContainerView
             {
               elementId: 'stateCheckbox',
               classNames: 'stateCheckbox',
-              checkedBinding: 'SDL.AudioModel.radioModel.radioControlCheckboxes.state'
+              checkedBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.state'
             }
           ),
           stateLabel: SDL.Label.extend(
@@ -1066,12 +1066,12 @@ SDL.RadioView = Em.ContainerView
               attributeBindings: ['disabled'],
               elementId: 'stateSelect',
               classNames: 'stateSelect',
-              contentBinding: 'SDL.AudioModel.radioModel.stateStruct',
-              valueBinding: 'SDL.AudioModel.radioModel.lastOptionParams.state',
+              contentBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.stateStruct',
+              valueBinding: 'SDL.RCModulesController.currentAudioModel.radioModel.lastOptionParams.state',
               isDisabled: function() {
-                return !SDL.AudioModel.radioModel.radioControlCheckboxes.state;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.state;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlCheckboxes.state'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlCheckboxes.state'
               ),
               disabledBinding: 'isDisabled'
             }
@@ -1082,7 +1082,7 @@ SDL.RadioView = Em.ContainerView
               classNames: 'sendButton button',
               text: 'Send',
               onDown: false,
-              target: 'SDL.AudioModel.radioModel',
+              target: 'SDL.RCModulesController.currentAudioModel.radioModel',
               action: 'sendButtonPress'
             }
           )
@@ -1093,38 +1093,38 @@ SDL.RadioView = Em.ContainerView
       info: Em.View.extend(
         {
           HDRadio: function() {
-            if (SDL.AudioModel.radioModel.radioControlStruct.band == 'XM') {
-              SDL.AudioModel.radioModel.setHDRadioEnable(false);
-              SDL.AudioModel.radioModel.set('radioControlCheckboxes.availableHdChannels',
-              SDL.AudioModel.radioModel.radioControlStruct.hdRadioEnable);
-              SDL.AudioModel.radioModel.set('radioControlCheckboxes.hdChannel',
-              SDL.AudioModel.radioModel.radioControlStruct.hdRadioEnable);
+            if (SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band == 'XM') {
+              SDL.RCModulesController.currentAudioModel.radioModel.setHDRadioEnable(false);
+              SDL.RCModulesController.currentAudioModel.radioModel.set('radioControlCheckboxes.availableHdChannels',
+              SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.hdRadioEnable);
+              SDL.RCModulesController.currentAudioModel.radioModel.set('radioControlCheckboxes.hdChannel',
+              SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.hdRadioEnable);
               return false;
             }
-            else if(!SDL.AudioModel.radioModel.radioControlStruct.hdRadioEnable){
+            else if(!SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.hdRadioEnable){
               return false;
             }
-            SDL.AudioModel.radioModel.setHDRadioEnable(SDL.AudioModel.radioModel.radioControlStruct.availableHdChannels.length >= 0);
-            return (SDL.AudioModel.radioModel.radioControlStruct.availableHdChannels.length >= 0);
-          }.property('SDL.AudioModel.radioModel.radioControlStruct.band',
-                     'SDL.AudioModel.radioModel.radioControlStruct.availableHdChannels.@each',
-                     'SDL.AudioModel.radioModel.radioControlStruct.hdRadioEnable'),
+            SDL.RCModulesController.currentAudioModel.radioModel.setHDRadioEnable(SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.availableHdChannels.length >= 0);
+            return (SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.availableHdChannels.length >= 0);
+          }.property('SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band',
+                     'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.availableHdChannels.@each',
+                     'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.hdRadioEnable'),
           STAName: function() {
-            return 'STA-' + SDL.AudioModel.radioModel.station.toString().replace('.', '');
-          }.property('SDL.AudioModel.radioModel.station'),
+            return 'STA-' + SDL.RCModulesController.currentAudioModel.radioModel.station.toString().replace('.', '');
+          }.property('SDL.RCModulesController.currentAudioModel.radioModel.station'),
           StationName: function() {
-            var station = SDL.AudioModel.radioModel.station;
-            if (SDL.AudioModel.radioModel.radioControlStruct.availableHdChannels.length >= 0 &
-              SDL.AudioModel.radioModel.radioControlStruct.hdRadioEnable) {
-              station += '-' + SDL.AudioModel.radioModel.radioControlStruct.hdChannel;
+            var station = SDL.RCModulesController.currentAudioModel.radioModel.station;
+            if (SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.availableHdChannels.length >= 0 &
+              SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.hdRadioEnable) {
+              station += '-' + SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.hdChannel;
             }
             return station;
-          }.property('SDL.AudioModel.radioModel.station',
-                     'SDL.AudioModel.radioModel.radioControlStruct.hdChannel',
-                     'SDL.AudioModel.radioModel.radioControlStruct.availableHdChannels.@each',
-                     'SDL.AudioModel.radioModel.radioControlStruct.hdRadioEnable'),
+          }.property('SDL.RCModulesController.currentAudioModel.radioModel.station',
+                     'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.hdChannel',
+                     'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.availableHdChannels.@each',
+                     'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.hdRadioEnable'),
           songInfo: function() {
-            var data = SDL.AudioModel.radioModel.radioDetails;
+            var data = SDL.RCModulesController.currentAudioModel.radioModel.radioDetails;
             if (data) {
               if (!(data.songInfo.name && data.songInfo.artist)) {
                 if (data.songInfo.name) {
@@ -1137,11 +1137,11 @@ SDL.RadioView = Em.ContainerView
               }
             }
           }.property(
-            'SDL.AudioModel.radioModel.radioDetails.songInfo.artist',
-            'SDL.AudioModel.radioModel.radioDetails.songInfo.name'
+            'SDL.RCModulesController.currentAudioModel.radioModel.radioDetails.songInfo.artist',
+            'SDL.RCModulesController.currentAudioModel.radioModel.radioDetails.songInfo.name'
           ),
           classNameBindings: [
-            'SDL.AudioModel.radioModel.radioControlStruct.radioEnable:active_state:inactive_state'
+            'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable:active_state:inactive_state'
           ],
           template: Em.Handlebars
             .compile(
@@ -1156,57 +1156,57 @@ SDL.RadioView = Em.ContainerView
               '</div>' +
               '{{#if HDRadio}}' +
               '<div class="hd-radio-info" style="top:4px;left: 30px;">' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelAvailable.[0]}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelCurrent.[0]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.[0]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelCurrent.[0]}}' +
               '<span style="padding: 5px;color: orange;"> 0 </span>' +
               '{{else}}' +
               '<span style="padding: 5px;"> 0 </span>' +
               '{{/if}}' +
               '{{/if}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelAvailable.[1]}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelCurrent.[1]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.[1]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelCurrent.[1]}}' +
               '<span style="padding: 5px;color: orange;"> 1 </span>' +
               '{{else}}' +
               '<span style="padding: 5px;"> 1 </span>' +
               '{{/if}}' +
               '{{/if}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelAvailable.[2]}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelCurrent.[2]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.[2]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelCurrent.[2]}}' +
               '<span style="padding: 5px;color: orange;"> 2 </span>' +
               '{{else}}' +
               '<span style="padding: 5px;"> 2 </span>' +
               '{{/if}}' +
               '{{/if}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelAvailable.[3]}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelCurrent.[3]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.[3]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelCurrent.[3]}}' +
               '<span style="padding: 5px;color: orange;"> 3 </span>' +
               '{{else}}' +
               '<span style="padding: 5px;"> 3 </span>' +
               '{{/if}}' +
               '{{/if}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelAvailable.[4]}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelCurrent.[4]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.[4]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelCurrent.[4]}}' +
               '<span style="padding: 5px;color: orange;"> 4 </span>' +
               '{{else}}' +
               '<span style="padding: 5px;"> 4 </span>' +
               '{{/if}}' +
               '{{/if}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelAvailable.[5]}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelCurrent.[5]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.[5]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelCurrent.[5]}}' +
               '<span style="padding: 5px;color: orange;"> 5 </span>' +
               '{{else}}' +
               '<span style="padding: 5px;"> 5 </span>' +
               '{{/if}}' +
               '{{/if}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelAvailable.[6]}}' +
-              '{{#if SDL.RadioModel.hdChannelCurrent.[6]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.[6]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelCurrent.[6]}}' +
               '<span style="padding: 5px;color: orange;"> 6 </span>' +
               '{{else}}' +
               '<span style="padding: 5px;"> 6 </span>' +
               '{{/if}}' +
               '{{/if}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelAvailable.[7]}}' +
-              '{{#if SDL.AudioModel.radioModel.hdChannelCurrent.[7]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelAvailable.[7]}}' +
+              '{{#if SDL.RCModulesController.currentAudioModel.radioModel.hdChannelCurrent.[7]}}' +
               '<span style="padding: 5px;color: orange;"> 7 </span>' +
               '{{else}}' +
               '<span style="padding: 5px;"> 7 </span>' +
@@ -1217,7 +1217,7 @@ SDL.RadioView = Em.ContainerView
               '<div class="STAName">{{STAName}}</div>' +
               '<div class="station">{{StationName}}</div>' +
               '<div class="divider_o"></div>' +
-              '<div class="genre">{{SDL.AudioModel.radioModel.radioDetails.songInfo.genre}}</div>' +
+              '<div class="genre">{{SDL.RCModulesController.currentAudioModel.radioModel.radioDetails.songInfo.genre}}</div>' +
               '<div class="songInfo">{{songInfo}}</div>' +
               '</div>' + '{{/with}}'
             )
@@ -1236,7 +1236,7 @@ SDL.RadioView = Em.ContainerView
           tune: Em.ContainerView.extend(
             {
               classNameBindings: [
-                'SDL.AudioModel.radioModel.tuneRadio::hidden'
+                'SDL.RCModulesController.currentAudioModel.radioModel.tuneRadio::hidden'
               ],
               elementId: 'tuneButtons',
               classNames: 'preset-items tuneButtons',
@@ -1253,25 +1253,25 @@ SDL.RadioView = Em.ContainerView
                         preset: index[i],
                         icon: i == 5 ? 'images/phone/del.png' : null,
                         action: 'tuneRadioStation',
-                        target: 'SDL.AudioModel.radioModel',
+                        target: 'SDL.RCModulesController.currentAudioModel.radioModel',
                         disabledBinding: 'isDisabled',
                         isDisabled: function() {
-                          if (!SDL.AudioModel.radioModel.radioControlStruct.radioEnable) {
+                          if (!SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable) {
                             return true;
                           }
                           if (this.preset == 'X') {
-                            return !SDL.AudioModel.radioModel.directTuneKeypressed;
+                            return !SDL.RCModulesController.currentAudioModel.radioModel.directTuneKeypressed;
                           } else if (this.preset == 'Enter') {
-                            return !SDL.AudioModel.radioModel.directTuneFinished;
+                            return !SDL.RCModulesController.currentAudioModel.radioModel.directTuneFinished;
                           } else if (this.preset != 'X') {
-                            return !SDL.AudioModel.radioModel.get('directTuneKeys')
+                            return !SDL.RCModulesController.currentAudioModel.radioModel.get('directTuneKeys')
                               .contains(this.preset);
                           }
                         }.property(
-                          'SDL.AudioModel.radioModel.radioControlStruct.radioEnable',
-                          'SDL.AudioModel.radioModel.directTuneKeys',
-                          'SDL.AudioModel.radioModel.directTuneFinished',
-                          'SDL.AudioModel.radioModel.directTuneKeypressed'
+                          'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable',
+                          'SDL.RCModulesController.currentAudioModel.radioModel.directTuneKeys',
+                          'SDL.RCModulesController.currentAudioModel.radioModel.directTuneFinished',
+                          'SDL.RCModulesController.currentAudioModel.radioModel.directTuneKeypressed'
                         )
                       }
                     )
@@ -1283,7 +1283,7 @@ SDL.RadioView = Em.ContainerView
           presets: Em.ContainerView.extend(
             {
               classNameBindings: [
-                'SDL.AudioModel.radioModel.tuneRadio:hidden'
+                'SDL.RCModulesController.currentAudioModel.radioModel.tuneRadio:hidden'
               ],
               elementId: 'radio_media_presetButtons_wrapper',
               classNames: ['preset-items'],
@@ -1298,23 +1298,23 @@ SDL.RadioView = Em.ContainerView
               1: SDL.RadioPresetButton.extend(
                 {
                   onEnableRadioClick: function() {
-                    if (!SDL.AudioModel.radioModel.radioControlStruct.radioEnable) {
+                    if (!SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable) {
                       return true;
                     }
                     return false;
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.radioEnable',
-                    'SDL.AudioModel.radioModel.radioControlStruct.band',
-                    'SDL.AudioModel.radioModel.radioControlStruct.availableHdChannels.@each'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable',
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band',
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.availableHdChannels.@each'
                   ),
                   disabledBinding: 'onEnableRadioClick',
                   elementId: 'radio_media_preset_button1',
                   classNames: 'a0',
                   getPresetText: function() {
-                    var band = SDL.AudioModel.radioModel.radioControlStruct.band;
-                    return SDL.AudioModel.radioModel.preset[band][0];
+                    var band = SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band;
+                    return SDL.RCModulesController.currentAudioModel.radioModel.preset[band][0];
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.band'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band'
                   ),
                   textBinding: 'getPresetText',
                   templateName: 'text',
@@ -1325,23 +1325,23 @@ SDL.RadioView = Em.ContainerView
               2: SDL.RadioPresetButton.extend(
                 {
                   onEnableRadioClick: function() {
-                    if (!SDL.AudioModel.radioModel.radioControlStruct.radioEnable) {
+                    if (!SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable) {
                       return true;
                     }
                     return false;
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.radioEnable',
-                    'SDL.AudioModel.radioModel.radioControlStruct.band',
-                    'SDL.AudioModel.radioModel.radioControlStruct.availableHdChannels.@each'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable',
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band',
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.availableHdChannels.@each'
                   ),
                   disabledBinding: 'onEnableRadioClick',
                   elementId: 'radio_media_preset_button2',
                   classNames: 'a1',
                   getPresetText: function() {
-                    var band = SDL.AudioModel.radioModel.radioControlStruct.band;
-                    return SDL.AudioModel.radioModel.preset[band][1];
+                    var band = SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band;
+                    return SDL.RCModulesController.currentAudioModel.radioModel.preset[band][1];
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.band'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band'
                   ),
                   textBinding: 'getPresetText',
                   templateName: 'text',
@@ -1352,23 +1352,23 @@ SDL.RadioView = Em.ContainerView
               3: SDL.RadioPresetButton.extend(
                 {
                   onEnableRadioClick: function() {
-                    if (!SDL.AudioModel.radioModel.radioControlStruct.radioEnable) {
+                    if (!SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable) {
                       return true;
                     }
                     return false;
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.radioEnable',
-                    'SDL.AudioModel.radioModel.radioControlStruct.band',
-                    'SDL.AudioModel.radioModel.radioControlStruct.availableHdChannels.@each'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable',
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band',
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.availableHdChannels.@each'
                   ),
                   disabledBinding: 'onEnableRadioClick',
                   elementId: 'radio_media_preset_button3',
                   classNames: 'a2',
                   getPresetText: function() {
-                    var band = SDL.AudioModel.radioModel.radioControlStruct.band;
-                    return SDL.AudioModel.radioModel.preset[band][2];
+                    var band = SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band;
+                    return SDL.RCModulesController.currentAudioModel.radioModel.preset[band][2];
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.band'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band'
                   ),
                   textBinding: 'getPresetText',
                   templateName: 'text',
@@ -1379,23 +1379,23 @@ SDL.RadioView = Em.ContainerView
               4: SDL.RadioPresetButton.extend(
                 {
                   onEnableRadioClick: function() {
-                    if (!SDL.AudioModel.radioModel.radioControlStruct.radioEnable) {
+                    if (!SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable) {
                       return true;
                     }
                     return false;
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.radioEnable',
-                    'SDL.AudioModel.radioModel.radioControlStruct.band',
-                    'SDL.AudioModel.radioModel.radioControlStruct.availableHdChannels.@each'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable',
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band',
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.availableHdChannels.@each'
                   ),
                   disabledBinding: 'onEnableRadioClick',
                   elementId: 'radio_media_preset_button4',
                   classNames: 'a3',
                   getPresetText: function() {
-                    var band = SDL.AudioModel.radioModel.radioControlStruct.band;
-                    return SDL.AudioModel.radioModel.preset[band][3];
+                    var band = SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band;
+                    return SDL.RCModulesController.currentAudioModel.radioModel.preset[band][3];
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.band'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band'
                   ),
                   textBinding: 'getPresetText',
                   templateName: 'text',
@@ -1406,23 +1406,23 @@ SDL.RadioView = Em.ContainerView
               5: SDL.RadioPresetButton.extend(
                 {
                   onEnableRadioClick: function() {
-                    if (!SDL.AudioModel.radioModel.radioControlStruct.radioEnable) {
+                    if (!SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable) {
                       return true;
                     }
                     return false;
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.radioEnable',
-                    'SDL.AudioModel.radioModel.radioControlStruct.band',
-                    'SDL.AudioModel.radioModel.radioControlStruct.availableHdChannels.@each'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable',
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band',
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.availableHdChannels.@each'
                   ),
                   disabledBinding: 'onEnableRadioClick',
                   elementId: 'radio_media_preset_button5',
                   classNames: 'a4',
                   getPresetText: function() {
-                    var band = SDL.AudioModel.radioModel.radioControlStruct.band;
-                    return SDL.AudioModel.radioModel.preset[band][4];
+                    var band = SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band;
+                    return SDL.RCModulesController.currentAudioModel.radioModel.preset[band][4];
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.band'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band'
                   ),
                   textBinding: 'getPresetText',
                   templateName: 'text',
@@ -1433,23 +1433,23 @@ SDL.RadioView = Em.ContainerView
               6: SDL.RadioPresetButton.extend(
                 {
                   onEnableRadioClick: function() {
-                    if (!SDL.AudioModel.radioModel.radioControlStruct.radioEnable) {
+                    if (!SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable) {
                       return true;
                     }
                     return false;
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.radioEnable',
-                    'SDL.AudioModel.radioModel.radioControlStruct.band',
-                    'SDL.AudioModel.radioModel.radioControlStruct.availableHdChannels.@each'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable',
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band',
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.availableHdChannels.@each'
                   ),
                   disabledBinding: 'onEnableRadioClick',
                   elementId: 'radio_media_preset_button6',
                   classNames: 'a5',
                   getPresetText: function() {
-                    var band = SDL.AudioModel.radioModel.radioControlStruct.band;
-                    return SDL.AudioModel.radioModel.preset[band][5];
+                    var band = SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band;
+                    return SDL.RCModulesController.currentAudioModel.radioModel.preset[band][5];
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.band'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band'
                   ),
                   textBinding: 'getPresetText',
                   templateName: 'text',
@@ -1484,25 +1484,25 @@ SDL.RadioView = Em.ContainerView
               disabled: false,
               onDown: false,
               action: 'radioEnableKeyPress',
-              target: 'SDL.AudioModel.radioModel',
+              target: 'SDL.RCModulesController.currentAudioModel.radioModel',
               iconBinding: 'onIconChange',
               // Change Icon for Frequency Scan
               onIconChange: function() {
               return SDL.SDLController.getLedIndicatorImagePath(
-                SDL.AudioModel.radioModel.radioControlStruct.radioEnable);
-              }.property('SDL.AudioModel.radioModel.radioControlStruct.radioEnable')
+                SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable);
+              }.property('SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable')
             }
           ),
           scanButton: SDL.Button.extend(
             {
               isDisabled: function() {
-                if (SDL.AudioModel.radioModel.radioControlStruct.band == 'XM') {
+                if (SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band == 'XM') {
                   return true;
                 }
-                return !SDL.AudioModel.radioModel.radioControlStruct.radioEnable;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlStruct.radioEnable',
-                'SDL.AudioModel.radioModel.radioControlStruct.band'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable',
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band'
               ),
               disabledBinding: 'isDisabled',
               elementId: 'media_fm_scanButton',
@@ -1511,10 +1511,10 @@ SDL.RadioView = Em.ContainerView
               // Change Icon for Frequency Scan
               onIconChange: function() {
               return SDL.SDLController.getLedIndicatorImagePath(
-                SDL.AudioModel.radioModel.scanState);
-              }.property('SDL.AudioModel.radioModel.scanState'),
+                SDL.RCModulesController.currentAudioModel.radioModel.scanState);
+              }.property('SDL.RCModulesController.currentAudioModel.radioModel.scanState'),
               action: 'scanKeyPress',
-              target: 'SDL.AudioModel.radioModel',
+              target: 'SDL.RCModulesController.currentAudioModel.radioModel',
               onDown: false,
               text: 'Scan'
             }
@@ -1522,39 +1522,39 @@ SDL.RadioView = Em.ContainerView
           optionsButton: SDL.Button.extend(
             {
               onEnableRadioClick: function() {
-                return !SDL.AudioModel.radioModel.radioControlStruct.radioEnable;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlStruct.radioEnable'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable'
               ),
               disabledBinding: 'onEnableRadioClick',
               elementId: 'media_fm_optionButton',
               classNames: ['rs-item'],
               icon: 'images/media/active_arrow.png',
               text: 'Options',
-              target: 'SDL.AudioModel.radioModel',
+              target: 'SDL.RCModulesController.currentAudioModel.radioModel',
               action: 'toggleOptions'
             }
           ),
           directTuneButton: SDL.Button.extend(
             {
               isDisabled: function() {
-                if (SDL.AudioModel.radioModel.radioControlStruct.band == 'XM') {
+                if (SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band == 'XM') {
                   return true;
                 }
                 return false;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlStruct.radioEnable',
-                'SDL.AudioModel.radioModel.radioControlStruct.band'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable',
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.band'
               ),
               disabledBinding: 'isDisabled',
               elementId: 'media_fm_directButton',
               classNameBindings: [
-                'SDL.AudioModel.radioModel.tuneRadio:hidden'
+                'SDL.RCModulesController.currentAudioModel.radioModel.tuneRadio:hidden'
               ],
               templateName: 'text',
               classNames: ['rs-item'],
               action: 'directTune',
-              target: 'SDL.AudioModel.radioModel',
+              target: 'SDL.RCModulesController.currentAudioModel.radioModel',
               onDown: false,
               text: 'Direct Tune'
             }
@@ -1562,19 +1562,19 @@ SDL.RadioView = Em.ContainerView
           presetsButton: SDL.Button.extend(
             {
               onEnableRadioClick: function() {
-                return !SDL.AudioModel.radioModel.radioControlStruct.radioEnable;
+                return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable;
               }.property(
-                'SDL.AudioModel.radioModel.radioControlStruct.radioEnable'
+                'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable'
               ),
               disabledBinding: 'onEnableRadioClick',
               elementId: 'media_fm_presetsButton',
               classNameBindings: [
-                'SDL.AudioModel.radioModel.tuneRadio::hidden'
+                'SDL.RCModulesController.currentAudioModel.radioModel.tuneRadio::hidden'
               ],
               templateName: 'text',
               classNames: ['rs-item'],
               action: 'directTune',
-              target: 'SDL.AudioModel.radioModel',
+              target: 'SDL.RCModulesController.currentAudioModel.radioModel',
               onDown: false,
               text: 'Presets'
             }
@@ -1589,13 +1589,13 @@ SDL.RadioView = Em.ContainerView
               tuneUp: SDL.Button.extend(
                 {
                   isDisabled: function() {
-                    return !SDL.AudioModel.radioModel.radioControlStruct.radioEnable;
+                    return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable;
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.radioEnable'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable'
                   ),
                   disabledBinding: 'isDisabled',
                   elementId: 'media_fm_tuneUpButton',
-                  target: 'SDL.AudioModel.radioModel',
+                  target: 'SDL.RCModulesController.currentAudioModel.radioModel',
                   action: 'tuneUpPress',
                   onDown: false,
                   templateName: 'text',
@@ -1605,13 +1605,13 @@ SDL.RadioView = Em.ContainerView
               tuneDown: SDL.Button.extend(
                 {
                   isDisabled: function() {
-                    return !SDL.AudioModel.radioModel.radioControlStruct.radioEnable;
+                    return !SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable;
                   }.property(
-                    'SDL.AudioModel.radioModel.radioControlStruct.radioEnable'
+                    'SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable'
                   ),
                   disabledBinding: 'isDisabled',
                   elementId: 'media_fm_tuneDownButton',
-                  target: 'SDL.AudioModel.radioModel',
+                  target: 'SDL.RCModulesController.currentAudioModel.radioModel',
                   action: 'tuneDownPress',
                   onDown: false,
                   templateName: 'text',
