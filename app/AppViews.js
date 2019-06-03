@@ -40,6 +40,7 @@ SDL.AppViews = Em.ContainerView.extend(
       'SDL.FuncSwitcher.rev:rev'
     ],
     childViews: [
+      SDL.VehicleEmulationView,
       SDL.HomeView,
       SDL.MediaView,
       SDL.NavigationAppView,
