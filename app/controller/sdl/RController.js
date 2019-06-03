@@ -65,7 +65,7 @@ SDL.RController = SDL.SDLController.extend(
       };
 
       if (params.moduleType == 'CLIMATE') {
-        var model = SDL.ClimateController.model;
+        var model = SDL.RCModulesController.currentClimate;
         switch (params.buttonName) {
           case 'AC_MAX': {
             model.toggleAcMaxEnable();
@@ -236,11 +236,11 @@ SDL.RController = SDL.SDLController.extend(
    toggleTemperatureUnit: function() {
       var next = this.nextElement(SDL.HmiSettingsModel.temperatureUnitStruct, SDL.HmiSettingsModel.temperatureUnit);
       SDL.HmiSettingsModel.set('temperatureUnit',next);
-      SDL.ClimateControlModel.set('climateControlData.temperatureUnit', next);
+      SDL.ClimateController.model.set('climateControlData.temperatureUnit', next);
       if(next == 'FAHRENHEIT') {
-        SDL.ClimateControlModel.temperatureUnitFahrenheitEnable();
+        SDL.ClimateController.model.temperatureUnitFahrenheitEnable();
       } else {
-        SDL.ClimateControlModel.temperatureUnitCelsiusEnable();
+        SDL.ClimateController.model.temperatureUnitCelsiusEnable();
       }
       var data = {
         temperatureUnit: next

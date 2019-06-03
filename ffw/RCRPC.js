@@ -242,7 +242,7 @@ FFW.RC = FFW.RPCObserver.create(
             
             if (request.params.moduleData.climateControlData) {
               var currentClimateState = 
-                SDL.ClimateController.getClimateControlData().climateEnable;
+                SDL.RCModulesController.currentClimate.getClimateControlData().climateEnable;
               var requestedClimateState = 
                 request.params.moduleData.climateControlData.climateEnable;
               if(!currentClimateState) {
@@ -263,7 +263,7 @@ FFW.RC = FFW.RPCObserver.create(
                 }
               }
               newClimateControlData =
-                SDL.ClimateController.model.setClimateData(
+                SDL.RCModulesController.currentClimate.setClimateData(
                   request.params.moduleData.climateControlData);
               if (Object.keys(request.params.moduleData.climateControlData).length > 0) {
                 FFW.RC.onInteriorVehicleDataNotification({moduleType:'CLIMATE', 
@@ -392,7 +392,7 @@ FFW.RC = FFW.RPCObserver.create(
             );
             switch(moduleType){
               case 'CLIMATE':{
-                climateControlData = SDL.ClimateController.getClimateControlData();
+                climateControlData = SDL.RCModulesController.currentClimate.getClimateControlData();
                 break
               }
               case 'RADIO':{

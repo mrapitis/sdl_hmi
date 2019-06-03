@@ -32,42 +32,43 @@
  * @version 1.0
  */
 
-SDL.ClimateControlModel = Em.Object.create({
+SDL.ClimateControlModel = Em.Object.extend({
 
-  init: function() {},
+  init: function() {
+    this._super();
+    this.set('climateControlData', {});
+    this.set('climateControlData.temperatureUnit', 'CELSIUS');
+    this.set('climateControlData.currentTemp', 20);
+    this.set('climateControlData.desiredTemp', 25);
+    this.set('climateControlData.acEnable', true);
+    this.set('climateControlData.acMaxEnable', true);
+    this.set('climateControlData.circulateAirEnable', true);
+    this.set('climateControlData.autoModeEnable', true);
+    this.set('climateControlData.defrostZone', 'FRONT');
+    this.set('climateControlData.defrostZoneFrontEnable', true);
+    this.set('climateControlData.defrostZoneRearEnable', false);
+    this.set('climateControlData.dualModeEnable', true);
+    this.set('climateControlData.fanSpeed', 0);
+    this.set('climateControlData.ventilationMode', 'UPPER');
+    this.set('climateControlData.ventilationModeLowEnable', false);
+    this.set('climateControlData.ventilationModeUpEnable', false);
+    this.set('climateControlData.heatedWindshieldEnable', false);
+    this.set('climateControlData.heatedRearWindowEnable', false);
+    this.set('climateControlData.heatedSteeringWheelEnable', false);
+    this.set('climateControlData.heatedMirrorsEnable', false);
 
-  currentFanSpeed: 0,
-  autoModeEnableString: 'OFF',
-  dualModeEnableString: 'OFF',
-  passengerDesiredTemp: 70,
-  reciRCulateAirEnableString: 'OFF',
-  acEnableString: 'OFF',
-  defrostZoneStruct: ['FRONT', 'REAR', 'ALL', 'NONE'],
-  ventilationModeStruct: ['UPPER', 'LOWER', 'BOTH', 'NONE'],
-  climateEnableButtonText: "Climate ON",
-
-  climateControlData: {
-    temperatureUnit: 'CELSIUS',
-    currentTemp: 20,
-    desiredTemp: 25,
-    acEnable: true,
-    acMaxEnable: true,
-    circulateAirEnable: true,
-    autoModeEnable: true,
-    defrostZone: 'FRONT',
-    defrostZoneFrontEnable: true,
-    defrostZoneRearEnable: false,
-    dualModeEnable: true,
-    fanSpeed: 0,
-    ventilationMode: 'UPPER',
-    ventilationModeLowEnable: false,
-    ventilationModeUpEnable: false,
-    heatedWindshieldEnable: false,
-    heatedRearWindowEnable: false,
-    heatedSteeringWheelEnable: false,
-    heatedMirrorsEnable: false,
-    climateEnable: true
+    this.set('currentFanSpeed', 0);
+    this.set('autoModeEnableString', 'OFF');
+    this.set('dualModeEnableString', 'OFF');
+    this.set('passengerDesiredTemp', 70);
+    this.set('reciRCulateAirEnableString', 'OFF');
+    this.set('acEnableString', 'OFF');
+    this.set('defrostZoneStruct', ['FRONT', 'REAR', 'ALL', 'NONE']);
+    this.set('ventilationModeStruct', ['UPPER', 'LOWER', 'BOTH', 'NONE']);
+    
   },
+
+  climateControlData: {},
 
   getClimateControlCapabilities: function() {
     var result = [];
@@ -549,12 +550,12 @@ SDL.ClimateControlModel = Em.Object.create({
 
   setCurrentTemp: function(temp) {
     this.set('climateControlData.currentTemp',
-      SDL.ClimateController.extractTemperatureFromStruct(temp));
+      this.extractTemperatureFromStruct(temp));
   },
 
   setDesiredTemp: function(temp) {
     this.set('climateControlData.desiredTemp',
-      SDL.ClimateController.extractTemperatureFromStruct(temp));
+      this.extractTemperatureFromStruct(temp));
   },
 
   setTemperatureUnitCelsiusEnable: function(tempUnit) {

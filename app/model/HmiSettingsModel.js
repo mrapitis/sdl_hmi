@@ -71,7 +71,7 @@ SDL.HmiSettingsModel = Em.Object.create({
 /*
  * Current temperature Unit used in the HMI (for temperature measuring systems)
  */ 
-  temperatureUnit: SDL.ClimateControlModel.climateControlData.temperatureUnit,
+  temperatureUnit: 'CELSIUS',
 
   getHmiSettingsCapabilities: function() {
     var capabilities = {
