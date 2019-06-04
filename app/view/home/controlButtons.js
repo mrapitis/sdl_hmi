@@ -55,8 +55,31 @@ SDL.ControlButtons = Em.ContainerView.create({
     'phoneCall',
     'keyboard',
     'imageMode',
-    'imageModeLabel'
+    'imageModeLabel',
+    'RCModules',
+    'RCModulesLabel'
   ],
+
+  RCModulesLabel: SDL.Label.extend({
+    elementId: 'RCModulesLabel',
+    classNames: 'RCModulesLabel',
+    content: 'RC module Id:'
+  }
+),
+
+  RCModules: Em.Select.extend({
+
+    elementId: 'RCModule',
+
+    classNames: 'RCModulesSelect',
+
+    change: function(event) {
+      SDL.RCModulesController.changeCurrentModule(this.selection);
+    }
+
+  }
+),
+
   imageModeLabel: SDL.Label.extend({
     elementId: 'imageModeLabel',
     classNames: 'imageModeLabel',

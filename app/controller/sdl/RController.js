@@ -65,7 +65,7 @@ SDL.RController = SDL.SDLController.extend(
       };
 
       if (params.moduleType == 'CLIMATE') {
-        var model = SDL.RCModulesController.currentClimate;
+        var model = SDL.RCModulesController.currentClimateModel;
         switch (params.buttonName) {
           case 'AC_MAX': {
             model.toggleAcMaxEnable();

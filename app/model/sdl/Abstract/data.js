@@ -653,6 +653,58 @@ SDL.SDLModelData = Em.Object.create(
       'Night mode',
       'Highlighted mode'
     ],
+
+    seatControlCapabilitiesValues: [
+      'moduleName',
+      'moduleInfo',
+      'heatingEnabledAvailable',
+      'coolingEnabledAvailable',
+      'heatingLevelAvailable',
+      'coolingLevelAvailable',
+      'horizontalPositionAvailable',
+      'verticalPositionAvailable',
+      'frontVerticalPositionAvailable',
+      'backVerticalPositionAvailable',
+      'backTiltAngleAvailable',
+      'headSupportHorizontalPositionAvailable',
+      'headSupportVerticalPositionAvailable',
+      'massageEnabledAvailable',
+      'massageModeAvailable',
+      'massageCushionFirmnessAvailable',
+      'memoryAvailable'
+    ],
+
+    climateControlCapabilitiesValues: [
+      'moduleName',
+      'moduleInfo',
+      'acEnableAvailable',
+      'acMaxEnableAvailable',
+      'autoModeEnableAvailable',
+      'circulateAirEnableAvailable',
+      'currentTemperatureAvailable',
+      'defrostZone',
+      'defrostZoneAvailable',
+      'desiredTemperatureAvailable',
+      'dualModeEnableAvailable',
+      'heatedMirrorsAvailable',
+      'heatedRearWindowAvailable',
+      'heatedSteeringWheelAvailable',
+      'heatedWindshieldAvailable',
+      'fanSpeedAvailable',
+      'ventilationMode',
+      'ventilationModeAvailable'
+    ],
+
+    audioControlCapabilitiesValues: [
+      'moduleName',
+      'moduleInfo',
+      'sourceAvailable',
+      'volumeAvailable',
+      'equalizerAvailable',
+      'keepContextAvailable',
+      'equalizerMaxChannelId'
+    ],
+
     vehicleSeatRepresentation: {
       'no_emulation' : [
         {

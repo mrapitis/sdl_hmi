@@ -124,26 +124,7 @@ SDL.remoteControlCapability =
         shortPressAvailable: true,
         upDownAvailable: false
     }],
-    climateControlCapabilities: [{
-        acEnableAvailable: true,
-        acMaxEnableAvailable: true,
-        autoModeEnableAvailable: true,
-        circulateAirEnableAvailable: true,
-        currentTemperatureAvailable: true,
-        defrostZone: ['FRONT', 'REAR', 'ALL', 'NONE'],
-        defrostZoneAvailable: true,
-        desiredTemperatureAvailable: true,
-        dualModeEnableAvailable: true,
-        heatedMirrorsAvailable: true,
-        heatedRearWindowAvailable: true,
-        heatedSteeringWheelAvailable: true,
-        heatedWindshieldAvailable: true,
-        fanSpeedAvailable: true,
-        moduleName: 'primary_climate',
-        ventilationMode: ['UPPER', 'LOWER', 'BOTH', 'NONE'],
-        ventilationModeAvailable: true,
-        climateEnableAvailable: true
-    }],
+    climateControlCapabilities: [],
     radioControlCapabilities: [{
         availableHdChannelsAvailable: true,
         hdChannelAvailable: true,
@@ -159,32 +140,8 @@ SDL.remoteControlCapability =
         sisDataAvailable: true,
         stateAvailable: true
     }],
-    audioControlCapabilities: [{
-        moduleName: 'audio',
-        sourceAvailable: true,
-        volumeAvailable: true,
-        equalizerAvailable: true,
-        keepContextAvailable: true,
-        equalizerMaxChannelId: 10
-    }],
-    seatControlCapabilities: [{
-      moduleName: "Seat",
-      heatingEnabledAvailable: true,
-      coolingEnabledAvailable: true,
-      heatingLevelAvailable: true,
-      coolingLevelAvailable: true,
-      horizontalPositionAvailable: true,
-      verticalPositionAvailable: true,
-      frontVerticalPositionAvailable: true,
-      backVerticalPositionAvailable: true,
-      backTiltAngleAvailable: true,
-      headSupportHorizontalPositionAvailable: true,
-      headSupportVerticalPositionAvailable: true,
-      massageEnabledAvailable: true,
-      massageModeAvailable: true,
-      massageCushionFirmnessAvailable: true,
-      memoryAvailable: true
-   }],
+    audioControlCapabilities: [],
+    seatControlCapabilities: [],
     lightControlCapabilities: {
         moduleName: 'light',
         supportedLights: [{
