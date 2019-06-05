@@ -389,7 +389,7 @@ SDL.SettingsController = Em.Object.create(
     },
     turnOnSeat: function () {
       if(!SDL.States.settings.seat.active){
-        SDL.SeatModel.goToStates();
+        SDL.RCModulesController.currentSeatModel.goToStates();
         SDL.States.goToStates('settings.seat');
         }
     }

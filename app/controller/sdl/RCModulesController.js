@@ -1,17 +1,17 @@
 SDL.RCModulesController = Em.Object.create({
     audioModels: {},
     climateModels: {},
-
+    radioModels: {},
+    seatModels: {},
+    currentSeatModel: null,
     currentAudioModel: null,
     currentClimateModel: null,
 
     init: function() {
         // TODO: init only driver seats and set current models
         this.set('currentAudioModel', SDL.AudioModel.create());
-        
-        // this.audioModels['1'] = this.currentAudioModel;        
-        // this.climateModels['1'] = SDL.ClimateControlModel.create(); 
         this.set('currentClimateModel', SDL.ClimateControlModel.create());
+        this.set('currentSeatModel', SDL.SeatModel.create());
     },
 
     populateModels: function() {
@@ -24,21 +24,29 @@ SDL.RCModulesController = Em.Object.create({
             contentBinding.push(moduleKeyName);
             this.set('audioModels.' + moduleKeyName, SDL.AudioModel.create());
             this.set('climateModels.' + moduleKeyName, SDL.ClimateControlModel.create());
+            this.set('seatModels.' + moduleKeyName, SDL.SeatModel.create({ID: moduleKeyName}));
             this.generateClimateCapabilities(element);
             this.generateAudioCapabilities(element);            
         });
         this.set('currentClimateModel', this.climateModels[contentBinding[0]]);
         this.set('currentAudioModel', this.audioModels[contentBinding[0]]);
+        this.set('currentSeatModel', this.seatModels[contentBinding[0]]);
         SDL.ControlButtons.RCModules.set('content', contentBinding);
     },
 
     changeCurrentModule: function(moduleId) {
         this.set('currentClimateModel',this.climateModels[moduleId]);
-        this.set('currentAudioModel',this.audioModels[moduleId]);
+        this.set('currentSeatModel', this.seatModels[moduleId]);
+        this.set('currentAudioModel', this.audioModels[moduleId]);
+        this.currentSeatModel.update();
     },
 
     getModuleKeyName: function(item) {
         return "C" + item.col + "R" + item.row + "L" + item.level;
+    },
+
+    action: function(event) {
+        this[event.model][event.method](event);
     },
 
     generateClimateCapabilities: function(element) {
@@ -90,5 +98,3 @@ SDL.RCModulesController = Em.Object.create({
     }
 })
 
-// ventilationMode: ['UPPER', 'LOWER', 'BOTH', 'NONE'],
-// defrostZone: ['FRONT', 'REAR', 'ALL', 'NONE'],
