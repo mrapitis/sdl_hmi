@@ -1257,7 +1257,20 @@ margin-top: 90px;
     text-align: center;
     line-height: 45px;
     right: 40px;
-    bottom: 25px;
+    bottom: 20px;
+}
+
+#vehicle_emulation_view .coverage_settings {
+    width: 130px;
+    height: 45px;
+    position: absolute;
+    cursor: pointer;
+    float: right;
+    font-size: 20px;
+    text-align: center;
+    line-height: 45px;
+    right: 40px;
+    bottom: 70px;
 }
 
 #vehicle_emulation_view .option_no_emulation_view {
@@ -1316,6 +1329,80 @@ margin-top: 90px;
     position: absolute;
     top: 375px;
     left: 510px;
+}
+
+#vehicle_module_coverage_view {
+    width: 800px;
+    height: 480px;
+    z-index: 12003;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(218, 218, 218)), color-stop(0.3, rgb(0, 0, 0)));
+}
+
+#vehicle_module_coverage_view .apply_settings {
+    width: 130px;
+    height: 45px;
+    position: absolute;
+    cursor: pointer;
+    float: right;
+    font-size: 20px;
+    text-align: center;
+    line-height: 45px;
+    right: 40px;
+    bottom: 20px;
+}
+
+#vehicle_module_coverage_view .codeEditor {
+    top: 30px !important;
+}
+
+#vehicle_module_coverage_view .codeEditor .button {
+    display: none;
+}
+
+#vehicle_module_coverage_view .editor {
+    top: 75px;
+}
+
+#vehicle_module_coverage_view .optionClimate {
+    position: absolute;
+    top: 75px;
+    left: 125px;
+    z-index: 5;
+}
+
+#vehicle_module_coverage_view .optionRadio {
+    position: absolute;
+    top: 75px;
+    left: 225px;
+    z-index: 5;
+}
+
+#vehicle_module_coverage_view .optionSeat {
+    position: absolute;
+    top: 75px;
+    left: 310px;
+    z-index: 5;
+}
+
+#vehicle_module_coverage_view .optionAudio {
+    position: absolute;
+    top: 75px;
+    left: 400px;
+    z-index: 5;
+}
+
+#vehicle_module_coverage_view .optionLight {
+    position: absolute;
+    top: 75px;
+    left: 490px;
+    z-index: 5;
+}
+
+#vehicle_module_coverage_view .optionHmiSettings {
+    position: absolute;
+    top: 75px;
+    left: 575px;
+    z-index: 5;
 }
 
 .radioButton .label{

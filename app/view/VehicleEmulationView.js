@@ -41,6 +41,7 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
       'OptionVehicle2x3',
       'OptionVehicle3x3',
       'applySettings',
+      'coverageSettings',
       'radioNoEmulation',
       'radioVehicle2x3',
       'radioVehicle3x3'
@@ -95,6 +96,29 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
         actionUp: function(event) {
           this.set('pressed', false);
           this._parentView.set('hide', true);
+        }
+      }
+    ),
+
+    coverageSettings: Em.View.create(
+      {
+        elementId: 'emulation_coverage_settings',
+        classNameBindings: [
+          'visible_display', 'pressed:pressed'
+        ],
+        classNames: [
+          'coverage_settings',
+          'ffw-button'
+        ],
+        template: Ember.Handlebars.compile('<span>Coverage</span>'),
+        actionDown: function(event) {
+          this.set('pressed', true);
+        },
+        actionUp: function(event) {
+          this.set('pressed', false);
+          SDL.VehicleModuleCoverageView.set('hide', false);
+          SDL.VehicleModuleCoverageController.fillDefaultCoverageSettings();
+          SDL.VehicleModuleCoverageController.showModuleCoverage();
         }
       }
     ),
