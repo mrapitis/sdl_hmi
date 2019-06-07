@@ -6,12 +6,14 @@ SDL.RCModulesController = Em.Object.create({
     currentSeatModel: null,
     currentAudioModel: null,
     currentClimateModel: null,
+    currentRadioModel: null,
 
     init: function() {
         // TODO: init only driver seats and set current models
         this.set('currentAudioModel', SDL.AudioModel.create());
         this.set('currentClimateModel', SDL.ClimateControlModel.create());
         this.set('currentSeatModel', SDL.SeatModel.create());
+        this.set('currentRadioModel', SDL.RadioModel.create());
     },
 
     populateModels: function() {
@@ -25,12 +27,14 @@ SDL.RCModulesController = Em.Object.create({
             this.set('audioModels.' + moduleKeyName, SDL.AudioModel.create());
             this.set('climateModels.' + moduleKeyName, SDL.ClimateControlModel.create());
             this.set('seatModels.' + moduleKeyName, SDL.SeatModel.create({ID: moduleKeyName}));
+            this.set('radioModels.' + moduleKeyName, SDL.RadioModel.create());
             this.generateClimateCapabilities(element);
             this.generateAudioCapabilities(element);            
         });
         this.set('currentClimateModel', this.climateModels[contentBinding[0]]);
         this.set('currentAudioModel', this.audioModels[contentBinding[0]]);
         this.set('currentSeatModel', this.seatModels[contentBinding[0]]);
+        this.set('currentRadioModel', this.radioModels[contentBinding[0]]);
         SDL.ControlButtons.RCModules.set('content', contentBinding);
     },
 
@@ -38,6 +42,7 @@ SDL.RCModulesController = Em.Object.create({
         this.set('currentClimateModel',this.climateModels[moduleId]);
         this.set('currentSeatModel', this.seatModels[moduleId]);
         this.set('currentAudioModel', this.audioModels[moduleId]);
+        this.set('currentRadioModel', this.radioModels[moduleId]);
         this.currentSeatModel.update();
     },
 
@@ -97,4 +102,3 @@ SDL.RCModulesController = Em.Object.create({
         SDL.remoteControlCapability['audioControlCapabilities'].push(capabilities);
     }
 })
-

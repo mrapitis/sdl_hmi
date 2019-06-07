@@ -253,10 +253,10 @@ var StateManager = Em.StateManager.extend(
                 enter: function() {
                   SDL.MediaController.set('activeState', SDL.States.nextState);
                   if (!FFW.RC.isSetVdInProgress) {
-                    SDL.RCModulesController.currentAudioModel.radioModel.sendAudioNotification();
+                    SDL.RCModulesController.currentRadioModel.sendAudioNotification();
                   }
-                  if (!SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.radioEnable) {
-                    SDL.RCModulesController.currentAudioModel.radioModel.radioEnableKeyPress();
+                  if (!SDL.RCModulesController.currentRadioModel.radioControlStruct.radioEnable) {
+                    SDL.RCModulesController.currentRadioModel.radioEnableKeyPress();
                   }
                   this._super();
                 },

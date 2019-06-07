@@ -255,8 +255,8 @@ SDL.MediaController = Em.Object.create(
         this.deactivateAll();
         SDL.States.goToStates('media.player.radio');
       }
-      SDL.RCModulesController.currentAudioModel.radioModel.saveCurrentOptions();
-      SDL.RCModulesController.currentAudioModel.radioModel.set('active', true);
+      SDL.RCModulesController.currentRadioModel.saveCurrentOptions();
+      SDL.RCModulesController.currentRadioModel.set('active', true);
       this.returnParameters();
     },
     turnOnBluetooth: function () {
@@ -362,7 +362,7 @@ SDL.MediaController = Em.Object.create(
      * Switching off Radio
      */
     deactivateRadio: function () {
-      SDL.RCModulesController.currentAudioModel.radioModel.set('active', false);
+      SDL.RCModulesController.currentRadioModel.set('active', false);
       SDL.States.set('media.player.cd.active', false);
       SDL.States.set('media.player.usb.active', false);
       SDL.States.set('media.player.bluetooth.active', false);
@@ -606,11 +606,11 @@ SDL.MediaController = Em.Object.create(
     state: true,
     setFalseStateModel: function () {
       SDL.SDLModel.set('data.limitedExist', false);
-      SDL.RCModulesController.currentAudioModel.radioModel.set('active', false);
+      SDL.RCModulesController.currentRadioModel.set('active', false);
       SDL.RCModulesController.currentAudioModel.cdModel.set('active', false);
       SDL.RCModulesController.currentAudioModel.usbModel.set('active', false);
       SDL.RCModulesController.currentAudioModel.ipodModel.set('active', false);
-      SDL.RCModulesController.currentAudioModel.radioModel.set('active', false);
+      SDL.RCModulesController.currentRadioModel.set('active', false);
       SDL.RCModulesController.currentAudioModel.bluetoothModel.set('active', false);
       SDL.RCModulesController.currentAudioModel.lineInModel.set('active', false);
     },
@@ -700,7 +700,7 @@ SDL.MediaController = Em.Object.create(
                 case 'XM':
                 case 'FM':
                   this.setFalseStateModel();
-                  SDL.RCModulesController.currentAudioModel.radioModel.set('active', true);
+                  SDL.RCModulesController.currentRadioModel.set('active', true);
                   this.set('activeState', 'media.player.radio');
                   break;
                 case 'USB':
@@ -741,7 +741,7 @@ SDL.MediaController = Em.Object.create(
         }
       } else { return this.setAudioControlData(data); }
 
-      SDL.RCModulesController.currentAudioModel.radioModel.checkoutRadioSource(data);
+      SDL.RCModulesController.currentRadioModel.checkoutRadioSource(data);
 
       if (data.volume != null) {
         this.set('currentVolume', data.volume);
@@ -781,7 +781,7 @@ SDL.MediaController = Em.Object.create(
       result = {};
       if (data.source != null) {
         
-        SDL.RCModulesController.currentAudioModel.radioModel.checkoutRadioSource(data);
+        SDL.RCModulesController.currentRadioModel.checkoutRadioSource(data);
         
         this.set('lastRadioControlStruct.source', data.source);
         this.switchSource(data.source);

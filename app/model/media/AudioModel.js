@@ -1,7 +1,7 @@
 SDL.AudioModel = Em.Object.extend({
 
     bluetoothModel: null,
-    radioModel: null,
+    // radioModel: null,
     cdModel: null,
     lineInModel: null,
     usbModel: null,
@@ -9,7 +9,7 @@ SDL.AudioModel = Em.Object.extend({
 
     init: function() {
         this.set('bluetoothModel', SDL.BluetoothModel.create());
-        this.set('radioModel', SDL.RadioModel.create());
+        // this.set('radioModel', SDL.RadioModel.create());
         this.set('cdModel', SDL.CDModel.create());
         this.set('lineInModel', SDL.LineInModel.create());
         this.set('usbModel', SDL.USBModel.create());

@@ -44,8 +44,8 @@ SDL.RadioPresetButton = SDL.Button.extend({
 
   highlight: function() {
       return (
-      this.preset == SDL.RadioModel.activePreset);
-    }.property('SDL.RadioModel.activePreset'),
+      this.preset == SDL.RCModulesController.currentRadioModel.activePreset);
+    }.property('SDL.RCModulesController.currentRadioModel.activePreset'),
 
   presetNum: function() {
       return this.preset + 1;
@@ -70,7 +70,7 @@ SDL.RadioPresetButton = SDL.Button.extend({
     this.saveToPreset = false;
     this.timerPreset = setTimeout(function() {
           self.saveToPreset = true;
-          SDL.RadioModel.saveStationToPreset(self);
+          SDL.RCModulesController.currentRadioModel.saveStationToPreset(self);
         }, 1000
       );
   },
@@ -84,7 +84,7 @@ SDL.RadioPresetButton = SDL.Button.extend({
     SDL.SDLController.onSoftButtonActionUp(this);
 
     if (!this.saveToPreset) {
-      SDL.RadioModel.setStation(this);
+      SDL.RCModulesController.currentRadioModel.setStation(this);
     }
     clearTimeout(this.timerPreset);
     this.timerPreset = null;
