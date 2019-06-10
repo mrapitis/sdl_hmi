@@ -76,6 +76,11 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     this.savedCoverageSettings[emulation_type] = SDL.deepCopy(this.coverageSettings);
   },
 
+  getCoverageSettings: function() {
+    this.loadSavedCoverageSettings();    
+    return this.coverageSettings;
+  },
+
   showModuleCoverage: function() {
     this.targetView.coverageEditor.activate();
     this.switchModule(this.targetView.currentModule);    

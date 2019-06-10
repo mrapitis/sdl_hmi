@@ -3,6 +3,9 @@ SDL.RCModulesController = Em.Object.create({
     climateModels: {},
     radioModels: {},
     seatModels: {},
+
+    ModuleModelsMapping: {},
+
     currentSeatModel: null,
     currentAudioModel: null,
     currentClimateModel: null,
@@ -16,38 +19,130 @@ SDL.RCModulesController = Em.Object.create({
         this.set('currentRadioModel', SDL.RadioModel.create());
     },
 
+    fillModuleModelsMapping: function(module_type, module_coverage) {
+      var mapping = {};
+
+      module_coverage.forEach(module => {
+        // These fields are not mandatory according to API so should be checked
+        var module_level = module.hasOwnProperty('level') ? module.level : 0;
+        var module_row = module.row;
+        var module_col = module.col;
+
+        var covering_module_name = SDL.VehicleModuleCoverageController.getModuleKeyName({
+          "col": module_col,
+          "row": module_row,
+          "level": module_level
+        });
+
+        var level_span = module.hasOwnProperty('levelspan') ? module.levelspan : 1;
+        var row_span = module.hasOwnProperty('rowspan') ? module.rowspan : 1;
+        var col_span = module.hasOwnProperty('colspan') ? module.colspan : 1;
+        
+        for (var level = module_level; level < module_level + level_span; ++level) {
+          for (var row = module_row; row < module_row + row_span; ++row) {
+            for (var col = module_col; col < module_col + col_span; ++col) {
+              var covered_item = {
+                "col" : col,
+                "row" : row,
+                "level" : level
+              }
+              var covered_module_name = 
+                SDL.VehicleModuleCoverageController.getModuleKeyName(covered_item);
+              mapping[covered_module_name] = covering_module_name;              
+            }
+          }
+        }
+      });
+
+      this.ModuleModelsMapping[module_type] = mapping;
+    }, 
+    
+    getCoveringModuleKey: function(module_type, module_key) {
+      var mapping = this.ModuleModelsMapping[module_type];
+      return mapping[module_key];
+    },
+
+    getCoveringModuleModel: function(module_type, module_key) {
+      var covering_module_key = this.getCoveringModuleKey(module_type, module_key);
+      switch (module_type) {
+        case 'CLIMATE': return this.climateModels[covering_module_key];
+        case 'RADIO': return this.radioModels[covering_module_key];
+        case 'SEAT': return this.seatModels[covering_module_key];
+        case 'AUDIO': return this.audioModels[covering_module_key];
+        case 'LIGHT': return null; // WTF??
+        case 'HMI_SETTINGS': return null; // WTF??
+      }
+      return null;   
+    },
+
     populateModels: function() {
-        // TODO: consider serviceArea parameter!
         var vehicleRepresentation = 
             SDL.SDLModelData.vehicleSeatRepresentation[FLAGS.VehicleEmulationType];
+        
         var contentBinding = [];
         vehicleRepresentation.forEach(element => {
-            var moduleKeyName = this.getModuleKeyName(element);
-            contentBinding.push(moduleKeyName);
-            this.set('audioModels.' + moduleKeyName, SDL.AudioModel.create());
-            this.set('climateModels.' + moduleKeyName, SDL.ClimateControlModel.create());
-            this.set('seatModels.' + moduleKeyName, SDL.SeatModel.create({ID: moduleKeyName}));
-            this.set('radioModels.' + moduleKeyName, SDL.RadioModel.create());
-            this.generateClimateCapabilities(element);
-            this.generateAudioCapabilities(element);            
+          var moduleKeyName =  SDL.VehicleModuleCoverageController.getModuleKeyName(element);
+          contentBinding.push(moduleKeyName);
         });
-        this.set('currentClimateModel', this.climateModels[contentBinding[0]]);
-        this.set('currentAudioModel', this.audioModels[contentBinding[0]]);
-        this.set('currentSeatModel', this.seatModels[contentBinding[0]]);
-        this.set('currentRadioModel', this.radioModels[contentBinding[0]]);
+
+        var self = this;
+        var coverageSettings = SDL.VehicleModuleCoverageController.getCoverageSettings();
+        Object.keys(coverageSettings).forEach(module_type => {
+          var module_coverage = coverageSettings[module_type];
+          switch (module_type) {
+            case 'CLIMATE': {
+              module_coverage.forEach(module => {
+                var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
+                self.set('climateModels.' + key_name, SDL.ClimateControlModel.create());
+                self.generateClimateCapabilities(module);        
+              });              
+              break;
+            }
+            case 'RADIO': {
+              module_coverage.forEach(module => {
+                var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
+                self.set('radioModels.' + key_name, SDL.RadioModel.create());        
+              });
+              break;
+            }
+            case 'SEAT': {
+              module_coverage.forEach(module => {
+                var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
+                self.set('seatModels.' + key_name, SDL.SeatModel.create({ID: key_name}));        
+              });
+              break;    
+            }
+            case 'AUDIO': {
+              module_coverage.forEach(module => {
+                var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
+                self.set('audioModels.' + key_name, SDL.AudioModel.create());       
+                this.generateAudioCapabilities(module); 
+              });              
+              break;   
+            }
+            case 'LIGHT': {
+                // WTF??
+              break;    
+            }
+            case 'HMI_SETTINGS': {
+                 // WTF??
+                break;
+            }
+          }
+          self.fillModuleModelsMapping(module_type, module_coverage);
+        });
+
         SDL.ControlButtons.RCModules.set('content', contentBinding);
+        this.changeCurrentModule(contentBinding[0]);
     },
 
-    changeCurrentModule: function(moduleId) {
-        this.set('currentClimateModel',this.climateModels[moduleId]);
-        this.set('currentSeatModel', this.seatModels[moduleId]);
-        this.set('currentAudioModel', this.audioModels[moduleId]);
-        this.set('currentRadioModel', this.radioModels[moduleId]);
+    changeCurrentModule: function(module_key) {
+        this.set('currentClimateModel', this.getCoveringModuleModel('CLIMATE', module_key));
+        this.set('currentAudioModel', this.getCoveringModuleModel('AUDIO', module_key));
+        this.set('currentSeatModel', this.getCoveringModuleModel('SEAT', module_key));
+        this.set('currentRadioModel', this.getCoveringModuleModel('RADIO', module_key));
+
         this.currentSeatModel.update();
-    },
-
-    getModuleKeyName: function(item) {
-        return "C" + item.col + "R" + item.row + "L" + item.level;
     },
 
     action: function(event) {
@@ -71,7 +166,8 @@ SDL.RCModulesController = Em.Object.create({
             }
             if('moduleInfo' === capability) {
                 var moduleInfo = {location: element};
-                moduleInfo['moduleId'] = this.getModuleKeyName(element);
+                moduleInfo['moduleId'] = 
+                  SDL.VehicleModuleCoverageController.getModuleKeyName(element);
                 capabilities[capability] = moduleInfo;
                 return;
             }
@@ -89,7 +185,8 @@ SDL.RCModulesController = Em.Object.create({
             }
             if('moduleInfo' === capability) {
                 var moduleInfo = {location: element};
-                moduleInfo['moduleId'] = this.getModuleKeyName(element);
+                moduleInfo['moduleId'] = 
+                  SDL.VehicleModuleCoverageController.getModuleKeyName(element);
                 capabilities[capability] = moduleInfo;
                 return;
             }
