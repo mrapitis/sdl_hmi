@@ -117,8 +117,19 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
         actionUp: function(event) {
           this.set('pressed', false);
           SDL.VehicleModuleCoverageView.set('hide', false);
-          SDL.VehicleModuleCoverageController.fillDefaultCoverageSettings();
+          SDL.VehicleModuleCoverageController.loadSavedCoverageSettings();
           SDL.VehicleModuleCoverageController.showModuleCoverage();
+
+          var vehicle_name;
+          switch (FLAGS.VehicleEmulationType) {
+            case "vehicle_2x3": vehicle_name = this._parentView.radioVehicle2x3.text; break;
+            case "vehicle_3x3": vehicle_name = this._parentView.radioVehicle3x3.text; break;
+            default: vehicle_name = this._parentView.radioNoEmulation.text; break;
+          }
+
+          SDL.VehicleModuleCoverageView.set('currentVehicleText', 
+            vehicle_name + " module coverage options"
+          );
         }
       }
     ),

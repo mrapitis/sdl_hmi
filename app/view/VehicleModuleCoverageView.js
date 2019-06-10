@@ -39,6 +39,7 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
     childViews: [
       'coverageEditor',
       'applyCoverageSettings',
+      'labelOptions',
       'optionClimate',
       'optionRadio',
       'optionSeat',
@@ -49,6 +50,7 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
 
     hide: true,
     currentModule: 'CLIMATE',
+    currentVehicleText: '',
 
     onModuleClick : function(event) {
         var module_name = event.target.value;
@@ -63,6 +65,14 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
     onModuleSave: function(event) {
         SDL.VehicleModuleCoverageController.saveModuleSettings(this.currentModule);
     },
+
+    labelOptions: SDL.Label.extend(
+      {        
+        elementId: 'labelOptions',
+        classNames: ['labelOptions'],
+        contentBinding: 'this.parentView.currentVehicleText'
+      }
+    ),
     
     optionClimate: SDL.RadioButton.extend(
         {
@@ -139,7 +149,8 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
     coverageEditor: SDL.CodeEditor.create(
       {
         codeEditorId: 'coverage_code_editor',
-        elementId: 'coverage_editor'
+        elementId: 'coverage_editor',
+        invalidJsonCallback: null // do not show popup in this case
       }
     ),
 
@@ -159,6 +170,13 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
         },
         actionUp: function(event) {
           this.set('pressed', false);
+
+          if (!SDL.VehicleModuleCoverageController.validateSettings()) {
+            SDL.VehicleModuleCoverageController.showModuleCoverage();
+            return;
+          }
+
+          SDL.VehicleModuleCoverageController.saveCoverageSettings();
           this._parentView.set('hide', true);
         }
       }
