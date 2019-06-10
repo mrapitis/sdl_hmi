@@ -60,44 +60,6 @@ SDL.RadioModel = Em.Object.extend({
     this.set('radioControlStruct.radioEnable', true);
     this.set('radioControlStruct.state', 'ACQUIRING');
 
-    // radioControlStruct: {
-    //   frequencyInteger: 87,
-    //   frequencyFraction: 9,
-    //   hdRadioEnable: true,
-    //   band: 'FM',
-    //   rdsData: {
-    //     PS: 'name',
-    //     RT: 'radio',
-    //     CT: 'YYYY-MM-DDThh:mm:ss.sTZD',
-    //     PI: 'Sign',
-    //     PTY: 1,
-    //     TP: true,
-    //     TA: true,
-    //     REG: 'Murica'
-    //   },
-    //   sisData:{
-    //     stationShortName:'Name1',
-    //     stationIDNumber:{
-    //       countryCode:101,
-    //       fccFacilityId:100
-    //     },
-    //     stationLongName:'Name2',
-    //     stationLocation:{
-    //       longitudeDegrees:0.1,
-    //       latitudeDegrees:0.1,
-    //       altitude:0.1
-    //     },
-    //     stationMessage:'station message'
-    //   },
-    //   availableHDs: 3,
-    //   hdChannel: 1,
-    //   signalStrength: 50,
-    //   signalChangeThreshold: 60,
-    //   radioEnable: false,
-    //   state: 'ACQUIRING'
-    // },
-
-
     this.updateRadioFrequency();
   },
 
@@ -299,42 +261,6 @@ SDL.RadioModel = Em.Object.extend({
 
   directTuneKeypressed: false,
 
-  // radioControlStruct: {
-  //   frequencyInteger: 87,
-  //   frequencyFraction: 9,
-  //   hdRadioEnable: true,
-  //   band: 'FM',
-  //   rdsData: {
-  //     PS: 'name',
-  //     RT: 'radio',
-  //     CT: 'YYYY-MM-DDThh:mm:ss.sTZD',
-  //     PI: 'Sign',
-  //     PTY: 1,
-  //     TP: true,
-  //     TA: true,
-  //     REG: 'Murica'
-  //   },
-  //   sisData:{
-  //     stationShortName:'Name1',
-  //     stationIDNumber:{
-  //       countryCode:101,
-  //       fccFacilityId:100
-  //     },
-  //     stationLongName:'Name2',
-  //     stationLocation:{
-  //       longitudeDegrees:0.1,
-  //       latitudeDegrees:0.1,
-  //       altitude:0.1
-  //     },
-  //     stationMessage:'station message'
-  //   },
-  //   availableHDs: 3,
-  //   hdChannel: 1,
-  //   signalStrength: 50,
-  //   signalChangeThreshold: 60,
-  //   radioEnable: false,
-  //   state: 'ACQUIRING'
-  // },
 
   radioControlCheckboxes: {
     band: true,
@@ -1907,6 +1833,15 @@ SDL.RadioModel = Em.Object.extend({
 
   setRadioState: function(state) {
     this.set('radioControlStruct.state', state);
+  },
+
+  /**
+   * @function update
+   * @description Update current radio data
+   */
+  update: function() {
+    var data = this.getCurrentOptions();
+    this.setRadioData(data);
   }
 
 }

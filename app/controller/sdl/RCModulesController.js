@@ -199,3 +199,4 @@ SDL.RCModulesController = Em.Object.create({
         SDL.remoteControlCapability['audioControlCapabilities'].push(capabilities);
     }
 })
+
