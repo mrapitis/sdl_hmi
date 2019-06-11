@@ -69,7 +69,7 @@ SDL.StatusMediaView = Em.ContainerView.extend({
 
         info: Em.View.extend({
             elementId: 'media_status_radio_info',
-            controlerBinding: 'SDL.MediaController',
+            controlerBinding: 'SDL.RCModulesController.currentAudioModel',
             /** Bind class for visual representation */
             classNameBindings: [
               'SDL.States.home.active:hidden_display:visible_display'
@@ -105,14 +105,14 @@ SDL.StatusMediaView = Em.ContainerView.extend({
     ),
   actionUp: function(event) {
 
-    if (SDL.MediaController.activeState.indexOf('media.sdlmedia') >= 0) {
+    if (SDL.RCModulesController.currentAudioModel.activeState.indexOf('media.sdlmedia') >= 0) {
       SDL.SDLMediaController.activateCurrentApp();
     }
-   else if (SDL.MediaController.activeState.indexOf('navigationApp.baseNavigation') >= 0) {
+   else if (SDL.RCModulesController.currentAudioModel.activeState.indexOf('navigationApp.baseNavigation') >= 0) {
       SDL.SDLMediaController.activateCurrentApp();
     } 
     else {
-      SDL.States.goToStates(SDL.MediaController.activeState);
+      SDL.States.goToStates(SDL.RCModulesController.currentAudioModel.activeState);
     }
   }
 }

@@ -146,14 +146,14 @@ SDL.CDModel = Em.Object.extend({
 sendAudioNotification:function()
   {
     this.setSource();
-    var data = SDL.MediaController.getAudioControlData();
+    var data = SDL.RCModulesController.currentAudioModel.getAudioControlData();
     if(data){
     FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO',audioControlData:{'source':data.source}});
   }
   },
   setSource:function()
   {
-    SDL.MediaController.lastRadioControlStruct.source='CD';
+    SDL.RCModulesController.currentAudioModel.lastRadioControlStruct.source='CD';
   },
 }
 );

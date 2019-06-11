@@ -32,14 +32,14 @@ statusBar: 'Line-in',
 sendAudioNotification:function()
   {
     this.setSource();
-    var data = SDL.MediaController.getAudioControlData();
+    var data = SDL.RCModulesController.currentAudioModel.getAudioControlData();
     if(data){
     FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO',audioControlData:{'source':data.source}});
   }
   },
   setSource:function()
   {
-    SDL.MediaController.lastRadioControlStruct.source='LINE_IN';
+    SDL.RCModulesController.currentAudioModel.lastRadioControlStruct.source='LINE_IN';
   },
 init:function(){
 	this._super();

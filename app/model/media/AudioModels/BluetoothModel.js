@@ -37,14 +37,14 @@ init: function() {
  sendAudioNotification:function()
   {
     this.setSource();
-    var data = SDL.MediaController.getAudioControlData();
+    var data = SDL.RCModulesController.currentAudioModel.getAudioControlData();
     if(data){
     FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO',audioControlData:{'source':data.source}});
   }
   },
   setSource:function()
   {
-    SDL.MediaController.lastRadioControlStruct.source='BLUETOOTH_STEREO_BTST';
+    SDL.RCModulesController.currentAudioModel.lastRadioControlStruct.source='BLUETOOTH_STEREO_BTST';
   },
 	
     PlayList: SDL.Playlist.create({

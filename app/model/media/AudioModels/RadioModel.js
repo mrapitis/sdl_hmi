@@ -1644,14 +1644,14 @@ SDL.RadioModel = Em.Object.extend({
   sendAudioNotification:function()
   {
     this.setSource();
-    var data = SDL.MediaController.getAudioControlData();
+    var data = SDL.RCModulesController.currentAudioModel.getAudioControlData();
     if(data){
     FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO',audioControlData: {'source':this.radioControlStruct.band }});
   }
   },
   setSource:function()
   {
-    SDL.MediaController.set('lastRadioControlStruct.source', this.radioControlStruct.band );
+    SDL.RCModulesController.currentAudioModel.set('lastRadioControlStruct.source', this.radioControlStruct.band );
   },
 
   exitPopUp:function (param){

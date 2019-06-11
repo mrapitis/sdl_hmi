@@ -58,14 +58,14 @@ boolStruct: [
     sendAudioNotification:function()
   {
     this.setSource();
-    var data = SDL.MediaController.getAudioControlData();
+    var data = SDL.RCModulesController.currentAudioModel.getAudioControlData();
     if(data){
     FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO',audioControlData: {'source':data.source}});
   }
   },
   setSource:function()
   {
-    SDL.MediaController.lastRadioControlStruct.source='USB';
+    SDL.RCModulesController.currentAudioModel.lastRadioControlStruct.source='USB';
   },
     PlayList: SDL.Playlist.create({
         selectedIndex: 0,

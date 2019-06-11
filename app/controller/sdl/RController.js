@@ -127,16 +127,16 @@ SDL.RController = SDL.SDLController.extend(
       if (params.moduleType == 'RADIO') {
         switch (params.buttonName) {
           case 'VOLUME_UP': {
-            SDL.MediaController.volumeUpPress();
+            SDL.RCModulesController.currentAudioModel.volumeUpPress();
             break;
           }
           case 'VOLUME_DOWN': {
-            SDL.MediaController.volumeDownPress();
+            SDL.RCModulesController.currentAudioModel.volumeDownPress();
             break;
           }
           case 'EJECT': {
-            if (SDL.MediaController.activeState == 'media.player.cd') {
-              SDL.MediaController.ejectCD();
+            if (SDL.RCModulesController.currentAudioModel.activeState == 'media.player.cd') {
+              SDL.RCModulesController.currentAudioModel.ejectCD();
             } else {
               result_struct.resultCode = SDL.SDLModel.data.resultCode.IGNORED;
               result_struct.resultInfo = 'CD audio source must be selected';
@@ -145,13 +145,13 @@ SDL.RController = SDL.SDLController.extend(
             break;
           }
           case 'SOURCE': {
-            SDL.MediaController.changeSource();
+            SDL.RCModulesController.currentAudioModel.changeSource();
             break;
           }
           case 'SHUFFLE': {
-            if (SDL.MediaController.activeState == 'media.player.cd' ||
-                SDL.MediaController.activeState == 'media.player.usb') {
-              SDL.MediaController.turnOnShuffle();
+            if (SDL.RCModulesController.currentAudioModel.activeState == 'media.player.cd' ||
+                SDL.RCModulesController.currentAudioModel.activeState == 'media.player.usb') {
+              SDL.RCModulesController.currentAudioModel.turnOnShuffle();
             } else {
               result_struct.resultCode = SDL.SDLModel.data.resultCode.IGNORED;
               result_struct.resultInfo = 'CD or USB audio source must be selected';
@@ -160,9 +160,9 @@ SDL.RController = SDL.SDLController.extend(
             break;
           }
           case 'REPEAT': {
-            if (SDL.MediaController.activeState == 'media.player.cd' ||
-                SDL.MediaController.activeState == 'media.player.usb') {
-              SDL.MediaController.repeatPress();
+            if (SDL.RCModulesController.currentAudioModel.activeState == 'media.player.cd' ||
+                SDL.RCModulesController.currentAudioModel.activeState == 'media.player.usb') {
+              SDL.RCModulesController.currentAudioModel.repeatPress();
             } else {
               result_struct.resultCode = SDL.SDLModel.data.resultCode.IGNORED;
               result_struct.resultInfo = 'CD or USB audio source must be selected';

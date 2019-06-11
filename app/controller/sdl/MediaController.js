@@ -70,7 +70,7 @@ SDL.SDLMediaController = Em.Object.create(
       this.set('currentAppId', applicationModel.appID);
       // set active model
       SDL.SDLController.set('model', applicationModel);
-      SDL.MediaController.turnOnSDL();
+      SDL.RCModulesController.currentAudioModel.turnOnSDL();
     },
     /**
      * Restore current application to active state
@@ -88,8 +88,8 @@ SDL.SDLMediaController = Em.Object.create(
           SDL.SDLController.getApplicationModel(appID).set('active', false);
           SDL.States.goToStates('info.apps');
         }
-        if (SDL.MediaController.activeState == 'media.sdlmedia') {
-          SDL.MediaController.set('activeState', 'media.player.cd');
+        if (SDL.RCModulesController.currentAudioModel.activeState == 'media.sdlmedia') {
+          SDL.RCModulesController.currentAudioModel.set('activeState', 'media.player.cd');
           SDL.CDModel.set('active', true);
         }
         SDL.SDLModel.data.set('limitedExist', false);

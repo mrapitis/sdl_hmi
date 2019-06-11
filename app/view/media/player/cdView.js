@@ -29,7 +29,7 @@ SDL.cdView = Em.ContainerView.create(
           '<div class="track-info">' +
             '<div class="total">' +
               '<div class="total-label" {{bindAttr class="SDL.RCModulesController.currentAudioModel.cdModel.player.ejected:inactive_state:active_state"}}>' +
-                '{{SDL.MediaController.currentSelectedPlayer.currentTrack}}/{{SDL.MediaController.currentSelectedPlayer.totalTracks}}' +
+                '{{SDL.RCModulesController.currentAudioModel.currentSelectedPlayer.currentTrack}}/{{SDL.RCModulesController.currentAudioModel.currentSelectedPlayer.totalTracks}}' +
               '</div>'+
               '<div class="total-label inactive_state" {{bindAttr class="SDL.RCModulesController.currentAudioModel.cdModel.player.ejected:active_state:inactive_state"}}>' +
                 'No disk' +
@@ -37,13 +37,13 @@ SDL.cdView = Em.ContainerView.create(
             '</div>' +
             '<div class="divider_o"></div>' +
             '<div class="title" {{bindAttr class="SDL.RCModulesController.currentAudioModel.cdModel.player.ejected:inactive_state"}}>' +
-              '{{SDL.MediaController.currentSelectedPlayer.data.selectedItem.album}}' +
+              '{{SDL.RCModulesController.currentAudioModel.currentSelectedPlayer.data.selectedItem.album}}' +
             '</div>' +
             '<div class="track-number" {{bindAttr class="SDL.RCModulesController.currentAudioModel.cdModel.player.ejected:inactive_state"}}>' +
-              '{{SDL.MediaController.currentSelectedPlayer.data.selectedItem.name}}' +
+              '{{SDL.RCModulesController.currentAudioModel.currentSelectedPlayer.data.selectedItem.name}}' +
             '</div>' +
             '<div class="time" {{bindAttr class="SDL.RCModulesController.currentAudioModel.cdModel.player.ejected:inactive_state"}}>' +
-              '{{SDL.MediaController.currentSelectedPlayer.formatTimeToString}}' +
+              '{{SDL.RCModulesController.currentAudioModel.currentSelectedPlayer.formatTimeToString}}' +
             '</div>' +
             '<div id="cd_logo" {{bindAttr class="SDL.RCModulesController.currentAudioModel.cdModel.player.ejected:inactive_state"}}></div>' +
           '</div>'
@@ -67,7 +67,7 @@ SDL.cdView = Em.ContainerView.create(
           {
             elementId: 'media_player_cd_view_controlls_prev_track_button',
             classNames: ['bc-item-big', 'prev-cd'],
-            target: 'SDL.MediaController',
+            target: 'SDL.RCModulesController.currentAudioModel',
             action: 'prevTrack',
             icon: 'images/media/ico_prew.png'
           }
@@ -76,12 +76,12 @@ SDL.cdView = Em.ContainerView.create(
           {
             elementId: 'media_player_cd_view_controlls_play_button',
             classNames: ['bc-item-big', 'play-cd'],
-            target: 'SDL.MediaController',
+            target: 'SDL.RCModulesController.currentAudioModel',
             action: 'playTrack',
             /** Define button template */
             template: Ember.Handlebars.compile(
-              '<img class="playIcon hideicon"{{bindAttr class="SDL.MediaController.currentSelectedPlayer.isPlaying:visible"}} src="images/media/ico_pause.png" />' +
-              '<img class="playIcon showicon"{{bindAttr class="SDL.MediaController.currentSelectedPlayer.isPlaying:not-visible"}} src="images/media/ico-play.png" />'
+              '<img class="playIcon hideicon"{{bindAttr class="SDL.RCModulesController.currentAudioModel.currentSelectedPlayer.isPlaying:visible"}} src="images/media/ico_pause.png" />' +
+              '<img class="playIcon showicon"{{bindAttr class="SDL.RCModulesController.currentAudioModel.currentSelectedPlayer.isPlaying:not-visible"}} src="images/media/ico-play.png" />'
             )
           }
         ),
@@ -89,7 +89,7 @@ SDL.cdView = Em.ContainerView.create(
           {
             elementId: 'media_player_cd_view_controlls_next_track_button',
             classNames: ['bc-item-big', 'next-cd'],
-            target: 'SDL.MediaController',
+            target: 'SDL.RCModulesController.currentAudioModel',
             action: 'nextTrack',
             icon: 'images/media/ico_next.png'
           }
@@ -121,7 +121,7 @@ SDL.cdView = Em.ContainerView.create(
                 SDL.RCModulesController.currentAudioModel.cdModel.player.ejected);
             }.property('SDL.RCModulesController.currentAudioModel.cdModel.player.ejected'),
             iconBinding: 'onIconChange',
-            target: 'SDL.MediaController',
+            target: 'SDL.RCModulesController.currentAudioModel',
             action: 'ejectCD',
             onDown: false,
             textBinding: 'SDL.locale.label.view_media_eject',
@@ -146,7 +146,7 @@ SDL.cdView = Em.ContainerView.create(
             ),
             textBinding: 'onRepeatPressed',
             disabledBinding: 'SDL.RCModulesController.currentAudioModel.cdModel.player.ejected',
-            target: 'SDL.MediaController',
+            target: 'SDL.RCModulesController.currentAudioModel',
             action: 'repeatPress'
           }
         ),
@@ -165,7 +165,7 @@ SDL.cdView = Em.ContainerView.create(
             textBinding: Ember.Binding.oneWay(
               'SDL.locale.label.view_media_shuffle'
             ),
-            target: 'SDL.MediaController',
+            target: 'SDL.RCModulesController.currentAudioModel',
             action: 'turnOnShuffle',
             onDown: false,
             disabledBinding: 'SDL.RCModulesController.currentAudioModel.cdModel.player.ejected'
@@ -176,7 +176,7 @@ SDL.cdView = Em.ContainerView.create(
             classNameBindings: ['SDL.helpMode:moreinfoButton_help'],
             elementId: 'media_cd_rightmenu_moreinfoButton',
             action: 'turnOnMoreInfo',
-            target: 'SDL.MediaController',
+            target: 'SDL.RCModulesController.currentAudioModel',
             classNames: ['rs-item'],
             icon: 'images/media/active_arrow.png',
             textBinding: Ember.Binding.oneWay(

@@ -301,8 +301,8 @@ FFW.RC = FFW.RPCObserver.create(
                   return;
                 } else {
               newAudioControlData = (request.params.moduleData.audioControlData.keepContext!=null)?
-              SDL.MediaController.setAudioControlDataWithKeepContext(request.params.moduleData.audioControlData)
-              :SDL.MediaController.setAudioControlData(request.params.moduleData.audioControlData);
+              SDL.RCModulesController.currentAudioModel.setAudioControlDataWithKeepContext(request.params.moduleData.audioControlData)
+              :SDL.RCModulesController.currentAudioModel.setAudioControlData(request.params.moduleData.audioControlData, true);
                 if (Object.keys(request.params.moduleData.audioControlData).length > 0) {
                   FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO', 
                                                           audioControlData: newAudioControlData});
@@ -404,7 +404,7 @@ FFW.RC = FFW.RPCObserver.create(
                 break
               }
               case 'AUDIO':{
-                audioControlData = SDL.MediaController.getAudioControlData(false);
+                audioControlData = SDL.RCModulesController.currentAudioModel.getAudioControlData(false);
                 break;
               }
               case 'LIGHT':{

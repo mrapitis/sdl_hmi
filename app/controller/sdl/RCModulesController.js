@@ -143,6 +143,8 @@ SDL.RCModulesController = Em.Object.create({
         this.set('currentRadioModel', this.getCoveringModuleModel('RADIO', module_key));
 
         this.currentSeatModel.update();
+        this.currentRadioModel.update();
+        this.currentAudioModel.update();
     },
 
     action: function(event) {
