@@ -131,8 +131,9 @@ SDL.RCModulesController = Em.Object.create({
           }
           self.fillModuleModelsMapping(module_type, module_coverage);
         });
-
-        SDL.ControlButtons.RCModules.set('content', contentBinding);
+        if(1 < contentBinding.length) {
+          SDL.ControlButtons.RCInfo.RCModules.set('content', contentBinding);
+        }
         this.changeCurrentModule(contentBinding[0]);
     },
 

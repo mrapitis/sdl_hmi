@@ -495,20 +495,29 @@
     margin-top: 10px;
 }
 
+#app_controlButtons .RCInfo {
+    position: absolute;
+    width: 150px;
+    height: 30px;
+    top: 310px;
+    left: 1215px;
+    -webkit-transition: 2s;
+    opacity: 0;
+    display: none;
+}
+
+#app_controlButtons .RCInfo.show {
+    opacity: 1;
+    display: block;
+}
+
 #app_controlButtons .RCModulesSelect{
     position: absolute;
     width: 150px;
     height: 30px;
-    top: 330px;
-    left: 1215px;
+    top: 20px;
     color: white;
     background: #393939;
-}
-
-#app_controlButtons .RCModulesLabel {
-    top: 310px;
-    left: 1215px;
-    width: 150px;
 }
 
 #app_controlButtons .imageModeSelect{
