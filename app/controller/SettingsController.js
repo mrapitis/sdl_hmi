@@ -378,10 +378,10 @@ SDL.SettingsController = Em.Object.create(
       }
     },
     turnOnLightSubMenu: function(event){
-      var length = SDL.LightModel.lightState.length;
+      var length = SDL.RCModulesController.currentLightModel.lightState.length;
       for(var i = 0; i < length; ++i){
-          if(event.text == SDL.LightModel.lightState[i].id){
-            SDL.LightModel.set('lightSettings',SDL.deepCopy(SDL.LightModel.lightState[i]));
+          if(event.text == SDL.RCModulesController.currentLightModel.lightState[i].id){
+            SDL.RCModulesController.currentLightModel.set('lightSettings',SDL.deepCopy(SDL.RCModulesController.currentLightModel.lightState[i]));
             break;
           }
       }

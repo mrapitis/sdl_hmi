@@ -4,6 +4,7 @@ SDL.RCModulesController = Em.Object.create({
     radioModels: {},
     seatModels: {},
     hmiSettingsModels: {},
+    lightModels: {},
 
     ModuleModelsMapping: {},
 
@@ -12,6 +13,7 @@ SDL.RCModulesController = Em.Object.create({
     currentClimateModel: null,
     currentRadioModel: null,
     currentHMISettingsModel: null,
+    currentLightModel: null,
 
     init: function() {
         // TODO: init only driver seats and set current models
@@ -20,6 +22,7 @@ SDL.RCModulesController = Em.Object.create({
         this.set('currentSeatModel', SDL.SeatModel.create());
         this.set('currentRadioModel', SDL.RadioModel.create());
         this.set('currentHMISettingsModel', SDL.HmiSettingsModel.create());
+        this.set('currentLightModel', SDL.LightModel.create());
     },
 
     fillModuleModelsMapping: function(module_type, module_coverage) {
@@ -72,7 +75,7 @@ SDL.RCModulesController = Em.Object.create({
         case 'RADIO': return this.radioModels[covering_module_key];
         case 'SEAT': return this.seatModels[covering_module_key];
         case 'AUDIO': return this.audioModels[covering_module_key];
-        case 'LIGHT': return null; // WTF??
+        case 'LIGHT': return this.lightModels[covering_module_key]; // WTF??
         case 'HMI_SETTINGS': return this.hmiSettingsModels[covering_module_key]; // WTF??
       }
       return null;   
@@ -124,7 +127,10 @@ SDL.RCModulesController = Em.Object.create({
               break;   
             }
             case 'LIGHT': {
-                // WTF??
+              module_coverage.forEach(module => {
+                var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
+                self.set('lightModels.' + key_name, SDL.LightModel.create());        
+              });
               break;    
             }
             case 'HMI_SETTINGS': {
@@ -149,6 +155,7 @@ SDL.RCModulesController = Em.Object.create({
         this.set('currentSeatModel', this.getCoveringModuleModel('SEAT', module_key));
         this.set('currentRadioModel', this.getCoveringModuleModel('RADIO', module_key));
         this.set('currentHMISettingsModel', this.getCoveringModuleModel('HMI_SETTINGS', module_key));
+        this.set('currentLightModel', this.getCoveringModuleModel('LIGHT', module_key));
 
         this.currentSeatModel.update();
         this.currentRadioModel.update();

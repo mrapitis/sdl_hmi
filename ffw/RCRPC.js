@@ -318,7 +318,7 @@ FFW.RC = FFW.RPCObserver.create(
                 }  
             }
             if(request.params.moduleData.lightControlData){
-              newLightControlData = SDL.LightModel.setLightControlData(
+              newLightControlData = SDL.RCModulesController.currentLightModel.setLightControlData(
                 request.params.moduleData.lightControlData);
 
                 if (Object.keys(newLightControlData).length > 0) {
@@ -408,7 +408,7 @@ FFW.RC = FFW.RPCObserver.create(
                 break;
               }
               case 'LIGHT':{
-                lightControlData = SDL.LightModel.getLightControlData(false);
+                lightControlData = SDL.RCModulesController.currentLightModel.getLightControlData(false);
                 break
               }
               case 'SEAT':{

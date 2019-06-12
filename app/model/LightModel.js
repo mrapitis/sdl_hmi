@@ -31,7 +31,7 @@
  * @version 1.0
  */
 
-SDL.LightModel = Em.Object.create({
+SDL.LightModel = Em.Object.extend({
    
     /*
     * Common Single Light
@@ -197,8 +197,8 @@ SDL.LightModel = Em.Object.create({
                         this.set('lightState.'+j+'.color', 
                             data.lightState[i].color);
                     } 
-                    if(data.lightState[i].id == SDL.LightModel.lightSettings.id){
-                        SDL.LightModel.set('lightSettings',this.lightState[j])
+                    if(data.lightState[i].id == SDL.RCModulesController.currentLightModel.lightSettings.id){
+                        SDL.RCModulesController.currentLightModel.set('lightSettings',this.lightState[j])
                     }
                 }
             }
