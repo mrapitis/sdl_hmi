@@ -72,7 +72,7 @@ SDL.ControlButtons = Em.ContainerView.create({
     RCModulesLabel: SDL.Label.extend({
         elementId: 'RCModulesLabel',
         classNames: 'RCModulesLabel',
-        content: 'RC module Id:'
+        content: 'Selected seat:'
       }
     ),
 

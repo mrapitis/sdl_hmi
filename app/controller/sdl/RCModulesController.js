@@ -76,6 +76,12 @@ SDL.RCModulesController = Em.Object.create({
     moduleModelsMapping: {},
 
     /**
+     * @description Mapping of user friendly seat names and their key names
+     * @type {Map}
+     */
+    seatKeyLabelMapping: {},
+
+    /**
      * @description Reference to currently active seat model
      * @type {Object}
      */
@@ -265,17 +271,49 @@ SDL.RCModulesController = Em.Object.create({
           }
           self.fillModuleModelsMapping(module_type, module_coverage);
         });
-        if(1 < contentBinding.length) {
-          SDL.ControlButtons.RCInfo.RCModules.set('content', contentBinding);
-        }
-        this.changeCurrentModule(contentBinding[0]);
+        this.fillModuleSeatsContent(contentBinding);
+        this.updateCurrentModels(contentBinding[0]);
+    },
+
+    /**
+     * @description Function to generate user friendly names for a specified
+     * strings in array and fill combobox
+     * @param {Array} content_binding 
+     */
+    fillModuleSeatsContent: function(content_binding) {
+      if (1 >= content_binding.length) {
+        return;
+      }
+
+      var user_friendly_content = [];
+      var mapping = {};
+      content_binding.forEach(element => {
+        var new_name = element.replace('L', 'Level ')
+                              .replace('R', ', Row ')
+                              .replace('C', ', Col ');
+        user_friendly_content.push(new_name);
+        mapping[new_name] = element;        
+      });
+      
+      this.set('seatKeyLabelMapping', mapping);
+      SDL.ControlButtons.RCInfo.RCModules.set('content', user_friendly_content);      
     },
 
     /**
      * @description Function invoked when user changes a seat zone
      * @param {String} module_key 
      */
-    changeCurrentModule: function(module_key) {
+    changeCurrentModule: function(user_friendly_key) {
+      var module_key = this.seatKeyLabelMapping[user_friendly_key];
+      this.updateCurrentModels(module_key);        
+    },
+
+    /**
+     * @description Function to update current models according to a newly
+     * selected module
+     * @param {String} module_key 
+     */
+    updateCurrentModels: function(module_key) {
         this.set('currentClimateModel', this.getCoveringModuleModel('CLIMATE', module_key));
         this.set('currentAudioModel', this.getCoveringModuleModel('AUDIO', module_key));
         this.set('currentSeatModel', this.getCoveringModuleModel('SEAT', module_key));
