@@ -1,22 +1,121 @@
+/*
+ * Copyright (c) 2019, Ford Motor Company All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met: ·
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer. · Redistributions in binary
+ * form must reproduce the above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. · Neither the name of the Ford Motor Company nor the
+ * names of its contributors may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/**
+ * @name SDL.RCModulesController
+ * @desc RC modules controller logic
+ * @category Controller
+ * @filesource app/controller/sdl/RCModulesController.js
+ * @version 1.0
+ */
 SDL.RCModulesController = Em.Object.create({
+    /**
+     * @description Mapping of module seats and audio data models
+     * @type {Map}
+     */
     audioModels: {},
+
+    /**
+     * @description Mapping of module seats and climate data models
+     * @type {Map}
+     */
     climateModels: {},
+
+    /**
+     * @description Mapping of module seats and radio data models
+     * @type {Map}
+     */
     radioModels: {},
+
+    /**
+     * @description Mapping of module seats and seat data models
+     * @type {Map}
+     */
     seatModels: {},
+
+    /**
+     * @description Mapping of module seats and hmi settings data models
+     * @type {Map}
+     */
     hmiSettingsModels: {},
+
+    /**
+     * @description Mapping of module seats and light data models
+     * @type {Map}
+     */
     lightModels: {},
 
+    /**
+     * @description Mapping of module types and internal mapping of module
+     * seats and responsible module
+     * @type {Map}
+     */
     ModuleModelsMapping: {},
 
+    /**
+     * @description Reference to currently active seat model
+     * @type {Object}
+     */
     currentSeatModel: null,
+    
+    /**
+     * @description Reference to currently active audio model
+     * @type {Object}
+     */
     currentAudioModel: null,
+
+    /**
+     * @description Reference to currently active climate model
+     * @type {Object}
+     */
     currentClimateModel: null,
+
+    /**
+     * @description Reference to currently active radio model
+     * @type {Object}
+     */
     currentRadioModel: null,
+
+    /**
+     * @description Reference to currently active hmi settings model
+     * @type {Object}
+     */
     currentHMISettingsModel: null,
+
+    /**
+     * @description Reference to currently active light model
+     * @type {Object}
+     */
     currentLightModel: null,
 
+    /**
+     * @description Function for controller initialization
+     */
     init: function() {
-        // TODO: init only driver seats and set current models
+        // Mock models required for early binding initialization
         this.set('currentAudioModel', SDL.AudioModel.create());
         this.set('currentClimateModel', SDL.ClimateControlModel.create());
         this.set('currentSeatModel', SDL.SeatModel.create());
@@ -25,6 +124,12 @@ SDL.RCModulesController = Em.Object.create({
         this.set('currentLightModel', SDL.LightModel.create());
     },
 
+    /**
+     * @description Function for generating a coverage according to specified
+     * settings and saving into the ModuleModelsMapping  
+     * @param {String} module_type
+     * @param {Array} module_coverage 
+     */
     fillModuleModelsMapping: function(module_type, module_coverage) {
       var mapping = {};
 
@@ -63,11 +168,24 @@ SDL.RCModulesController = Em.Object.create({
       this.ModuleModelsMapping[module_type] = mapping;
     }, 
     
+    /**
+     * @description Function for getting covering module key by specified
+     * module type + actual seat key
+     * @param {String} module_type 
+     * @param {String} module_key
+     * @returns covering module key 
+     */
     getCoveringModuleKey: function(module_type, module_key) {
       var mapping = this.ModuleModelsMapping[module_type];
       return mapping[module_key];
     },
 
+    /**
+     * @description Function for getting module model by specified module
+     * type + actual seat key
+     * @param {String} module_type 
+     * @param {String} module_key 
+     */
     getCoveringModuleModel: function(module_type, module_key) {
       var covering_module_key = this.getCoveringModuleKey(module_type, module_key);
       switch (module_type) {
@@ -75,12 +193,16 @@ SDL.RCModulesController = Em.Object.create({
         case 'RADIO': return this.radioModels[covering_module_key];
         case 'SEAT': return this.seatModels[covering_module_key];
         case 'AUDIO': return this.audioModels[covering_module_key];
-        case 'LIGHT': return this.lightModels[covering_module_key]; // WTF??
-        case 'HMI_SETTINGS': return this.hmiSettingsModels[covering_module_key]; // WTF??
+        case 'LIGHT': return this.lightModels[covering_module_key];
+        case 'HMI_SETTINGS': return this.hmiSettingsModels[covering_module_key];
       }
       return null;   
     },
 
+    /**
+     * @description Function for creation of models and assigning them to
+     * responsible modules according to coverage settings
+     */
     populateModels: function() {
         var vehicleRepresentation = 
             SDL.SDLModelData.vehicleSeatRepresentation[FLAGS.VehicleEmulationType];
@@ -131,12 +253,12 @@ SDL.RCModulesController = Em.Object.create({
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
                 self.set('lightModels.' + key_name, SDL.LightModel.create());        
               });
-              break;    
+              break;
             }
             case 'HMI_SETTINGS': {
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
-                self.set('hmiSettingsModels.' + key_name, SDL.HmiSettingsModel.create());        
+                self.set('hmiSettingsModels.' + key_name, SDL.HmiSettingsModel.create());     
               });
               break;
             }
@@ -149,6 +271,10 @@ SDL.RCModulesController = Em.Object.create({
         this.changeCurrentModule(contentBinding[0]);
     },
 
+    /**
+     * @description Function invoked when user changes a seat zone
+     * @param {String} module_key 
+     */
     changeCurrentModule: function(module_key) {
         this.set('currentClimateModel', this.getCoveringModuleModel('CLIMATE', module_key));
         this.set('currentAudioModel', this.getCoveringModuleModel('AUDIO', module_key));
@@ -162,10 +288,18 @@ SDL.RCModulesController = Em.Object.create({
         this.currentAudioModel.update();
     },
 
+    /**
+     * @description Function used to do specified action in specified model
+     * @param {Event} event 
+     */
     action: function(event) {
         this[event.model][event.method](event);
     },
 
+    /**
+     * @description Function to generate climate capabilities
+     * @param {Object} element 
+     */
     generateClimateCapabilities: function(element) {
         var capabilities = {};
         SDL.SDLModelData.climateControlCapabilitiesValues.forEach(capability => {
@@ -193,6 +327,10 @@ SDL.RCModulesController = Em.Object.create({
         SDL.remoteControlCapability['climateControlCapabilities'].push(capabilities);
     },
 
+    /**
+     * @description Function to generate audio capabilities
+     * @param {Object} element 
+     */
     generateAudioCapabilities: function(element) {
         var capabilities = {};
         SDL.SDLModelData.audioControlCapabilitiesValues.forEach(capability => {

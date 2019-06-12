@@ -648,12 +648,21 @@ SDL.SDLModelData = Em.Object.create(
       'FI-FI',
       'SK-SK'
     ],
+
+    /**
+     * @description List of available display modes
+     * @type {Array}
+     */
     imageModeList:[
       'Day mode',
       'Night mode',
       'Highlighted mode'
     ],
 
+    /**
+     * @description List of seat control capability values
+     * @type {Array}
+     */
     seatControlCapabilitiesValues: [
       'moduleName',
       'moduleInfo',
@@ -674,6 +683,10 @@ SDL.SDLModelData = Em.Object.create(
       'memoryAvailable'
     ],
 
+    /**
+     * @description List of climate control capability values
+     * @type {Array}
+     */
     climateControlCapabilitiesValues: [
       'moduleName',
       'moduleInfo',
@@ -695,6 +708,10 @@ SDL.SDLModelData = Em.Object.create(
       'ventilationModeAvailable'
     ],
 
+    /**
+     * @description List of audio climate control capability values
+     * @type {Array}
+     */
     audioControlCapabilitiesValues: [
       'moduleName',
       'moduleInfo',
@@ -705,6 +722,11 @@ SDL.SDLModelData = Em.Object.create(
       'equalizerMaxChannelId'
     ],
 
+    /**
+     * @description Map of supported vehicles and array representing their 
+     * seats and locations
+     * @type {Map}
+     */
     vehicleSeatRepresentation: {
       'no_emulation' : [
         {

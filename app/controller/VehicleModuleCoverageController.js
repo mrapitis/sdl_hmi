@@ -23,6 +23,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 /**
  * @name SDL.VehicleModuleCoverageController
  * @desc Vehicle module coverage settings representation
@@ -30,10 +31,18 @@
  * @filesource app/controller/VehicleModuleCoverageController.js
  * @version 1.0
  */
-
 SDL.VehicleModuleCoverageController = Em.Object.create({
+
+  /**
+   * @description Reference to view to work with
+   * @type {Object}
+   */
   targetView: null,
 
+  /**
+   * @description List of supported RC modules
+   * @type {Array}
+   */
   availableModules: [
     "CLIMATE",
     "RADIO",
@@ -43,14 +52,30 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     "HMI_SETTINGS"
   ],
 
+  /**
+   * @description Map of modules and their coverage settings
+   * @type {Map}
+   */
   coverageSettings: {},
 
+  /**
+   * @description Map of saved coverage settings from coverageSettings per
+   * each vehicle
+   * @type {Map}
+   */
   savedCoverageSettings: {},
 
+  /**
+   * @description Function for controller initialization
+   */
   init: function() {
     this.set('targetView', SDL.VehicleModuleCoverageView);    
   },
 
+  /**
+   * @description Function for loading saved coverage settings for a chosen
+   * vehicle. If there is no saved settings, default settings will be generated
+   */
   loadSavedCoverageSettings: function() {
     var emulation_type = FLAGS.VehicleEmulationType;
     if (this.savedCoverageSettings.hasOwnProperty(emulation_type)) {
@@ -76,6 +101,11 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     this.set('coverageSettings', SDL.deepCopy(default_settings));
   },
 
+  /**
+   * @description Function to generate a single module which covers all vehicle
+   * seats
+   * @param {Array} data 
+   */
   createFullCoverage: function(data) {
     var max_col_index = this.getVehicleMaxIndex(data, 'col');
     var max_col_value = this.getVehicleItemValue(data[max_col_index], 'col');
@@ -95,21 +125,38 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     return full_coverage_data;
   },
 
+  /**
+   * @description Function for saving current coverage settings into the map
+   */
   saveCoverageSettings: function() {
     var emulation_type = FLAGS.VehicleEmulationType;
     this.savedCoverageSettings[emulation_type] = SDL.deepCopy(this.coverageSettings);
   },
 
+  /**
+   * @description Function to get current coverage settings. If no settings
+   * were set, default will be generated
+   * @returns current coverage settings for the chosen vehicle
+   */
   getCoverageSettings: function() {
     this.loadSavedCoverageSettings();    
     return this.coverageSettings;
   },
 
+  /**
+   * @description Function to display current module coverage settings in the
+   * target view's editor
+   */
   showModuleCoverage: function() {
     this.targetView.coverageEditor.activate();
     this.switchModule(this.targetView.currentModule);    
   },
 
+  /**
+   * @description Function to change the content of editor to display settings
+   * of another module
+   * @param {String} module_name 
+   */
   switchModule: function(module_name) {
     var settings = this.coverageSettings[module_name];
     this.targetView.coverageEditor.set('content', JSON.stringify(settings, null, 2));
@@ -121,6 +168,11 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     });
   },
 
+  /**
+   * @description Function to save current module settings before switching
+   * @param {String} module_name 
+   * @param {Array} data 
+   */
   saveModuleSettings: function(module_name, data) {
     var parsed_settings;
     parsed_settings = JSON.parse(data);
@@ -128,6 +180,10 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     this.set('coverageSettings.' + module_name, parsed_settings);
   },
   
+  /**
+   * @description Function to validate current settings
+   * @returns true if settings are valid, otherwise returns false
+   */
   validateSettings: function() {
     this.targetView.coverageEditor.save();
 
@@ -158,10 +214,22 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     return true;
   },
 
+  /**
+   * @description Function to get current module key by its location
+   * @param {Object} item
+   * @returns stringified key of the module 
+   */
   getModuleKeyName: function(item) {
     return "L" + item.level + "R" + item.row + "C" + item.col;
   },
 
+  /**
+   * @description Function to get index of element in array which has max value
+   * in the specified field
+   * @param {Array} data 
+   * @param {String} field 
+   * @returns index of element
+   */
   getVehicleMaxIndex: function(data, field) {
     var max_index = 0;
     var max_value = 0;
@@ -180,6 +248,13 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     return max_index;
   },
 
+  /**
+   * @description Function to get value of the element considering its "span"
+   * addition
+   * @param {Object} item 
+   * @param {String} field 
+   * @returns value of element
+   */
   getVehicleItemValue: function(item, field) {
     var value = 0;
     if (item.hasOwnProperty(field)) {
@@ -194,6 +269,10 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     return value;
   },
 
+  /**
+   * @description Function to check settings consistency according to API
+   * @returns true if settings are valid, otherwise returns false
+   */
   checkModulesConsistency: function() {
     var self = this;
     var validation_message = "";
@@ -212,6 +291,11 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     return validation_message;
   },
 
+  /**
+   * @description Function to check settings boundaries according to physical
+   * seats location of the chosen vehicle
+   * @returns true if settings are valied, otherwise returns false
+   */
   checkModulesBoundaries: function() {
     var representation = SDL.SDLModelData.vehicleSeatRepresentation[FLAGS.VehicleEmulationType];
     var max_col_index = this.getVehicleMaxIndex(representation, 'col');
@@ -254,6 +338,11 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     return validation_message;
   },
 
+  /**
+   * @description Function to check coverage by specified settings of the
+   * physical seats of the chosen vehicle
+   * @returns true if settings are valied, otherwise returns false
+   */
   checkModuleCoverage: function() {
     var representation = SDL.SDLModelData.vehicleSeatRepresentation[FLAGS.VehicleEmulationType];
     var self = this;

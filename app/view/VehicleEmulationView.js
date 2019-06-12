@@ -47,8 +47,15 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
       'radioVehicle3x3'
     ],
 
+    /**
+     * @description Flag responsible for a overall view visibility
+     * @type {Boolean}
+     */
     hide: true,
 
+    /**
+     * @description No emulation image element
+     */
     OptionNoEmulation: Em.View.extend(
       {
         classNames: [
@@ -71,6 +78,9 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
       }
     ),
 
+    /**
+     * @description Vehicle 2x3 image element
+     */
     OptionVehicle2x3: Em.View.extend(
       {
         classNames: [
@@ -90,6 +100,9 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
       }
     ),
 
+    /**
+     * @description Vehicle 3x3 image element
+     */
     OptionVehicle3x3: Em.View.extend(
       {
         classNames: [
@@ -109,6 +122,9 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
       }
     ),
 
+    /**
+     * @description Apply button element
+     */
     applySettings: Em.View.create(
       {
         elementId: 'emulation_apply_settings',
@@ -130,6 +146,9 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
       }
     ),
 
+    /**
+     * @description Coverage button element
+     */
     coverageSettings: SDL.Button.create(
       {
         elementId: 'emulation_coverage_settings',
@@ -176,6 +195,9 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
       }
     ),
 
+    /**
+     * @description No emulation radio button element
+     */
     radioNoEmulation: SDL.RadioButton.extend(
       {
         Id: 'radioNoEmulation',
@@ -187,6 +209,9 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
       }
     ),
 
+    /**
+     * @description Vehicle 2x3 radio button element
+     */
     radioVehicle2x3: SDL.RadioButton.extend(
       {
         Id: 'radioVehicle2x3',        
@@ -198,6 +223,9 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
       }
     ),
 
+    /**
+     * @description Vehicle 3x3 radio button element
+     */
     radioVehicle3x3: SDL.RadioButton.extend(
       {
         Id: 'radioVehicle3x3',

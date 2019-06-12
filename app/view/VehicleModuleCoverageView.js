@@ -48,10 +48,28 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
       'optionHmiSettings'
     ],
 
+    /**
+     * @description Flag responsible for a overall view visibility
+     * @type {Boolean}
+     */
     hide: true,
+
+    /**
+     * @description Currently selected module
+     * @type {String}
+     */
     currentModule: 'CLIMATE',
+
+    /**
+     * @description Text displayed on the label above the editor
+     * @type {String}
+     */
     currentVehicleText: '',
 
+    /**
+     * @description Callback when user click module radio button
+     * @param {Event} event 
+     */
     onModuleClick : function(event) {
         var module_name = event.target.value;
         if (this._parentView.currentModule == module_name) {
@@ -62,10 +80,17 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
         SDL.VehicleModuleCoverageController.switchModule(module_name);
     },
 
+    /**
+     * @description Callback when editor saves edited data
+     * @param {Event} event 
+     */
     onModuleSave: function(event) {
         SDL.VehicleModuleCoverageController.saveModuleSettings(this.currentModule);
     },
 
+    /**
+     * @description Label to show text of the current vehicle editor
+     */
     labelOptions: SDL.Label.extend(
       {        
         elementId: 'labelOptions',
@@ -74,6 +99,9 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
       }
     ),
     
+    /**
+     * @description Radio button of the climate module
+     */
     optionClimate: SDL.RadioButton.extend(
         {
           Id: 'optionClimate',
@@ -86,6 +114,9 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
         }
     ),
 
+    /**
+     * @description Radio button of the radio module
+     */
     optionRadio: SDL.RadioButton.extend(
         {
           Id: 'optionRadio',
@@ -98,6 +129,9 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
         }
     ),
 
+    /**
+     * @description Radio button of the seat module
+     */
     optionSeat: SDL.RadioButton.extend(
         {
           Id: 'optionSeat',
@@ -110,6 +144,9 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
         }
     ),
 
+    /**
+     * @description Radio button of the audio module
+     */
     optionAudio: SDL.RadioButton.extend(
         {
           Id: 'optionAudio',
@@ -122,6 +159,9 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
         }
     ),
 
+    /**
+     * @description Radio button of the light module
+     */
     optionLight: SDL.RadioButton.extend(
         {
           Id: 'optionLight',
@@ -134,6 +174,9 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
         }
     ),
 
+    /**
+     * @description Radio button of the hmi settings module
+     */
     optionHmiSettings: SDL.RadioButton.extend(
         {
           Id: 'optionHmiSettings',
@@ -146,6 +189,9 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
         }
     ),
 
+    /**
+     * @description Code editor element
+     */
     coverageEditor: SDL.CodeEditor.create(
       {
         codeEditorId: 'coverage_code_editor',
@@ -154,6 +200,9 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
       }
     ),
 
+    /**
+     * @description Apply button element
+     */
     applyCoverageSettings: Em.View.create(
       {
         elementId: 'coverage_apply_settings',
