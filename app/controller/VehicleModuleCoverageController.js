@@ -90,8 +90,7 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     var default_settings = {};
 
     this.availableModules.forEach(module => {
-      if('HMI_SETTINGS' == module ||
-          'LIGHT' == module) {
+      if('HMI_SETTINGS' == module || 'LIGHT' == module) {
         default_settings[module] = self.createFullCoverage(currentSeatsData);
         return;
       }
@@ -107,22 +106,21 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
    * @param {Array} data 
    */
   createFullCoverage: function(data) {
+    var coverage_element = SDL.deepCopy(data[0]);
+
     var max_col_index = this.getVehicleMaxIndex(data, 'col');
     var max_col_value = this.getVehicleItemValue(data[max_col_index], 'col');
+    coverage_element['colspan'] = max_col_value + 1;
+
     var max_row_index = this.getVehicleMaxIndex(data, 'row');
     var max_row_value = this.getVehicleItemValue(data[max_row_index], 'row');
+    coverage_element['rowspan'] = max_row_value + 1;
+
     var max_level_index = this.getVehicleMaxIndex(data, 'level');
     var max_level_value = this.getVehicleItemValue(data[max_level_index], 'level');
+    coverage_element['levelspan'] = max_level_value + 1;
 
-    var full_coverage_data = [{
-      col: 0, 
-      row: 0, 
-      level: 0,
-      colspan: ++max_col_value,
-      rowspan: ++max_row_value,
-      levelspan: ++max_level_value
-    }];
-    return full_coverage_data;
+    return [coverage_element];
   },
 
   /**
