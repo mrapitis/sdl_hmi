@@ -65,10 +65,34 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     var default_settings = {};
 
     this.availableModules.forEach(module => {
+      if('HMI_SETTINGS' == module ||
+          'LIGHT' == module) {
+        default_settings[module] = self.createFullCoverage(currentSeatsData);
+        return;
+      }
       default_settings[module] = SDL.deepCopy(currentSeatsData);
     });
 
     this.set('coverageSettings', SDL.deepCopy(default_settings));
+  },
+
+  createFullCoverage: function(data) {
+    var max_col_index = this.getVehicleMaxIndex(data, 'col');
+    var max_col_value = this.getVehicleItemValue(data[max_col_index], 'col');
+    var max_row_index = this.getVehicleMaxIndex(data, 'row');
+    var max_row_value = this.getVehicleItemValue(data[max_row_index], 'row');
+    var max_level_index = this.getVehicleMaxIndex(data, 'level');
+    var max_level_value = this.getVehicleItemValue(data[max_level_index], 'level');
+
+    var full_coverage_data = [{
+      col: 0, 
+      row: 0, 
+      level: 0,
+      colspan: ++max_col_value,
+      rowspan: ++max_row_value,
+      levelspan: ++max_level_value
+    }];
+    return full_coverage_data;
   },
 
   saveCoverageSettings: function() {

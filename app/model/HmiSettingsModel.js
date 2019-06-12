@@ -32,7 +32,7 @@
  * @version 1.0
  */
 
-SDL.HmiSettingsModel = Em.Object.create({
+SDL.HmiSettingsModel = Em.Object.extend({
 
 /**
  * Display mode of the HMI display

@@ -310,7 +310,7 @@ FFW.RC = FFW.RPCObserver.create(
               }
             }
             if(request.params.moduleData.hmiSettingsControlData){
-              newHMISettingsControlData = SDL.HmiSettingsModel.setHmiSettingsData(
+              newHMISettingsControlData = SDL.RCModulesController.currentHMISettingsModel.setHmiSettingsData(
                 request.params.moduleData.hmiSettingsControlData);
                 if (Object.keys(request.params.moduleData.hmiSettingsControlData).length > 0) {
                   FFW.RC.onInteriorVehicleDataNotification({moduleType:'HMI_SETTINGS', 
@@ -400,7 +400,7 @@ FFW.RC = FFW.RPCObserver.create(
                 break
               }
               case 'HMI_SETTINGS':{
-                hmiSettingsControlData = SDL.HmiSettingsModel.getHmiSettingsControlData(false);
+                hmiSettingsControlData = SDL.RCModulesController.currentHMISettingsModel.getHmiSettingsControlData(false);
                 break
               }
               case 'AUDIO':{

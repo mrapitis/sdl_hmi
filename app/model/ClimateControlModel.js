@@ -358,7 +358,7 @@ SDL.ClimateControlModel = Em.Object.extend({
           'desiredTemperature.unit', 'desiredTemperature.value']
         );
       }
-      SDL.HmiSettingsModel.set('temperatureUnit','FAHRENHEIT');
+      SDL.RCModulesController.currentHMISettingsModel.set('temperatureUnit','FAHRENHEIT');
   },
 
   temperatureUnitCelsiusEnable: function(sendNotification = true) {
@@ -369,7 +369,7 @@ SDL.ClimateControlModel = Em.Object.extend({
           'desiredTemperature.unit', 'desiredTemperature.value']
         );
       }
-      SDL.HmiSettingsModel.set('temperatureUnit','CELSIUS');
+      SDL.RCModulesController.currentHMISettingsModel.set('temperatureUnit','CELSIUS');
   },
 
   refreshDefrostZoneValue: function() {

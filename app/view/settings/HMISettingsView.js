@@ -46,21 +46,21 @@ SDL.HMISettingsView = Em.ContainerView.create({
     ],
 
     getDisplayModeStatus: function() {
-      return 'Display mode - ' + SDL.HmiSettingsModel.displayMode;
+      return 'Display mode - ' + SDL.RCModulesController.currentHMISettingsModel.displayMode;
     }.property(
-      'SDL.HmiSettingsModel.displayMode'
+      'SDL.RCModulesController.currentHMISettingsModel.displayMode'
     ),
 
     getDistanceUnit: function() {
-      return 'Distance unit - ' + SDL.HmiSettingsModel.distanceUnit;
+      return 'Distance unit - ' + SDL.RCModulesController.currentHMISettingsModel.distanceUnit;
     }.property(
-      'SDL.HmiSettingsModel.distanceUnit'
+      'SDL.RCModulesController.currentHMISettingsModel.distanceUnit'
     ),
     
     getTemperatureUnit: function() {
-      return 'Temperature unit - ' + SDL.HmiSettingsModel.temperatureUnit;
+      return 'Temperature unit - ' + SDL.RCModulesController.currentHMISettingsModel.temperatureUnit;
     }.property(
-      'SDL.HmiSettingsModel.temperatureUnit'
+      'SDL.RCModulesController.currentHMISettingsModel.temperatureUnit'
     ),
 
     SettingsList: SDL.List.extend({

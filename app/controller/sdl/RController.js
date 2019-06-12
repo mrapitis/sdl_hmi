@@ -216,17 +216,17 @@ SDL.RController = SDL.SDLController.extend(
     },
 
    toggleDisplayMode: function() {
-      var next = this.nextElement(SDL.HmiSettingsModel.displayModeStruct, SDL.HmiSettingsModel.displayMode);
-      SDL.HmiSettingsModel.set('displayMode',next);
+      var next = this.nextElement(SDL.RCModulesController.currentHMISettingsModel.displayModeStruct, SDL.RCModulesController.currentHMISettingsModel.displayMode);
+      SDL.RCModulesController.currentHMISettingsModel.set('displayMode',next);
       var data = {
-        displayMode: SDL.HmiSettingsModel.getHmiSettingsControlData().displayMode
+        displayMode: SDL.RCModulesController.currentHMISettingsModel.getHmiSettingsControlData().displayMode
       }
       this.sendHMISettingsNotification(data);
     },
 
    toggleDistanceUnit: function() {
-      var next = this.nextElement(SDL.HmiSettingsModel.distanceUnitStruct, SDL.HmiSettingsModel.distanceUnit);
-      SDL.HmiSettingsModel.set('distanceUnit',next);
+      var next = this.nextElement(SDL.RCModulesController.currentHMISettingsModel.distanceUnitStruct, SDL.RCModulesController.currentHMISettingsModel.distanceUnit);
+      SDL.RCModulesController.currentHMISettingsModel.set('distanceUnit',next);
       var data = {
         distanceUnit: next
       }
@@ -234,8 +234,8 @@ SDL.RController = SDL.SDLController.extend(
     },
 
    toggleTemperatureUnit: function() {
-      var next = this.nextElement(SDL.HmiSettingsModel.temperatureUnitStruct, SDL.HmiSettingsModel.temperatureUnit);
-      SDL.HmiSettingsModel.set('temperatureUnit',next);
+      var next = this.nextElement(SDL.RCModulesController.currentHMISettingsModel.temperatureUnitStruct, SDL.RCModulesController.currentHMISettingsModel.temperatureUnit);
+      SDL.RCModulesController.currentHMISettingsModel.set('temperatureUnit',next);
       SDL.ClimateController.model.set('climateControlData.temperatureUnit', next);
       if(next == 'FAHRENHEIT') {
         SDL.ClimateController.model.temperatureUnitFahrenheitEnable();
