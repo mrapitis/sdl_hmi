@@ -100,7 +100,7 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
       }
     ),
 
-    coverageSettings: Em.View.create(
+    coverageSettings: SDL.Button.create(
       {
         elementId: 'emulation_coverage_settings',
         classNameBindings: [
@@ -111,11 +111,23 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
           'ffw-button'
         ],
         template: Ember.Handlebars.compile('<span>Coverage</span>'),
+        disabledBinding: 'isDisabled',
+        
+        isDisabled: function() {
+          return 'no_emulation' === FLAGS.VehicleEmulationType;
+        }.property('FLAGS.VehicleEmulationType'),
+
         actionDown: function(event) {
+          if (this.get('disabled')) {
+            return;
+          }
           this.set('pressed', true);
-        },
+        },        
         actionUp: function(event) {
           this.set('pressed', false);
+          if (this.get('disabled')) {
+            return;
+          }
           SDL.VehicleModuleCoverageView.set('hide', false);
           SDL.VehicleModuleCoverageController.loadSavedCoverageSettings();
           SDL.VehicleModuleCoverageController.showModuleCoverage();
