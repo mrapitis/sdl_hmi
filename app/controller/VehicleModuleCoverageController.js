@@ -132,6 +132,19 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
   },
 
   /**
+   * @description Function to reset current coverage settings and set them to
+   * default ones
+   */
+  resetCoverageSettings: function() {
+    var emulation_type = FLAGS.VehicleEmulationType;
+    if (this.savedCoverageSettings.hasOwnProperty(emulation_type)) {
+      delete this.savedCoverageSettings[emulation_type];
+    }
+    this.loadSavedCoverageSettings();
+    this.showModuleCoverage();
+  },
+
+  /**
    * @description Function to get current coverage settings. If no settings
    * were set, default will be generated
    * @returns current coverage settings for the chosen vehicle

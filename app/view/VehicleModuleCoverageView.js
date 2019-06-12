@@ -39,6 +39,7 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
     childViews: [
       'coverageEditor',
       'applyCoverageSettings',
+      'resetCoverageSettings',
       'labelOptions',
       'optionClimate',
       'optionRadio',
@@ -229,5 +230,29 @@ SDL.VehicleModuleCoverageView = Em.ContainerView.create({
           this._parentView.set('hide', true);
         }
       }
-    )
+    ),
+
+    /**
+     * @description Reset button element
+     */
+    resetCoverageSettings: Em.View.create(
+      {
+        elementId: 'coverage_reset_settings',
+        classNameBindings: [
+          'visible_display', 'pressed:pressed'
+        ],
+        classNames: [
+          'reset_settings',
+          'ffw-button'
+        ],
+        template: Ember.Handlebars.compile('<span>Reset</span>'),
+        actionDown: function(event) {
+          this.set('pressed', true);
+        },
+        actionUp: function(event) {
+          this.set('pressed', false);
+          SDL.VehicleModuleCoverageController.resetCoverageSettings();
+        }
+      }
+    ),
 });

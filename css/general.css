@@ -1372,6 +1372,19 @@ margin-top: 90px;
     bottom: 20px;
 }
 
+#vehicle_module_coverage_view .reset_settings {
+    width: 130px;
+    height: 45px;
+    position: absolute;
+    cursor: pointer;
+    float: right;
+    font-size: 20px;
+    text-align: center;
+    line-height: 45px;
+    right: 180px;
+    bottom: 20px;
+}
+
 #vehicle_module_coverage_view .codeEditor {
     top: 30px !important;
 }
