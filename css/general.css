@@ -1283,6 +1283,27 @@ margin-top: 90px;
     border-color: gray;
     height: 322px;
     text-align: center;
+    -webkit-transition: all 0.25s linear;
+}
+
+
+#vehicle_emulation_view .option_no_emulation_view.select,
+#vehicle_emulation_view .option_vehicle2x3.select,
+#vehicle_emulation_view .option_vehicle3x3.select,
+#vehicle_emulation_view .option_no_emulation_view.select:hover,
+#vehicle_emulation_view .option_vehicle2x3.select:hover,
+#vehicle_emulation_view .option_vehicle3x3.select:hover
+{
+    border-color: orange;
+    -webkit-transition: all 0.25s linear;
+}
+
+#vehicle_emulation_view .option_no_emulation_view:hover,
+#vehicle_emulation_view .option_vehicle2x3:hover,
+#vehicle_emulation_view .option_vehicle3x3:hover {
+    border-color: #d4af6b;
+    cursor: pointer;
+    -webkit-transition: all 0.25s linear;
 }
 
 #vehicle_emulation_view .option_vehicle2x3 {

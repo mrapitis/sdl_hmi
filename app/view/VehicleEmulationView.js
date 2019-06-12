@@ -54,10 +54,20 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
         classNames: [
           'option_no_emulation_view'
         ],
+        classNameBindings: 'select',
         elementId: 'option_no_emulation_view',
         template: Ember.Handlebars.compile(
           '<span style="position: relative; top: 50%;">NO EMULATION</span>'
-        )
+        ),
+        
+        select: function() {
+          return 'no_emulation' == FLAGS.VehicleEmulationType;
+        }.property('FLAGS.VehicleEmulationType'),
+
+        actionDown: function() {
+          document.getElementById('radioNoEmulation').checked = true;
+          FLAGS.set('VehicleEmulationType', 'no_emulation');
+        }
       }
     ),
 
@@ -66,7 +76,17 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
         classNames: [
           'option_vehicle2x3'
         ],
-        elementId: 'option_vehicle2x3'
+        classNameBindings: 'select',
+        elementId: 'option_vehicle2x3',
+
+        select: function() {
+          return 'vehicle_2x3' == FLAGS.VehicleEmulationType;
+        }.property('FLAGS.VehicleEmulationType'),
+
+        actionDown: function() {
+          document.getElementById('radioVehicle2x3').checked = true;
+          FLAGS.set('VehicleEmulationType', 'vehicle_2x3');
+        }
       }
     ),
 
@@ -75,7 +95,17 @@ SDL.VehicleEmulationView = Em.ContainerView.create({
         classNames: [
           'option_vehicle3x3'
         ],
-        elementId: 'option_vehicle3x3'
+        classNameBindings: 'select',
+        elementId: 'option_vehicle3x3',
+
+        select: function() {
+          return 'vehicle_3x3' == FLAGS.VehicleEmulationType;
+        }.property('FLAGS.VehicleEmulationType'),
+
+        actionDown: function() {
+          document.getElementById('radioVehicle3x3').checked = true;
+          FLAGS.set('VehicleEmulationType', 'vehicle_3x3');
+        }
       }
     ),
 
