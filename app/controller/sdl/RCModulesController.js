@@ -73,7 +73,7 @@ SDL.RCModulesController = Em.Object.create({
      * seats and responsible module
      * @type {Map}
      */
-    ModuleModelsMapping: {},
+    moduleModelsMapping: {},
 
     /**
      * @description Reference to currently active seat model
@@ -126,7 +126,7 @@ SDL.RCModulesController = Em.Object.create({
 
     /**
      * @description Function for generating a coverage according to specified
-     * settings and saving into the ModuleModelsMapping  
+     * settings and saving into the moduleModelsMapping  
      * @param {String} module_type
      * @param {Array} module_coverage 
      */
@@ -165,7 +165,7 @@ SDL.RCModulesController = Em.Object.create({
         }
       });
 
-      this.ModuleModelsMapping[module_type] = mapping;
+      this.moduleModelsMapping[module_type] = mapping;
     }, 
     
     /**
@@ -176,7 +176,7 @@ SDL.RCModulesController = Em.Object.create({
      * @returns covering module key 
      */
     getCoveringModuleKey: function(module_type, module_key) {
-      var mapping = this.ModuleModelsMapping[module_type];
+      var mapping = this.moduleModelsMapping[module_type];
       return mapping[module_key];
     },
 
