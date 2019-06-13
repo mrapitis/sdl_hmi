@@ -189,7 +189,8 @@ FFW.RC = FFW.RPCObserver.create(
               'result': {
                 'code': SDL.SDLModel.data.resultCode.SUCCESS,
                 'method': request.method,
-                'remoteControlCapability': SDL.remoteControlCapability
+                'seatLocationCapability': SDL.remoteControlCapabilities.seatLocationCapability,
+                'remoteControlCapability': SDL.remoteControlCapabilities.remoteControlCapability
               }
             };
             this.client.send(JSONMessage);

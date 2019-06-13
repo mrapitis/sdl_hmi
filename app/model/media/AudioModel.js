@@ -799,7 +799,7 @@ SDL.AudioModel = Em.Object.extend({
     getAudioControlCapabilities: function () {
       var result = [];
       var capabilities = {
-        moduleName: 'AudioControlCapabilities',
+        moduleName: 'Audio Control Module',
         keepContextAvailable: true,
         sourceAvailable: true,
         volumeAvailable: true,
@@ -839,25 +839,20 @@ SDL.AudioModel = Em.Object.extend({
      * @param {Object} element 
      */
     generateAudioCapabilities: function(element) {
-      var capabilities = {};
-      SDL.SDLModelData.audioControlCapabilitiesValues.forEach(capability => {
-          if('moduleName' === capability) {
-              capabilities[capability] = 'Audio';
-              return;
-          }
-          if('moduleInfo' === capability) {
-              var moduleInfo = {location: element};
-              moduleInfo['moduleId'] = 
-                SDL.VehicleModuleCoverageController.getModuleKeyName(element);
-              capabilities[capability] = moduleInfo;
-              return;
-          }
-          if('equalizerMaxChannelId' === capability) {
-              capabilities[capability] = 10;
-              return;
-          }
-          capabilities[capability] = true;
-      });
-      SDL.remoteControlCapability['audioControlCapabilities'].push(capabilities);
+      var moduleInfo = {
+        'allowMultipleAccess': true,
+        'moduleId':
+          SDL.VehicleModuleCoverageController.getModuleKeyName(element),
+        'serviceArea': SDL.deepCopy(element),
+        'location': SDL.deepCopy(element),
+      };
+  
+      moduleInfo.location['colspan'] = 1;
+      moduleInfo.location['rowspan'] = 1;
+      moduleInfo.location['levelspan'] = 1;
+  
+      var capabilities = this.getAudioControlCapabilities()[0];
+      capabilities['moduleInfo'] = moduleInfo;
+      SDL.remoteControlCapabilities.remoteControlCapability['audioControlCapabilities'].push(capabilities);
     }
 })

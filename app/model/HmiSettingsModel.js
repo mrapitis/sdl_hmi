@@ -75,7 +75,7 @@ SDL.HmiSettingsModel = Em.Object.extend({
 
   getHmiSettingsCapabilities: function() {
     var capabilities = {
-      moduleName: 'HMISettingsControlCapabilities',
+      moduleName: 'HMI Settings Control Module',
       distanceUnitAvailable: true,
       temperatureUnitAvailable: true,
       displayModeUnitAvailable: true
@@ -120,13 +120,27 @@ SDL.HmiSettingsModel = Em.Object.extend({
     }
     return result;
   },
+
+  /**
+   * @description Function to generate default HMI settings capabilities
+   * supported by HMI
+   * @type {Object}
+   */
   generateHMISettingsCapabilities: function(element) {
-    var moduleInfo = {location: element};
-    moduleInfo['moduleId'] = 
-                SDL.VehicleModuleCoverageController.getModuleKeyName(element);
+    var moduleInfo = {
+      'allowMultipleAccess': true,
+      'moduleId':
+        SDL.VehicleModuleCoverageController.getModuleKeyName(element),
+      'serviceArea': SDL.deepCopy(element),
+      'location': SDL.deepCopy(element),
+    };
+
+    moduleInfo.location['colspan'] = 1;
+    moduleInfo.location['rowspan'] = 1;
+    moduleInfo.location['levelspan'] = 1;
+
     var capabilities = this.getHmiSettingsCapabilities();
     capabilities['moduleInfo'] = moduleInfo;
-    
-    SDL.remoteControlCapability['hmiSettingsControlCapabilities'] = capabilities;
+    SDL.remoteControlCapabilities.remoteControlCapability['hmiSettingsControlCapabilities'] = capabilities;
   }
 })

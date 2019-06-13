@@ -452,13 +452,26 @@ SDL.SeatModel = Em.Object.extend({
         }
         return result;
     },
+
+    /**
+     * @description Function to generate seat capabilities
+     * @param {Object} element 
+     */
     generateSeatCapabilities: function(element) {
-        var moduleInfo = {location: element};
-        moduleInfo['moduleId'] = 
-                    SDL.VehicleModuleCoverageController.getModuleKeyName(element);
+        var moduleInfo = {
+          'allowMultipleAccess': false,
+          'moduleId':
+            SDL.VehicleModuleCoverageController.getModuleKeyName(element),
+          'serviceArea': SDL.deepCopy(element),
+          'location': SDL.deepCopy(element)
+        };
+      
+        moduleInfo.location['colspan'] = 1;
+        moduleInfo.location['rowspan'] = 1;
+        moduleInfo.location['levelspan'] = 1;
+        
         var capabilities = this.getSeatCapabilities()[0];
         capabilities['moduleInfo'] = moduleInfo;
-        
-        SDL.remoteControlCapability['seatControlCapabilities'].push(capabilities);
+        SDL.remoteControlCapabilities.remoteControlCapability['seatControlCapabilities'].push(capabilities);
     }
 });

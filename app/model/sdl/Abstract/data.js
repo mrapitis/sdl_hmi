@@ -660,69 +660,6 @@ SDL.SDLModelData = Em.Object.create(
     ],
 
     /**
-     * @description List of seat control capability values
-     * @type {Array}
-     */
-    seatControlCapabilitiesValues: [
-      'moduleName',
-      'moduleInfo',
-      'heatingEnabledAvailable',
-      'coolingEnabledAvailable',
-      'heatingLevelAvailable',
-      'coolingLevelAvailable',
-      'horizontalPositionAvailable',
-      'verticalPositionAvailable',
-      'frontVerticalPositionAvailable',
-      'backVerticalPositionAvailable',
-      'backTiltAngleAvailable',
-      'headSupportHorizontalPositionAvailable',
-      'headSupportVerticalPositionAvailable',
-      'massageEnabledAvailable',
-      'massageModeAvailable',
-      'massageCushionFirmnessAvailable',
-      'memoryAvailable'
-    ],
-
-    /**
-     * @description List of climate control capability values
-     * @type {Array}
-     */
-    climateControlCapabilitiesValues: [
-      'moduleName',
-      'moduleInfo',
-      'acEnableAvailable',
-      'acMaxEnableAvailable',
-      'autoModeEnableAvailable',
-      'circulateAirEnableAvailable',
-      'currentTemperatureAvailable',
-      'defrostZone',
-      'defrostZoneAvailable',
-      'desiredTemperatureAvailable',
-      'dualModeEnableAvailable',
-      'heatedMirrorsAvailable',
-      'heatedRearWindowAvailable',
-      'heatedSteeringWheelAvailable',
-      'heatedWindshieldAvailable',
-      'fanSpeedAvailable',
-      'ventilationMode',
-      'ventilationModeAvailable'
-    ],
-
-    /**
-     * @description List of audio climate control capability values
-     * @type {Array}
-     */
-    audioControlCapabilitiesValues: [
-      'moduleName',
-      'moduleInfo',
-      'sourceAvailable',
-      'volumeAvailable',
-      'equalizerAvailable',
-      'keepContextAvailable',
-      'equalizerMaxChannelId'
-    ],
-
-    /**
      * @description Map of supported vehicles and array representing their 
      * seats and locations
      * @type {Map}

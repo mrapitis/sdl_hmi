@@ -228,7 +228,8 @@ SDL.RCModulesController = Em.Object.create({
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
                 self.set('climateModels.' + key_name, SDL.ClimateControlModel.create());
-                self.climateModels[key_name].generateClimateCapabilities(module);   
+                self.climateModels[key_name].generateClimateCapabilities(module);
+                self.fillButtonCapabilitiesContent(self.climateModels[key_name], module);   
               });              
               break;
             }
@@ -236,7 +237,8 @@ SDL.RCModulesController = Em.Object.create({
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
                 self.set('radioModels.' + key_name, SDL.RadioModel.create()); 
-                self.radioModels[key_name].generateRadioControlCapabilities(module);       
+                self.radioModels[key_name].generateRadioControlCapabilities(module);
+                self.fillButtonCapabilitiesContent(self.radioModels[key_name], module);        
               });
               break;
             }
@@ -275,16 +277,47 @@ SDL.RCModulesController = Em.Object.create({
           }
           self.fillModuleModelsMapping(module_type, module_coverage);
         });
-        this.fillModuleSeatsContent(contentBinding);
+
+        this.fillModuleSeatLocationContent(contentBinding);
+        this.fillSeatLocationCapabilities(vehicleRepresentation);
+
         this.updateCurrentModels(contentBinding[0]);
     },
 
     /**
+     * @description Function to fill button capabilities
+     * @param {Object} model
+     * @param {Object} module 
+     */
+    fillButtonCapabilitiesContent: function(model, module) {
+      var moduleInfo = {
+        'allowMultipleAccess': true,
+        'moduleId':
+          SDL.VehicleModuleCoverageController.getModuleKeyName(module),
+        'serviceArea': SDL.deepCopy(module),
+        'location': SDL.deepCopy(module),
+      };
+  
+      moduleInfo.location['colspan'] = 1;
+      moduleInfo.location['rowspan'] = 1;
+      moduleInfo.location['levelspan'] = 1;
+      
+      var button_capabilities = model.getButtonCapabilities();
+      button_capabilities.forEach(element => {
+        element['moduleInfo'] = moduleInfo;
+      });
+
+      SDL.remoteControlCapabilities.remoteControlCapability['buttonCapabilities'] =
+        SDL.remoteControlCapabilities.remoteControlCapability['buttonCapabilities']
+          .concat(button_capabilities);
+    },
+
+    /**
      * @description Function to generate user friendly names for a specified
-     * strings in array and fill combobox
+     * strings in array and fill combobox with seat locations
      * @param {Array} content_binding 
      */
-    fillModuleSeatsContent: function(content_binding) {
+    fillModuleSeatLocationContent: function(content_binding) {
       if (1 >= content_binding.length) {
         return;
       }
@@ -300,7 +333,44 @@ SDL.RCModulesController = Em.Object.create({
       });
       
       this.set('seatKeyLabelMapping', mapping);
-      SDL.ControlButtons.RCInfo.RCModules.set('content', user_friendly_content);      
+      SDL.ControlButtons.RCInfo.RCModules.set('content', user_friendly_content);
+    },
+
+    /**
+     * @description Function to generate seat locations capabilities
+     * @param {Array} representation 
+     */
+    fillSeatLocationCapabilities: function(representation) {       
+      var seat_capability = {};
+      
+      var max_col_index = 
+        SDL.VehicleModuleCoverageController.getVehicleMaxIndex(representation, 'col');
+      seat_capability['columns'] = 
+        SDL.VehicleModuleCoverageController.getVehicleItemValue(
+          representation[max_col_index], 'col') + 1;
+
+      var max_row_index = 
+        SDL.VehicleModuleCoverageController.getVehicleMaxIndex(representation, 'row');
+      seat_capability['rows'] = 
+        SDL.VehicleModuleCoverageController.getVehicleItemValue(
+          representation[max_row_index], 'row') + 1;
+
+      var max_level_index = 
+        SDL.VehicleModuleCoverageController.getVehicleMaxIndex(representation, 'level');
+      seat_capability['levels'] = 
+        SDL.VehicleModuleCoverageController.getVehicleItemValue(
+          representation[max_level_index], 'level') + 1;
+
+      seat_capability['seats'] = [];
+      representation.forEach(seat => {
+        seat_capability.seats.push(
+          {
+            'grid': seat
+          }
+        );
+      });
+
+      SDL.remoteControlCapabilities.seatLocationCapability = seat_capability;
     },
 
     /**

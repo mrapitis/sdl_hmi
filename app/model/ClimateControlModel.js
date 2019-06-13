@@ -98,7 +98,7 @@ SDL.ClimateControlModel = Em.Object.extend({
     return result;
   },
 
-  getClimateButtonCapabilities: function() {
+  getButtonCapabilities: function() {
     var result = [
       {
         'name': 'AC_MAX',
@@ -613,30 +613,21 @@ SDL.ClimateControlModel = Em.Object.extend({
    * @param {Object} element 
    */
   generateClimateCapabilities: function(element) {
-    var capabilities = {};
-    SDL.SDLModelData.climateControlCapabilitiesValues.forEach(capability => {
-        if('moduleName' === capability) {
-            capabilities[capability] = 'Climate';
-            return;
-        }
-        if('ventilationMode' === capability) {
-            capabilities[capability] = ['UPPER', 'LOWER', 'BOTH', 'NONE'];
-            return;
-        }
-        if('defrostZone' === capability) {
-            capabilities[capability] = ['FRONT', 'REAR', 'ALL', 'NONE'];
-            return;
-        }
-        if('moduleInfo' === capability) {
-            var moduleInfo = {location: element};
-            moduleInfo['moduleId'] = 
-              SDL.VehicleModuleCoverageController.getModuleKeyName(element);
-            capabilities[capability] = moduleInfo;
-            return;
-        }
-        capabilities[capability] = true;
-      });
-      SDL.remoteControlCapability['climateControlCapabilities'].push(capabilities);
-    },
+    var moduleInfo = {
+      'allowMultipleAccess': true,
+      'moduleId':
+        SDL.VehicleModuleCoverageController.getModuleKeyName(element),
+      'serviceArea': SDL.deepCopy(element),
+      'location': SDL.deepCopy(element),
+    };
+
+    moduleInfo.location['colspan'] = 1;
+    moduleInfo.location['rowspan'] = 1;
+    moduleInfo.location['levelspan'] = 1;
+
+    var capabilities = this.getClimateControlCapabilities()[0];
+    capabilities['moduleInfo'] = moduleInfo;    
+    SDL.remoteControlCapabilities.remoteControlCapability['climateControlCapabilities'].push(capabilities);
+  }
 }
 );

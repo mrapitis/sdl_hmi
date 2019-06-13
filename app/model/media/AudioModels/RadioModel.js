@@ -556,7 +556,7 @@ SDL.RadioModel = Em.Object.extend({
     return result;
   },
 
-  getRadioButtonCapabilities: function() {
+  getButtonCapabilities: function() {
     var result = [
       {
         'name': 'VOLUME_UP',
@@ -1844,15 +1844,26 @@ SDL.RadioModel = Em.Object.extend({
     this.setRadioData(data);
   },
 
+  /**
+   * @description Function to generate radio capabilities
+   * @param {Object} element 
+   */
   generateRadioControlCapabilities: function(element) {
-    var moduleInfo = {location: element};
-    moduleInfo['moduleId'] = 
-                SDL.VehicleModuleCoverageController.getModuleKeyName(element);
+    var moduleInfo = {
+      'allowMultipleAccess': true,
+      'moduleId':
+        SDL.VehicleModuleCoverageController.getModuleKeyName(element),
+      'serviceArea': SDL.deepCopy(element),
+      'location': SDL.deepCopy(element),
+    };
+
+    moduleInfo.location['colspan'] = 1;
+    moduleInfo.location['rowspan'] = 1;
+    moduleInfo.location['levelspan'] = 1;
+
     var capabilities = this.getRadioControlCapabilities()[0];
     capabilities['moduleInfo'] = moduleInfo;
-    
-    SDL.remoteControlCapability['radioControlCapabilities'].push(capabilities);
+    SDL.remoteControlCapabilities.remoteControlCapability['radioControlCapabilities'].push(capabilities);
   }
-
 }
 );
