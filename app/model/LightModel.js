@@ -213,5 +213,15 @@ SDL.LightModel = Em.Object.extend({
             lightState: this.lightState
         };
         return result;
+    },
+
+    generateLightCapabilities: function(element) {
+        var moduleInfo = {location: element};
+        moduleInfo['moduleId'] = 
+                    SDL.VehicleModuleCoverageController.getModuleKeyName(element);
+        var capabilities = this.getLightCapabilities();
+        capabilities['moduleInfo'] = moduleInfo;
+        
+        SDL.remoteControlCapability['lightControlCapabilities'] = capabilities;
     }
 });

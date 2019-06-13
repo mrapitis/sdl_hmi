@@ -451,5 +451,14 @@ SDL.SeatModel = Em.Object.extend({
             }
         }
         return result;
+    },
+    generateSeatCapabilities: function(element) {
+        var moduleInfo = {location: element};
+        moduleInfo['moduleId'] = 
+                    SDL.VehicleModuleCoverageController.getModuleKeyName(element);
+        var capabilities = this.getSeatCapabilities()[0];
+        capabilities['moduleInfo'] = moduleInfo;
+        
+        SDL.remoteControlCapability['seatControlCapabilities'].push(capabilities);
     }
 });

@@ -228,43 +228,47 @@ SDL.RCModulesController = Em.Object.create({
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
                 self.set('climateModels.' + key_name, SDL.ClimateControlModel.create());
-                self.generateClimateCapabilities(module);        
+                self.climateModels[key_name].generateClimateCapabilities(module);   
               });              
               break;
             }
             case 'RADIO': {
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
-                self.set('radioModels.' + key_name, SDL.RadioModel.create());        
+                self.set('radioModels.' + key_name, SDL.RadioModel.create()); 
+                self.radioModels[key_name].generateRadioControlCapabilities(module);       
               });
               break;
             }
             case 'SEAT': {
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
-                self.set('seatModels.' + key_name, SDL.SeatModel.create({ID: key_name}));        
+                self.set('seatModels.' + key_name, SDL.SeatModel.create({ID: key_name}));
+                self.seatModels[key_name].generateSeatCapabilities(module);
               });
               break;    
             }
             case 'AUDIO': {
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
-                self.set('audioModels.' + key_name, SDL.AudioModel.create());       
-                this.generateAudioCapabilities(module); 
+                self.set('audioModels.' + key_name, SDL.AudioModel.create());   
+                this.audioModels[key_name].generateAudioCapabilities(module);
               });              
               break;   
             }
             case 'LIGHT': {
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
-                self.set('lightModels.' + key_name, SDL.LightModel.create());        
+                self.set('lightModels.' + key_name, SDL.LightModel.create());
+                self.lightModels[key_name].generateLightCapabilities(module);  
               });
               break;
             }
             case 'HMI_SETTINGS': {
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
-                self.set('hmiSettingsModels.' + key_name, SDL.HmiSettingsModel.create());     
+                self.set('hmiSettingsModels.' + key_name, SDL.HmiSettingsModel.create());
+                self.hmiSettingsModels[key_name].generateHMISettingsCapabilities(module);   
               });
               break;
             }
@@ -332,64 +336,6 @@ SDL.RCModulesController = Em.Object.create({
      */
     action: function(event) {
         this[event.model][event.method](event);
-    },
-
-    /**
-     * @description Function to generate climate capabilities
-     * @param {Object} element 
-     */
-    generateClimateCapabilities: function(element) {
-        var capabilities = {};
-        SDL.SDLModelData.climateControlCapabilitiesValues.forEach(capability => {
-            if('moduleName' === capability) {
-                capabilities[capability] = 'Climate';
-                return;
-            }
-            if('ventilationMode' === capability) {
-                capabilities[capability] = ['UPPER', 'LOWER', 'BOTH', 'NONE'];
-                return;
-            }
-            if('defrostZone' === capability) {
-                capabilities[capability] = ['FRONT', 'REAR', 'ALL', 'NONE'];
-                return;
-            }
-            if('moduleInfo' === capability) {
-                var moduleInfo = {location: element};
-                moduleInfo['moduleId'] = 
-                  SDL.VehicleModuleCoverageController.getModuleKeyName(element);
-                capabilities[capability] = moduleInfo;
-                return;
-            }
-            capabilities[capability] = true;
-        });
-        SDL.remoteControlCapability['climateControlCapabilities'].push(capabilities);
-    },
-
-    /**
-     * @description Function to generate audio capabilities
-     * @param {Object} element 
-     */
-    generateAudioCapabilities: function(element) {
-        var capabilities = {};
-        SDL.SDLModelData.audioControlCapabilitiesValues.forEach(capability => {
-            if('moduleName' === capability) {
-                capabilities[capability] = 'Audio';
-                return;
-            }
-            if('moduleInfo' === capability) {
-                var moduleInfo = {location: element};
-                moduleInfo['moduleId'] = 
-                  SDL.VehicleModuleCoverageController.getModuleKeyName(element);
-                capabilities[capability] = moduleInfo;
-                return;
-            }
-            if('equalizerMaxChannelId' === capability) {
-                capabilities[capability] = 10;
-                return;
-            }
-            capabilities[capability] = true;
-        });
-        SDL.remoteControlCapability['audioControlCapabilities'].push(capabilities);
-    }
+    },   
 })
 

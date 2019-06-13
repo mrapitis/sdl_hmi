@@ -1842,6 +1842,16 @@ SDL.RadioModel = Em.Object.extend({
   update: function() {
     var data = this.getCurrentOptions();
     this.setRadioData(data);
+  },
+
+  generateRadioControlCapabilities: function(element) {
+    var moduleInfo = {location: element};
+    moduleInfo['moduleId'] = 
+                SDL.VehicleModuleCoverageController.getModuleKeyName(element);
+    var capabilities = this.getRadioControlCapabilities()[0];
+    capabilities['moduleInfo'] = moduleInfo;
+    
+    SDL.remoteControlCapability['radioControlCapabilities'].push(capabilities);
   }
 
 }

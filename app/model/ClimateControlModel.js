@@ -606,6 +606,37 @@ SDL.ClimateControlModel = Em.Object.extend({
 
   setHeatedMirrorsEnable: function(state) {
     this.set('climateControlData.heatedMirrorsEnable', state);
-  }
+  },
+  
+  /**
+   * @description Function to generate climate capabilities
+   * @param {Object} element 
+   */
+  generateClimateCapabilities: function(element) {
+    var capabilities = {};
+    SDL.SDLModelData.climateControlCapabilitiesValues.forEach(capability => {
+        if('moduleName' === capability) {
+            capabilities[capability] = 'Climate';
+            return;
+        }
+        if('ventilationMode' === capability) {
+            capabilities[capability] = ['UPPER', 'LOWER', 'BOTH', 'NONE'];
+            return;
+        }
+        if('defrostZone' === capability) {
+            capabilities[capability] = ['FRONT', 'REAR', 'ALL', 'NONE'];
+            return;
+        }
+        if('moduleInfo' === capability) {
+            var moduleInfo = {location: element};
+            moduleInfo['moduleId'] = 
+              SDL.VehicleModuleCoverageController.getModuleKeyName(element);
+            capabilities[capability] = moduleInfo;
+            return;
+        }
+        capabilities[capability] = true;
+      });
+      SDL.remoteControlCapability['climateControlCapabilities'].push(capabilities);
+    },
 }
 );

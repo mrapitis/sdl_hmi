@@ -119,5 +119,14 @@ SDL.HmiSettingsModel = Em.Object.extend({
       result.displayMode = (time > 7 && time < 20? 'DAY': 'NIGHT');
     }
     return result;
+  },
+  generateHMISettingsCapabilities: function(element) {
+    var moduleInfo = {location: element};
+    moduleInfo['moduleId'] = 
+                SDL.VehicleModuleCoverageController.getModuleKeyName(element);
+    var capabilities = this.getHmiSettingsCapabilities();
+    capabilities['moduleInfo'] = moduleInfo;
+    
+    SDL.remoteControlCapability['hmiSettingsControlCapabilities'] = capabilities;
   }
 })

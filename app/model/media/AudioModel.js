@@ -832,5 +832,32 @@ SDL.AudioModel = Em.Object.extend({
     update: function() {
         var data = this.getAudioControlData();
         this.setAudioControlData(data, SDL.States.media.active);
+    },
+
+    /**
+     * @description Function to generate audio capabilities
+     * @param {Object} element 
+     */
+    generateAudioCapabilities: function(element) {
+      var capabilities = {};
+      SDL.SDLModelData.audioControlCapabilitiesValues.forEach(capability => {
+          if('moduleName' === capability) {
+              capabilities[capability] = 'Audio';
+              return;
+          }
+          if('moduleInfo' === capability) {
+              var moduleInfo = {location: element};
+              moduleInfo['moduleId'] = 
+                SDL.VehicleModuleCoverageController.getModuleKeyName(element);
+              capabilities[capability] = moduleInfo;
+              return;
+          }
+          if('equalizerMaxChannelId' === capability) {
+              capabilities[capability] = 10;
+              return;
+          }
+          capabilities[capability] = true;
+      });
+      SDL.remoteControlCapability['audioControlCapabilities'].push(capabilities);
     }
 })
