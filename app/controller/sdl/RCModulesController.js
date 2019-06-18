@@ -408,7 +408,7 @@ SDL.RCModulesController = Em.Object.create({
     action: function(event) {
         this[event.model][event.method](event);
     },   
-    
+
     /**
      * @function setInteriorVehicleData
      * @param {Object} data 
@@ -545,6 +545,45 @@ SDL.RCModulesController = Em.Object.create({
                 }
             }
         }      
+        return dataToReturn;
+    },
+
+    /**
+     * @function getInteriorVehicleData
+     * @param {Object} data 
+     * @description get data by moduleId and moduleType
+     */
+    getInteriorVehicleData: function(data) {
+        var moduleId = data.params.moduleId;
+        var moduleType = data.params.moduleType;
+        var dataToReturn = {};
+
+        switch(moduleType){
+          case 'CLIMATE':{
+            dataToReturn.climateControlData = this.climateModels[moduleId].getClimateControlData();
+            break
+          }
+          case 'RADIO':{
+            dataToReturn.radioControlData = this.radioModels[moduleId].getRadioControlData(false);
+            break
+          }
+          case 'HMI_SETTINGS':{
+            dataToReturn.hmiSettingsControlData = this.hmiSettingsModels[moduleId].getHmiSettingsControlData(false);
+            break
+          }
+          case 'AUDIO':{
+            dataToReturn.audioControlData = this.audioModels[moduleId].getAudioControlData(false);
+            break;
+          }
+          case 'LIGHT':{
+            dataToReturn.lightControlData = this.lightModels[moduleId].getLightControlData(false);
+            break
+          }
+          case 'SEAT':{
+            dataToReturn.seatControlData = this.seatModels[moduleId].getSeatControlData(false);
+            break
+          }
+        }
         return dataToReturn;
     }
 })

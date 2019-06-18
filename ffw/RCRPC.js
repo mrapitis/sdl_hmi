@@ -226,44 +226,6 @@ FFW.RC = FFW.RPCObserver.create(
           {
             Em.Logger.log('FFW.' + request.method + ' Request');
 
-            var moduleType = request.params.moduleType;
-            var climateControlData = null;
-            var radioControlData = null;
-            var audioControlData=null;
-            var hmiSettingsControlData = null;
-            var lightControlData = null;
-            var seatControlData = null;
-
-            var app = SDL.SDLController.getApplicationModel(
-              request.params.appID
-            );
-            switch(moduleType){
-              case 'CLIMATE':{
-                climateControlData = SDL.RCModulesController.currentClimateModel.getClimateControlData();
-                break
-              }
-              case 'RADIO':{
-                radioControlData = SDL.RadioModel.getRadioControlData(false);
-                break
-              }
-              case 'HMI_SETTINGS':{
-                hmiSettingsControlData = SDL.RCModulesController.currentHMISettingsModel.getHmiSettingsControlData(false);
-                break
-              }
-              case 'AUDIO':{
-                audioControlData = SDL.RCModulesController.currentAudioModel.getAudioControlData(false);
-                break;
-              }
-              case 'LIGHT':{
-                lightControlData = SDL.RCModulesController.currentLightModel.getLightControlData(false);
-                break
-              }
-              case 'SEAT':{
-                seatControlData = SDL.SeatModel.getSeatControlData(false);
-                break
-              }
-            }
-
             var JSONMessage = {
               'jsonrpc': '2.0',
               'id': request.id,
@@ -271,41 +233,18 @@ FFW.RC = FFW.RPCObserver.create(
                 'code': SDL.SDLModel.data.resultCode.SUCCESS,
                 'method': request.method,
                 'moduleData': {
-                  'moduleType': moduleType
+                  'moduleType': request.params.moduleType,
+                  'moduleId': request.params.moduleId
                 }
               }
             };
 
-            if (radioControlData) {
-              JSONMessage.result.moduleData.radioControlData =
-                radioControlData;
+            var data = SDL.RCModulesController.getInteriorVehicleData(request);
+            if(data) {
+              var key = Object.keys(data)[0];
+              JSONMessage.result.moduleData[key] = data[key];
+              this.client.send(JSONMessage);
             }
-            if (climateControlData) {
-              JSONMessage.result.moduleData.climateControlData
-                = climateControlData;
-            }
-            if (audioControlData) {
-              JSONMessage.result.moduleData.audioControlData
-                = audioControlData;
-            }
-            if(hmiSettingsControlData){
-              JSONMessage.result.moduleData.hmiSettingsControlData = 
-              hmiSettingsControlData;
-            }
-            if(lightControlData){
-              JSONMessage.result.moduleData.lightControlData = 
-                lightControlData;
-            }
-            if(seatControlData){
-              JSONMessage.result.moduleData.seatControlData = 
-              seatControlData;
-            }
-            if (request.params.subscribe !== undefined) {
-              JSONMessage.result.isSubscribed =
-                request.params.subscribe;
-            }
-
-            this.client.send(JSONMessage);
             break;
           }
           case 'RC.GetInteriorVehicleDataConsent':
