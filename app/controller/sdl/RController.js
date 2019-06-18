@@ -215,45 +215,6 @@ SDL.RController = SDL.SDLController.extend(
       );
     },
 
-   toggleDisplayMode: function() {
-      var next = this.nextElement(SDL.RCModulesController.currentHMISettingsModel.displayModeStruct, SDL.RCModulesController.currentHMISettingsModel.displayMode);
-      SDL.RCModulesController.currentHMISettingsModel.set('displayMode',next);
-      var data = {
-        displayMode: SDL.RCModulesController.currentHMISettingsModel.getHmiSettingsControlData().displayMode
-      }
-      this.sendHMISettingsNotification(data);
-    },
-
-   toggleDistanceUnit: function() {
-      var next = this.nextElement(SDL.RCModulesController.currentHMISettingsModel.distanceUnitStruct, SDL.RCModulesController.currentHMISettingsModel.distanceUnit);
-      SDL.RCModulesController.currentHMISettingsModel.set('distanceUnit',next);
-      var data = {
-        distanceUnit: next
-      }
-      this.sendHMISettingsNotification(data);
-    },
-
-   toggleTemperatureUnit: function() {
-      var next = this.nextElement(SDL.RCModulesController.currentHMISettingsModel.temperatureUnitStruct, SDL.RCModulesController.currentHMISettingsModel.temperatureUnit);
-      SDL.RCModulesController.currentHMISettingsModel.set('temperatureUnit',next);
-      SDL.ClimateController.model.set('climateControlData.temperatureUnit', next);
-      if(next == 'FAHRENHEIT') {
-        SDL.ClimateController.model.temperatureUnitFahrenheitEnable();
-      } else {
-        SDL.ClimateController.model.temperatureUnitCelsiusEnable();
-      }
-      var data = {
-        temperatureUnit: next
-      }
-      this.sendHMISettingsNotification(data);
-    },
-
-   sendHMISettingsNotification: function(data){
-      if (Object.keys(data).length > 0) {
-        FFW.RC.onInteriorVehicleDataNotification({moduleType:'HMI_SETTINGS', hmiSettingsControlData: data});
-      }
-    },
-
    nextElement: function(data, currentItem){
       var arr_length = data.length;
       for (var i = 0; i < arr_length; i++) {

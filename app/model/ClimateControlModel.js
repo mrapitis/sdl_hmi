@@ -222,9 +222,9 @@ SDL.ClimateControlModel = Em.Object.extend({
     if (data.desiredTemperature != null) {
       this.setDesiredTemp(data.desiredTemperature);
       if(data.desiredTemperature.unit == 'FAHRENHEIT') {
-        SDL.ClimateControlModel.temperatureUnitFahrenheitEnable(false);
+        this.temperatureUnitFahrenheitEnable(false);
       } else {
-        SDL.ClimateControlModel.temperatureUnitCelsiusEnable(false);
+        this.temperatureUnitCelsiusEnable(false);
       }
     }
 
@@ -297,7 +297,7 @@ SDL.ClimateControlModel = Em.Object.extend({
     var data = this.getClimateControlData();
     data = SDL.SDLController.filterObjectProperty(data, properties);
     if (Object.keys(data).length > 0) {
-      FFW.RC.onInteriorVehicleDataNotification({moduleType:'CLIMATE',climateControlData: data});
+      FFW.RC.onInteriorVehicleDataNotification({moduleType:'CLIMATE',moduleId: this.ID ,climateControlData: data});
     }
   },
 
@@ -550,12 +550,12 @@ SDL.ClimateControlModel = Em.Object.extend({
 
   setCurrentTemp: function(temp) {
     this.set('climateControlData.currentTemp',
-      this.extractTemperatureFromStruct(temp));
+    SDL.ClimateController.extractTemperatureFromStruct(temp));
   },
 
   setDesiredTemp: function(temp) {
     this.set('climateControlData.desiredTemp',
-      this.extractTemperatureFromStruct(temp));
+    SDL.ClimateController.extractTemperatureFromStruct(temp));
   },
 
   setTemperatureUnitCelsiusEnable: function(tempUnit) {

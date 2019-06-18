@@ -29,7 +29,7 @@ SDL.SendMessage = Em.ContainerView.create({
         SDL.RCModulesController.currentLightModel.lightSettings.color.green = parseInt(SDL.RCModulesController.currentLightModel.lightSettings.color.green);
         SDL.RCModulesController.currentLightModel.lightSettings.color.blue = parseInt(SDL.RCModulesController.currentLightModel.lightSettings.color.blue);
         var length = SDL.RCModulesController.currentLightModel.lightState.length;
-
+        var moduleId = SDL.RCModulesController.currentLightModel.ID;
         var data = SDL.deepCopy(SDL.RCModulesController.currentLightModel.lightSettings);
         var oldData;
         for(var i = 0; i < length; ++i){
@@ -48,7 +48,7 @@ SDL.SendMessage = Em.ContainerView.create({
           delete data['density'];
         }
         if (Object.keys(data).length > 0) {
-          FFW.RC.onInteriorVehicleDataNotification({moduleType:'LIGHT', lightControlData: {lightState: [data]}});
+          FFW.RC.onInteriorVehicleDataNotification({moduleType:'LIGHT',moduleId: moduleId, lightControlData: {lightState: [data]}});
         }
         SDL.SendMessage.toggleActivity();
       },

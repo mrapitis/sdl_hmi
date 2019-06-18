@@ -874,7 +874,7 @@ SDL.RadioModel = Em.Object.extend({
     var data = this.getRadioControlData(false);
     data = SDL.SDLController.filterObjectProperty(data, properties);
     if (Object.keys(data).length > 0) {
-      FFW.RC.onInteriorVehicleDataNotification({moduleType:'RADIO', radioControlData: data});
+      FFW.RC.onInteriorVehicleDataNotification({moduleType:'RADIO',moduleId: this.ID ,radioControlData: data});
     }
     if(data.band != null){
       this.sendAudioNotification();
@@ -1646,7 +1646,7 @@ SDL.RadioModel = Em.Object.extend({
     this.setSource();
     var data = SDL.RCModulesController.currentAudioModel.getAudioControlData();
     if(data){
-    FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO',audioControlData: {'source':this.radioControlStruct.band }});
+    FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO',moduleId: this.ID ,audioControlData: {'source':this.radioControlStruct.band }});
   }
   },
   setSource:function()

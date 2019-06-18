@@ -227,7 +227,7 @@ SDL.RCModulesController = Em.Object.create({
             case 'CLIMATE': {
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
-                self.set('climateModels.' + key_name, SDL.ClimateControlModel.create());
+                self.set('climateModels.' + key_name, SDL.ClimateControlModel.create({ID: key_name}));
                 self.climateModels[key_name].generateClimateCapabilities(module);
                 self.fillButtonCapabilitiesContent(self.climateModels[key_name], module);   
               });              
@@ -236,7 +236,7 @@ SDL.RCModulesController = Em.Object.create({
             case 'RADIO': {
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
-                self.set('radioModels.' + key_name, SDL.RadioModel.create()); 
+                self.set('radioModels.' + key_name, SDL.RadioModel.create({ID: key_name})); 
                 self.radioModels[key_name].generateRadioControlCapabilities(module);
                 self.fillButtonCapabilitiesContent(self.radioModels[key_name], module);        
               });
@@ -253,7 +253,7 @@ SDL.RCModulesController = Em.Object.create({
             case 'AUDIO': {
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
-                self.set('audioModels.' + key_name, SDL.AudioModel.create());   
+                self.set('audioModels.' + key_name, SDL.AudioModel.create({ID: key_name}));   
                 this.audioModels[key_name].generateAudioCapabilities(module);
               });              
               break;   
@@ -261,7 +261,7 @@ SDL.RCModulesController = Em.Object.create({
             case 'LIGHT': {
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
-                self.set('lightModels.' + key_name, SDL.LightModel.create());
+                self.set('lightModels.' + key_name, SDL.LightModel.create({ID: key_name}));
                 self.lightModels[key_name].generateLightCapabilities(module);  
               });
               break;
@@ -269,7 +269,7 @@ SDL.RCModulesController = Em.Object.create({
             case 'HMI_SETTINGS': {
               module_coverage.forEach(module => {
                 var key_name = SDL.VehicleModuleCoverageController.getModuleKeyName(module);
-                self.set('hmiSettingsModels.' + key_name, SDL.HmiSettingsModel.create());
+                self.set('hmiSettingsModels.' + key_name, SDL.HmiSettingsModel.create({ID: key_name}));
                 self.hmiSettingsModels[key_name].generateHMISettingsCapabilities(module);   
               });
               break;
@@ -398,6 +398,7 @@ SDL.RCModulesController = Em.Object.create({
         this.currentSeatModel.update();
         this.currentRadioModel.update();
         this.currentAudioModel.update();
+        this.currentHMISettingsModel.update();
     },
 
     /**
@@ -407,5 +408,144 @@ SDL.RCModulesController = Em.Object.create({
     action: function(event) {
         this[event.model][event.method](event);
     },   
+    
+    /**
+     * @function setInteriorVehicleData
+     * @param {Object} data 
+     * @description Set data from mobile request by moduleId
+     */
+    setInteriorVehicleData: function(data) {
+        var moduleId = data.params.moduleData.moduleId;
+        var moduleType = data.params.moduleData.moduleType;
+        var dataToReturn = {};
+        switch (moduleType) {
+            case 'RADIO': 
+            {
+                if (data.params.moduleData.radioControlData) {
+                    if (data.params.moduleData.radioControlData.radioEnable == null
+                        && this.radioModels[moduleId].radioControlStruct.radioEnable == false) {
+                        FFW.RC.sendError(
+                        SDL.SDLModel.data.resultCode.IGNORED,
+                        data.id, data.method,
+                        'Radio module must be activated.'
+                        );
+                        return;
+                    }
+                    var result = this.radioModels[moduleId].checkRadioFrequencyBoundaries(
+                        data.params.moduleData.radioControlData
+                    );
+                    if (!result.success) {
+                        FFW.RC.sendError(
+                        SDL.SDLModel.data.resultCode.INVALID_DATA,
+                        data.id, data.method,
+                        result.info
+                        );
+                        return;
+                    }
+                }
+
+                if (data.params.moduleData.radioControlData) {
+                    if(data.params.moduleData.radioControlData.band && 
+                        data.params.moduleData.radioControlData.band == 'DAB'){
+                        FFW.RC.sendError(
+                            SDL.SDLModel.data.resultCode.UNSUPPORTED_RESOURCE,
+                            data.id, data.method,'DAB not supported'
+                        );
+                        return;
+                    } else {
+                        var radioControlData =
+                            this.radioModels[moduleId].setRadioData(
+                            data.params.moduleData.radioControlData);
+                        if (this.radioModels[moduleId].radioControlStruct.radioEnable) {
+                            this.radioModels[moduleId].saveCurrentOptions();
+                        }
+                        if (Object.keys(radioControlData).length > 0) {
+                            FFW.RC.onInteriorVehicleDataNotification({moduleType:'RADIO', moduleId: moduleId,
+                                                                    radioControlData: radioControlData});
+                        }
+                        dataToReturn.radioControlData = radioControlData;                        
+                    }
+                }
+                break;
+            }
+            case 'CLIMATE':
+            {
+                if (data.params.moduleData.climateControlData) {
+                    var climateControlData =
+                        this.climateModels[moduleId].setClimateData(
+                        data.params.moduleData.climateControlData);
+                    if (Object.keys(data.params.moduleData.climateControlData).length > 0) {
+                        FFW.RC.onInteriorVehicleDataNotification({moduleType:'CLIMATE', moduleId: moduleId,
+                                                                climateControlData: climateControlData});
+                    }
+                    dataToReturn.climateControlData = climateControlData;
+                }
+                break;
+            }
+            case 'AUDIO':
+            {
+                if(data.params.moduleData.audioControlData){
+                    if(data.params.moduleData.audioControlData.source && 
+                      data.params.moduleData.audioControlData.source == 'DAB'){
+                        FFW.RC.sendError(
+                          SDL.SDLModel.data.resultCode.UNSUPPORTED_RESOURCE,
+                          data.id, data.method,'DAB not supported'
+                        );
+                        return;
+                    } else {
+                        var audioControlData = (data.params.moduleData.audioControlData.keepContext!=null) ?
+                        this.audioModels[moduleId].setAudioControlDataWithKeepContext(data.params.moduleData.audioControlData, moduleId) :
+                        this.audioModels[moduleId].setAudioControlData(data.params.moduleData.audioControlData, moduleId);
+                        if (Object.keys(data.params.moduleData.audioControlData).length > 0) {
+                            FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO', moduleId: moduleId,
+                                                                    audioControlData: audioControlData});
+                        }
+                        dataToReturn.audioControlData = audioControlData;
+                    }
+                }
+                break;
+            }
+            case 'HMI_SETTINGS':
+            {
+                if(data.params.moduleData.hmiSettingsControlData){
+                    var hmiSettingsControlData = this.hmiSettingsModels[moduleId].setHmiSettingsData(
+                      data.params.moduleData.hmiSettingsControlData);
+                    if (Object.keys(data.params.moduleData.hmiSettingsControlData).length > 0) {
+                    FFW.RC.onInteriorVehicleDataNotification({moduleType:'HMI_SETTINGS', moduleId: moduleId,
+                                                                hmiSettingsControlData: hmiSettingsControlData});
+                    }
+                    dataToReturn.hmiSettingsControlData = hmiSettingsControlData;
+                }
+                break;
+            }
+            case 'LIGHT':
+            {
+                if(data.params.moduleData.lightControlData){
+                    var lightControlData = this.lightModels[moduleId].setLightControlData(
+                      data.params.moduleData.lightControlData);
+      
+                    if (Object.keys(lightControlData).length > 0) {
+                    FFW.RC.onInteriorVehicleDataNotification({moduleType:'LIGHT', moduleId: moduleId,
+                                                                lightControlData: data.params.moduleData.lightControlData});
+                    }
+                    dataToReturn.lightControlData = lightControlData;
+                }
+                break;
+            }
+            case 'SEAT':
+            {
+                if(data.params.moduleData.seatControlData){
+                    var seatControlData = this.seatModels[moduleId].setSeatControlData(
+                    data.params.moduleData.seatControlData);
+                    if (Object.keys(data.params.moduleData.seatControlData).length > 0) {
+                    FFW.RC.onInteriorVehicleDataNotification({moduleType:'SEAT', moduleId: moduleId,
+                                                                seatControlData: seatControlData});
+                    }
+                    dataToReturn.seatControlData = seatControlData;
+                }
+            }
+        }      
+        return dataToReturn;
+    }
 })
 

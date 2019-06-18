@@ -71,24 +71,30 @@ SDL.HMISettingsView = Em.ContainerView.create({
         items: [{
             type: SDL.Button,
             params: {
-              action: 'toggleDisplayMode',
-              target: 'SDL.SDLController',
+              action: 'action',
+              target: 'SDL.RCModulesController',
+              model: 'currentHMISettingsModel',
+              method: 'toggleDisplayMode',
               textBinding: 'SDL.HMISettingsView.getDisplayModeStatus'
             }
           },
           {
             type: SDL.Button,
             params: {
-              action: 'toggleDistanceUnit',
-              target: 'SDL.SDLController',
+              action: 'action',
+              target: 'SDL.RCModulesController',
+              model: 'currentHMISettingsModel',
+              method: 'toggleDistanceUnit',
               textBinding: 'SDL.HMISettingsView.getDistanceUnit'
             }
           },
           {
             type: SDL.Button,
             params: {
-              action: 'toggleTemperatureUnit',
-              target: 'SDL.SDLController',
+              action: 'action',
+              target: 'SDL.RCModulesController',
+              model: 'currentHMISettingsModel',
+              method: 'toggleTemperatureUnit',
               textBinding: 'SDL.HMISettingsView.getTemperatureUnit'
             }
           }]

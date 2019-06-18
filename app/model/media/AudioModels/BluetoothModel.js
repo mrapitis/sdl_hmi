@@ -39,7 +39,7 @@ init: function() {
     this.setSource();
     var data = SDL.RCModulesController.currentAudioModel.getAudioControlData();
     if(data){
-    FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO',audioControlData:{'source':data.source}});
+    FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO', moduleId: this.ID,audioControlData:{'source':data.source}});
   }
   },
   setSource:function()
