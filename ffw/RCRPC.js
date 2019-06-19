@@ -253,6 +253,19 @@ FFW.RC = FFW.RPCObserver.create(
             SDL.SDLController.interiorDataConsent(request);
             break;
           }
+          case 'RC.SetGlobalProperties': 
+          {
+            Em.Logger.log('FFW.' + request.method + ' Request');
+            var JSONMessage = {
+              'jsonrpc': '2.0',
+              'id': request.id,
+              'result': {
+                'code': SDL.SDLModel.data.resultCode.SUCCESS,
+                'method': request.method
+              }
+            };
+            this.client.send(JSONMessage);
+          }
 
           default:
           {
