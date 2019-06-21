@@ -220,20 +220,21 @@ SDL.LightModel = Em.Object.extend({
      * @param {Object} element 
      */
     generateLightCapabilities: function(element) {
-        var moduleInfo = {
-            'allowMultipleAccess': true,
-            'moduleId':
-              SDL.VehicleModuleCoverageController.getModuleKeyName(element),
-            'serviceArea': SDL.deepCopy(element),
-            'location': SDL.deepCopy(element),
-          };
-      
-        moduleInfo.location['colspan'] = 1;
-        moduleInfo.location['rowspan'] = 1;
-        moduleInfo.location['levelspan'] = 1;
-      
-        var capabilities = this.getLightCapabilities(); 
-        capabilities['moduleInfo'] = moduleInfo;
+        var capabilities = this.getLightCapabilities();
+        if(element) {
+            var moduleInfo = {
+                'allowMultipleAccess': true,
+                'moduleId':
+                SDL.VehicleModuleCoverageController.getModuleKeyName(element),
+                'serviceArea': SDL.deepCopy(element),
+                'location': SDL.deepCopy(element),
+            };
+        
+            moduleInfo.location['colspan'] = 1;
+            moduleInfo.location['rowspan'] = 1;
+            moduleInfo.location['levelspan'] = 1;
+            capabilities['moduleInfo'] = moduleInfo;
+        }
         SDL.remoteControlCapabilities.remoteControlCapability['lightControlCapabilities'] = capabilities;
     }
 });

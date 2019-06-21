@@ -76,6 +76,13 @@ SDL.RCModulesController = Em.Object.create({
     moduleModelsMapping: {},
 
     /**
+     * @name moduleIDMapping
+     * @type {Map}
+     * @description Mapping module ID with driver and front passenger seat
+     */
+    moduleIDMapping: {},
+
+    /**
      * @description Mapping of user friendly seat names and their key names
      * @type {Map}
      */
@@ -124,7 +131,7 @@ SDL.RCModulesController = Em.Object.create({
         // Mock models required for early binding initialization
         this.set('currentAudioModel', SDL.AudioModel.create());
         this.set('currentClimateModel', SDL.ClimateControlModel.create());
-        this.set('currentSeatModel', SDL.SeatModel.create());
+        this.set('currentSeatModel', SDL.SeatModel.create({ID: 'No emulation mode. ID is undefined'}));
         this.set('currentRadioModel', SDL.RadioModel.create());
         this.set('currentHMISettingsModel', SDL.HmiSettingsModel.create());
         this.set('currentLightModel', SDL.LightModel.create());
@@ -210,6 +217,25 @@ SDL.RCModulesController = Em.Object.create({
      * responsible modules according to coverage settings
      */
     populateModels: function() {
+        if('no_emulation' == FLAGS.VehicleEmulationType) {
+          var moduleId = FLAGS.VehicleEmulationType;
+
+          this.set('climateModels.' + moduleId, this.currentClimateModel);
+          this.set('radioModels.' + moduleId, this.currentRadioModel);
+          this.set('seatModels.' + moduleId, this.currentSeatModel);
+          this.set('audioModels.' + moduleId, this.currentAudioModel);
+          this.set('lightModels.' + moduleId, this.currentLightModel);
+          this.set('hmiSettingsModels.' + moduleId, this.currentHMISettingsModel);
+
+          this.currentClimateModel.generateClimateCapabilities();
+          this.currentAudioModel.generateAudioCapabilities();
+          this.currentHMISettingsModel.generateHMISettingsCapabilities();
+          this.currentLightModel.generateLightCapabilities();
+          this.currentSeatModel.generateSeatCapabilities();
+          this.currentHMISettingsModel.generateHMISettingsCapabilities();
+          delete SDL.remoteControlCapabilities.seatLocationCapability;
+          return;
+        }
         var vehicleRepresentation = 
             SDL.SDLModelData.vehicleSeatRepresentation[FLAGS.VehicleEmulationType];
         
@@ -280,8 +306,31 @@ SDL.RCModulesController = Em.Object.create({
 
         this.fillModuleSeatLocationContent(contentBinding);
         this.fillSeatLocationCapabilities(vehicleRepresentation);
+        this.fillModuleIDMapping(vehicleRepresentation);
 
         this.updateCurrentModels(contentBinding[0]);
+    },
+
+    /**
+     * @function fillModuleIDMapping
+     * @param {Array} representation
+     * @description function to generate driver and 
+     * front passenger seat mapping model by moduleId
+     */
+    fillModuleIDMapping: function(representation) {
+      var max_col_index = SDL.VehicleModuleCoverageController.getVehicleMaxIndex(representation, 'col');
+      var max_col_value = SDL.VehicleModuleCoverageController.getVehicleItemValue(representation[max_col_index], 'col');
+      representation.forEach(element => {
+        if(0 == element.row && 0 == element.col) {
+          var driver_key = SDL.VehicleModuleCoverageController.getModuleKeyName(element);
+          this.moduleIDMapping[driver_key] = 'DRIVER';
+        } else if(0 == element.row &&
+           max_col_value == element.col &&
+           0 != max_col_value) {
+          var front_passenger_key = SDL.VehicleModuleCoverageController.getModuleKeyName(element);
+          this.moduleIDMapping[front_passenger_key] = 'FRONT_PASSENGER';
+        }        
+      })
     },
 
     /**
@@ -374,6 +423,16 @@ SDL.RCModulesController = Em.Object.create({
     },
 
     /**
+     * @function getSeatCurrentID
+     * @description callback to get current module id name for Seat View
+     */
+    getSeatCurrentID: function() {
+      var moduleId = this.currentSeatModel.ID;
+      var moduleName = this.moduleIDMapping[moduleId];
+      return moduleName ? moduleName : moduleId;
+    }.property('SDL.RCModulesController.currentSeatModel.ID'),
+
+    /**
      * @description Function invoked when user changes a seat zone
      * @param {String} module_key 
      */
@@ -416,6 +475,9 @@ SDL.RCModulesController = Em.Object.create({
      */
     setInteriorVehicleData: function(data) {
         var moduleId = data.params.moduleData.moduleId;
+        if('no_emulation' == FLAGS.VehicleEmulationType) {
+          moduleId = FLAGS.VehicleEmulationType;
+        }
         var moduleType = data.params.moduleData.moduleType;
         var dataToReturn = {};
         switch (moduleType) {
@@ -555,6 +617,9 @@ SDL.RCModulesController = Em.Object.create({
      */
     getInteriorVehicleData: function(data) {
         var moduleId = data.params.moduleId;
+        if('no_emulation' == FLAGS.VehicleEmulationType) {
+          moduleId = FLAGS.VehicleEmulationType;
+        }
         var moduleType = data.params.moduleType;
         var dataToReturn = {};
 

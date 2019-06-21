@@ -856,20 +856,21 @@ SDL.AudioModel = Em.Object.extend({
      * @param {Object} element 
      */
     generateAudioCapabilities: function(element) {
-      var moduleInfo = {
-        'allowMultipleAccess': true,
-        'moduleId':
-          SDL.VehicleModuleCoverageController.getModuleKeyName(element),
-        'serviceArea': SDL.deepCopy(element),
-        'location': SDL.deepCopy(element),
-      };
-  
-      moduleInfo.location['colspan'] = 1;
-      moduleInfo.location['rowspan'] = 1;
-      moduleInfo.location['levelspan'] = 1;
-  
       var capabilities = this.getAudioControlCapabilities()[0];
-      capabilities['moduleInfo'] = moduleInfo;
+      if(element) {
+        var moduleInfo = {
+          'allowMultipleAccess': true,
+          'moduleId':
+            SDL.VehicleModuleCoverageController.getModuleKeyName(element),
+          'serviceArea': SDL.deepCopy(element),
+          'location': SDL.deepCopy(element),
+        };
+    
+        moduleInfo.location['colspan'] = 1;
+        moduleInfo.location['rowspan'] = 1;
+        moduleInfo.location['levelspan'] = 1;
+        capabilities['moduleInfo'] = moduleInfo;
+      }
       SDL.remoteControlCapabilities.remoteControlCapability['audioControlCapabilities'].push(capabilities);
     }
 })

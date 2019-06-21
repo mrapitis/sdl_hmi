@@ -51,7 +51,7 @@ SDL.SeatView = Em.ContainerView.create({
         'massageMode',
         'cushionFirmness'
     ],
-
+    
     heating: Em.ContainerView.create({
         elementId: 'heating',
         classNames: 'in_seat_heating_view', 
@@ -964,7 +964,7 @@ SDL.SeatView = Em.ContainerView.create({
         moduleName: SDL.Label.create({
             elementId: 'seatModelCurrent',
             classNames: 'seatModelCurrent',
-            contentBinding: 'SDL.RCModulesController.currentSeatModel.ID'
+            contentBinding: 'SDL.RCModulesController.getSeatCurrentID'
         })
     }),
 
