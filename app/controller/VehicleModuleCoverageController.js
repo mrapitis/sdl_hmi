@@ -86,12 +86,11 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     }
 
     var currentSeatsData = SDL.SDLModelData.vehicleSeatRepresentation[emulation_type];
-    var self = this;
     var default_settings = {};
 
     this.availableModules.forEach(module => {
       if('HMI_SETTINGS' == module || 'LIGHT' == module) {
-        default_settings[module] = self.createFullCoverage(currentSeatsData);
+        default_settings[module] = this.createFullCoverage(currentSeatsData);
         return;
       }
       default_settings[module] = SDL.deepCopy(currentSeatsData);
@@ -182,12 +181,10 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
   /**
    * @description Function to save current module settings before switching
    * @param {String} module_name 
-   * @param {Array} data 
+   * @param {Object} data 
    */
   saveModuleSettings: function(module_name, data) {
-    var parsed_settings;
-    parsed_settings = JSON.parse(data);
- 
+    var parsed_settings = JSON.parse(data); 
     this.set('coverageSettings.' + module_name, parsed_settings);
   },
   
@@ -285,11 +282,10 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
    * @returns true if settings are valid, otherwise returns false
    */
   checkModulesConsistency: function() {
-    var self = this;
     var validation_message = "";
 
-    Object.keys(self.coverageSettings).forEach(module_type => {
-      var module_coverage = self.coverageSettings[module_type];
+    Object.keys(this.coverageSettings).forEach(module_type => {
+      var module_coverage = this.coverageSettings[module_type];
       
       module_coverage.forEach(
         function(element, index) {
@@ -318,31 +314,30 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
     var max_level_index = this.getVehicleMaxIndex(representation, 'level');
     var max_level_value = this.getVehicleItemValue(representation[max_level_index], 'level');
 
-    var self = this;
     var validation_message = "";
 
-    Object.keys(self.coverageSettings).forEach(module_type => {
-      var module_coverage = self.coverageSettings[module_type];
-      var module_max_col_index = self.getVehicleMaxIndex(module_coverage, 'col');
-      var module_max_col_value = self.getVehicleItemValue(module_coverage[module_max_col_index], 'col');
+    Object.keys(this.coverageSettings).forEach(module_type => {
+      var module_coverage = this.coverageSettings[module_type];
+      var module_max_col_index = this.getVehicleMaxIndex(module_coverage, 'col');
+      var module_max_col_value = this.getVehicleItemValue(module_coverage[module_max_col_index], 'col');
 
-      var module_max_row_index = self.getVehicleMaxIndex(module_coverage, 'row');
-      var module_max_row_value = self.getVehicleItemValue(module_coverage[module_max_row_index], 'row');
+      var module_max_row_index = this.getVehicleMaxIndex(module_coverage, 'row');
+      var module_max_row_value = this.getVehicleItemValue(module_coverage[module_max_row_index], 'row');
 
-      var module_max_level_index = self.getVehicleMaxIndex(module_coverage, 'level');
-      var module_max_level_value = self.getVehicleItemValue(module_coverage[module_max_level_index], 'level');  
+      var module_max_level_index = this.getVehicleMaxIndex(module_coverage, 'level');
+      var module_max_level_value = this.getVehicleItemValue(module_coverage[module_max_level_index], 'level');  
 
       if (module_max_col_value > max_col_value) {
         validation_message += module_type + ": out-of-bound column in " + 
-          self.getModuleKeyName(module_coverage[module_max_col_index]) + "\n";
+          this.getModuleKeyName(module_coverage[module_max_col_index]) + "\n";
       }
       if (module_max_row_value > max_row_value) {
         validation_message += module_type + ": out-of-bound row in " +
-          self.getModuleKeyName(module_coverage[module_max_row_index]) + "\n";
+          this.getModuleKeyName(module_coverage[module_max_row_index]) + "\n";
       }
       if (module_max_level_value > max_level_value) {
         validation_message += module_type + ": out-of-bound level in " +
-          self.getModuleKeyName(module_coverage[module_max_level_index]) + "\n";
+          this.getModuleKeyName(module_coverage[module_max_level_index]) + "\n";
       }
     });
 
@@ -356,17 +351,20 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
    */
   checkModuleCoverage: function() {
     var representation = SDL.SDLModelData.vehicleSeatRepresentation[FLAGS.VehicleEmulationType];
-    var self = this;
     var validation_message = "";
 
-    Object.keys(self.coverageSettings).forEach(module_type => {
+    Object.keys(this.coverageSettings).forEach(module_type => {
+      // Coverage map will contain how many modules covers each location
+      // 0 - seat is not covered by any module - NOK
+      // 1 - seat is covered by one module - OK
+      // >1 - seat is covered by multiple modules - NOK
       var coverage = {};
     
       representation.forEach(item => {
-        coverage[self.getModuleKeyName(item)] = 0;
+        coverage[this.getModuleKeyName(item)] = 0;
       });
       
-      var module_coverage = self.coverageSettings[module_type];
+      var module_coverage = this.coverageSettings[module_type];
       module_coverage.forEach(module => {
         // These fields are not mandatory according to API so should be checked
         var module_level = module.hasOwnProperty('level') ? module.level : 0;
@@ -383,7 +381,7 @@ SDL.VehicleModuleCoverageController = Em.Object.create({
                 "row" : row,
                 "level" : level
               }
-              var covered_module_name = self.getModuleKeyName(covered_item);
+              var covered_module_name = this.getModuleKeyName(covered_item);
               if (coverage.hasOwnProperty(covered_module_name)) {
                 coverage[covered_module_name]++;
               }

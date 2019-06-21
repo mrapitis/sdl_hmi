@@ -1,3 +1,37 @@
+/*
+ * Copyright (c) 2019, Ford Motor Company All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met: ·
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer. · Redistributions in binary
+ * form must reproduce the above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. · Neither the name of the Ford Motor Company nor the
+ * names of its contributors may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/**
+ * @name SDL.AudioModel
+ * @desc Audio model
+ * @category Model
+ * @filesource app/model/media/AudioModel.js
+ * @version 1.0
+ */
+
 SDL.AudioModel = Em.Object.extend({
 
     bluetoothModel: null,
@@ -5,7 +39,14 @@ SDL.AudioModel = Em.Object.extend({
     lineInModel: null,
     usbModel: null,
     ipodModel: null,
+    optionsEnabled: false,
+    state: true,
+    tempSource: '',
 
+    /**
+     * @function init
+     * @description function to init a current object
+     */
     init: function() {
         this.createDefaultData();
         this.createEqualizerSettings();
@@ -17,21 +58,32 @@ SDL.AudioModel = Em.Object.extend({
         this.set('currentSelectedPlayer', this.cdModel.player);          
     },
 
+    /**
+     * @function createEqualizerSettings
+     * @description function to create equalizer settings
+     *  during initialization a current object
+     */
     createEqualizerSettings: function() {
         this.tempEqualizerSettIndex = 1;
         this.tempEqualizerSettings.channelName = this.lastRadioControlStruct.equalizerSettings[this.tempEqualizerSettIndex - 1].channelName;
         this.tempEqualizerSettings.channelId = parseInt(this.lastRadioControlStruct.equalizerSettings[this.tempEqualizerSettIndex - 1].channelId);
         this.tempEqualizerSettings.channelSetting = parseInt(this.lastRadioControlStruct.equalizerSettings[this.tempEqualizerSettIndex - 1].channelSetting);
-        for (var i = 4; i <= 10; i++) {
-            temp = {};
-            temp.channelId = parseInt(i);
-            temp.channelSetting = parseInt(i);
-            temp.channelName = 'Name' + ' ' + i.toString();
+        var startIndex = this.lastRadioControlStruct.equalizerSettings.length + 1;
+        for (var i = startIndex; i <= 10; i++) {
+            temp = {
+              channelId: parseInt(i),
+              channelSetting: parseInt(i),
+              channelName: 'Name' + ' ' + i.toString()
+            }
             this.lastRadioControlStruct.equalizerSettings.push(temp);
-            this.radioControlStruct.equalizerSettings.push(temp);
+            this.radioControlStruct.equalizerSettings.push(temp);            
         }  
     },
 
+    /**
+     * @function createDefaultData
+     * @description function to create default data of current object
+     */
     createDefaultData: function() {
         this.set('radioControlStruct',{
             source: 'CD',
@@ -87,16 +139,13 @@ SDL.AudioModel = Em.Object.extend({
         this.set('boolStruct', [true, false]);
     },
 
-    saveButtonPress: function () {
-
+    /**
+     * @function changedEqualizerSettings
+     * @description checks changed equalizer settings
+     * @returns {Array}
+     */
+    changedEqualizerSettings: function() {
       var equalizerSettings = [];
-      this.lastRadioControlStruct.equalizerSettings[this.tempEqualizerSettIndex - 1].channelId =
-        parseInt(this.tempEqualizerSettings.channelId);
-      this.lastRadioControlStruct.equalizerSettings[this.tempEqualizerSettIndex - 1].channelSetting =
-        parseInt(this.tempEqualizerSettings.channelSetting);
-      this.lastRadioControlStruct.equalizerSettings[this.tempEqualizerSettIndex - 1].channelName =
-        this.tempEqualizerSettings.channelName;
-
       var lengthLast = this.lastRadioControlStruct.equalizerSettings.length;
       for (var i; i < lengthLast; i++) {
         this.lastRadioControlStruct.equalizerSettings[i].channelId =
@@ -105,62 +154,52 @@ SDL.AudioModel = Em.Object.extend({
           parseInt(this.lastRadioControlStruct.equalizerSettings[i].channelSetting);
       }
       var lengthCurrent = this.radioControlStruct.equalizerSettings.length;
-      if (lengthLast > lengthCurrent) {
-        if (lengthLast != lengthCurrent) {
-          for (var i = lengthCurrent; i < lengthLast; i++) {
-            equalizerSettings.push(this.lastRadioControlStruct.equalizerSettings[i]);
-          }
-        }
-        for (var i = 0; i < lengthCurrent; ++i) {
-          if (this.lastRadioControlStruct.equalizerSettings[i].channelId !=
-            this.radioControlStruct.equalizerSettings[i].channelId ||
-            this.lastRadioControlStruct.equalizerSettings[i].channelSetting !=
-            this.radioControlStruct.equalizerSettings[i].channelSetting) {
-            temp = {};
-            temp.channelId =
-              parseInt(this.lastRadioControlStruct.equalizerSettings[i].channelId);
-            temp.channelSetting =
-              parseInt(this.lastRadioControlStruct.equalizerSettings[i].channelSetting);
-            if (this.lastRadioControlStruct.equalizerSettings[i].channelName !=
-              this.radioControlStruct.equalizerSettings[i].channelName) {
-              temp.channelName =
-                this.lastRadioControlStruct.equalizerSettings[i].channelName;
-            }
-            equalizerSettings.push(temp);
-            continue;
-          }
-          if (this.lastRadioControlStruct.equalizerSettings[i].channelName !=
-            this.radioControlStruct.equalizerSettings[i].channelName) {
-            equalizerSettings.push(this.lastRadioControlStruct.equalizerSettings[i]);
-          }
+      if (lengthLast != lengthCurrent) {
+        for (var i = lengthCurrent; i < lengthLast; i++) {
+          equalizerSettings.push(this.lastRadioControlStruct.equalizerSettings[i]);
         }
       }
-      else {
-        for (var i = 0; i < lengthLast; ++i) {
-          if (this.lastRadioControlStruct.equalizerSettings[i].channelId !=
-            this.radioControlStruct.equalizerSettings[i].channelId ||
-            this.lastRadioControlStruct.equalizerSettings[i].channelSetting !=
-            this.radioControlStruct.equalizerSettings[i].channelSetting) {
-            temp = {};
-            temp.channelId =
-              parseInt(this.lastRadioControlStruct.equalizerSettings[i].channelId);
-            temp.channelSetting =
-              parseInt(this.lastRadioControlStruct.equalizerSettings[i].channelSetting);
-            if (this.lastRadioControlStruct.equalizerSettings[i].channelName !=
-              this.radioControlStruct.equalizerSettings[i].channelName) {
-              temp.channelName =
-                this.lastRadioControlStruct.equalizerSettings[i].channelName;
-            }
-            equalizerSettings.push(temp);
-            continue;
-          }
+      var length = lengthLast > lengthCurrent ? lengthCurrent : lengthLast;
+      for (var i = 0; i < length; ++i) {
+        if (this.lastRadioControlStruct.equalizerSettings[i].channelId !=
+          this.radioControlStruct.equalizerSettings[i].channelId ||
+          this.lastRadioControlStruct.equalizerSettings[i].channelSetting !=
+          this.radioControlStruct.equalizerSettings[i].channelSetting) {
+          temp = {};
+          temp.channelId =
+            parseInt(this.lastRadioControlStruct.equalizerSettings[i].channelId);
+          temp.channelSetting =
+            parseInt(this.lastRadioControlStruct.equalizerSettings[i].channelSetting);
           if (this.lastRadioControlStruct.equalizerSettings[i].channelName !=
             this.radioControlStruct.equalizerSettings[i].channelName) {
-            equalizerSettings.push(this.lastRadioControlStruct.equalizerSettings[i]);
+            temp.channelName =
+              this.lastRadioControlStruct.equalizerSettings[i].channelName;
           }
+          equalizerSettings.push(temp);
+          continue;
+        }
+        if (this.lastRadioControlStruct.equalizerSettings[i].channelName !=
+          this.radioControlStruct.equalizerSettings[i].channelName) {
+          equalizerSettings.push(this.lastRadioControlStruct.equalizerSettings[i]);
         }
       }
+      return equalizerSettings;
+    },
+
+    /**
+     * @function saveButtonPress
+     * @description callback for save button on equalizer view
+     */
+    saveButtonPress: function () {
+      this.lastRadioControlStruct.equalizerSettings[this.tempEqualizerSettIndex - 1].channelId =
+        parseInt(this.tempEqualizerSettings.channelId);
+      this.lastRadioControlStruct.equalizerSettings[this.tempEqualizerSettIndex - 1].channelSetting =
+        parseInt(this.tempEqualizerSettings.channelSetting);
+      this.lastRadioControlStruct.equalizerSettings[this.tempEqualizerSettIndex - 1].channelName =
+        this.tempEqualizerSettings.channelName;
       SDL.RCModulesController.currentAudioModel.toggleProperty('optionsEnabled');
+      var equalizerSettings = this.changedEqualizerSettings();
+
       if (equalizerSettings.length) {
         var size = equalizerSettings.length;
         for (var i = 0; i < size; i++) {
@@ -172,9 +211,19 @@ SDL.AudioModel = Em.Object.extend({
         this.setLastData();
       }
     },
+
+    /**
+     * @function setLastData
+     * @description function to save lastRadioControlStruct
+     */
     setLastData: function () {
       this.radioControlStruct = SDL.deepCopy(this.lastRadioControlStruct);
     },
+
+    /**
+     * @function getCurrentData
+     * @description function to get Current Audio Data
+     */
     getCurrentData: function () {
       var result = {
         'source': this.lastRadioControlStruct.source,
@@ -188,19 +237,23 @@ SDL.AudioModel = Em.Object.extend({
       return result;
     },
 
-
-    optionsEnabled: false,
+    /**
+     * @function toggleOptions
+     * @description toggle @optionsEnabled parameter
+     */
     toggleOptions: function () {
       SDL.RCModulesController.currentAudioModel.toggleProperty('optionsEnabled');
     },
-    /**
-     * Turn on CD
-     */
+    
     returnParameters:function()
     {
       this.set('state', true);
       this.set('tempSource','');
     },
+
+    /**
+     * Turn on CD
+     */
     turnOnCD: function () {
       if (!SDL.States.media.player.cd.active) {
         this.deactivateAll();
@@ -209,6 +262,7 @@ SDL.AudioModel = Em.Object.extend({
       this.onPlayerEnter(SDL.RCModulesController.currentAudioModel.cdModel, 'cd');
      this.returnParameters();
     },
+
     /**
      * Turn on USB
      */
@@ -220,6 +274,7 @@ SDL.AudioModel = Em.Object.extend({
       this.onPlayerEnter(SDL.RCModulesController.currentAudioModel.usbModel, 'usb');
       this.returnParameters();
     },
+
     /**
      * Turn on Radio
      */
@@ -232,6 +287,10 @@ SDL.AudioModel = Em.Object.extend({
       SDL.RCModulesController.currentRadioModel.set('active', true);
       this.returnParameters();
     },
+
+    /**
+     * Turn on Bluetooth
+     */
     turnOnBluetooth: function () {
       if (!SDL.States.media.player.bluetooth.active) {
         this.deactivateAll();
@@ -241,6 +300,9 @@ SDL.AudioModel = Em.Object.extend({
       this.returnParameters();
     },
 
+    /**
+     * Turn on LineIn
+     */
     turnOnLineIn: function () {
       if (!SDL.States.media.player.lineIn.active) {
         this.deactivateAll();
@@ -250,6 +312,9 @@ SDL.AudioModel = Em.Object.extend({
       this.returnParameters();
     },
 
+    /**
+     * Turn on IPod
+     */
     turnOnIPod: function () {
       if (!SDL.States.media.player.ipod.active) {
         this.deactivateAll();
@@ -258,6 +323,7 @@ SDL.AudioModel = Em.Object.extend({
       this.onPlayerEnter(SDL.RCModulesController.currentAudioModel.ipodModel, 'ipod');
       this.returnParameters();
     },
+
     /**
      * Switching on Application
      */
@@ -287,6 +353,7 @@ SDL.AudioModel = Em.Object.extend({
 
       SDL.States.goToStates('media.sdlmedia');
     },
+
     /**
      * Volume level up
      */
@@ -298,6 +365,7 @@ SDL.AudioModel = Em.Object.extend({
         }
       }
     },
+
     /**
      * Volume level down
      */
@@ -309,6 +377,7 @@ SDL.AudioModel = Em.Object.extend({
         }
       }
     },
+
     /**
      * Switching off CD
      */
@@ -320,6 +389,7 @@ SDL.AudioModel = Em.Object.extend({
       SDL.States.set('media.player.lineIn.active', false);
       SDL.States.set('media.player.ipod.active', false);
     },
+
     /**
      * Switching off USB
      */
@@ -331,6 +401,7 @@ SDL.AudioModel = Em.Object.extend({
       SDL.States.set('media.player.lineIn.active', false);
       SDL.States.set('media.player.ipod.active', false);
     },
+
     /**
      * Switching off Radio
      */
@@ -343,6 +414,9 @@ SDL.AudioModel = Em.Object.extend({
       SDL.States.set('media.player.ipod.active', false);
     },
 
+    /**
+     * Switching off Bluetooth
+     */
     deactivateBluetooth: function () {
       SDL.RCModulesController.currentAudioModel.bluetoothModel.set('active', false);
       SDL.States.set('media.player.radio.active', false);
@@ -351,6 +425,10 @@ SDL.AudioModel = Em.Object.extend({
       SDL.States.set('media.player.lineIn.active', false);
       SDL.States.set('media.player.ipod.active', false);
     },
+
+     /**
+     * Switching off Line IN
+     */
     deactivateLineIn: function () {
       SDL.RCModulesController.currentAudioModel.lineInModel.set('active', false);
       SDL.States.set('media.player.radio.active', false);
@@ -359,6 +437,10 @@ SDL.AudioModel = Em.Object.extend({
       SDL.States.set('media.player.cd.active', false);
       SDL.States.set('media.player.ipod.active', false);
     },
+
+     /**
+     * Switching off IPod
+     */
     deactivateIPod: function () {
       SDL.RCModulesController.currentAudioModel.ipodModel.set('active', false);
       SDL.States.set('media.player.radio.active', false);
@@ -367,6 +449,10 @@ SDL.AudioModel = Em.Object.extend({
       SDL.States.set('media.player.lineIn.active', false);
       SDL.States.set('media.player.cd.active', false);
     },
+
+     /**
+     * Switching off all
+     */
     deactivateAll:function(){
       SDL.States.set('media.player.cd.active', false);
       SDL.States.set('media.player.usb.active', false);
@@ -375,6 +461,7 @@ SDL.AudioModel = Em.Object.extend({
       SDL.States.set('media.player.ipod.active', false);
       SDL.States.set('media.player.bluetooth.active', false);
     },
+
     /**  On player module enter event */
     onPlayerEnter: function (data, state) {
       if (this.currentSelectedPlayer) {
@@ -386,42 +473,49 @@ SDL.AudioModel = Em.Object.extend({
         SDL.States.goToState('media.player.' + state);
       }
     },
+
     /**
      * Player Prev track event
      */
     prevTrack: function () {
       this.currentSelectedPlayer.prevTrackPress();
     },
+
     /**
      * Player Play track event
      */
     playTrack: function () {
       this.currentSelectedPlayer.playTrackPress();
     },
+
     /**
      * Player Next track event
      */
     nextTrack: function () {
       this.currentSelectedPlayer.nextTrackPress();
     },
+
     /**
      * Turn on shuffle help video event
      */
     turnOnShuffle: function () {
       this.currentSelectedPlayer.shufflePress();
     },
+
     /**
      * Repeat mode pressed
      */
     repeatPress: function () {
       this.currentSelectedPlayer.repeatPress();
     },
+
     /**
      * Eject/insert CD
      */
     ejectCD: function () {
       this.currentSelectedPlayer.ejectPress();
     },
+
     /**
      * Change media audio source
      */
@@ -459,6 +553,7 @@ SDL.AudioModel = Em.Object.extend({
         }
       }
     },
+
     /**
      * Switches to next after radio source
      * @param is source switched from background or not
@@ -471,6 +566,7 @@ SDL.AudioModel = Em.Object.extend({
         SDL.States.goToStates(old_state);
       }
     },
+
     /**
      * Switches to next after CD source
      * @param is source switched from background or not
@@ -483,6 +579,7 @@ SDL.AudioModel = Em.Object.extend({
         SDL.States.goToStates(old_state);
       }
     },
+
     /**
      * Switches to next after USB source
      * @param is source switched from background or not
@@ -499,6 +596,11 @@ SDL.AudioModel = Em.Object.extend({
         SDL.States.goToStates(old_state);
       }
     },
+
+    /**
+     * Switches to next after Bluetooth source
+     * @param is source switched from background or not
+     */
     changeSourceFromBluetooth: function (is_background) {
       var old_state = SDL.States.currentState.get('path');
       this.deactivateBluetooth();
@@ -507,6 +609,11 @@ SDL.AudioModel = Em.Object.extend({
         SDL.States.goToStates(old_state);
       }
     },
+
+    /**
+     * Switches to next after Line IN source
+     * @param is source switched from background or not
+     */
     changeSourceFromLineIn: function (is_background) {
       var old_state = SDL.States.currentState.get('path');
       this.deactivateLineIn();
@@ -515,6 +622,11 @@ SDL.AudioModel = Em.Object.extend({
         SDL.States.goToStates(old_state);
       }
     },
+
+    /**
+     * Switches to next after IPod source
+     * @param is source switched from background or not
+     */
     changeSourceFromIpod: function (is_background) {
       var old_state = SDL.States.currentState.get('path');
       this.deactivateIpod();
@@ -523,6 +635,7 @@ SDL.AudioModel = Em.Object.extend({
         SDL.States.goToStates(old_state);
       }
     },
+
     /**
      * Switches to next after unknown source
      * @param is source switched from background or not
@@ -535,6 +648,11 @@ SDL.AudioModel = Em.Object.extend({
       }
     },
 
+    /**
+     * @function getAudioControlData
+     * @description get audio control data
+     * @return {Object}
+     */
     getAudioControlData: function () {
       var size = this.lastRadioControlStruct.equalizerSettings.length;
       for (var i = 0; i < size; i++) {
@@ -547,22 +665,12 @@ SDL.AudioModel = Em.Object.extend({
       result.volume = this.currentVolume;
       return result;
     },
-    getResultWithKeepContext: function () {
-      equalizerSettings: [];
-      equalizerSettings = SDL.deepCopy(this.lastRadioControlStruct.equalizerSettings);
-      result = { equalizerSettings };
-      result.source = SDL.deepCopy(this.tempSource);
-      var size = result.equalizerSettings.length;
-      for (var i = 0; i < size; i++) {
-        result.equalizerSettings[i].channelId =
-          parseInt(result.equalizerSettings[i].channelId);
-        result.equalizerSettings[i].channelSetting =
-          parseInt(result.equalizerSettings[i].channelSetting);
 
-      }
-      return result;
-
-    },
+    /**
+     * @function switchSource
+     * @param {String} source
+     * @description function to switch source 
+     */
     switchSource: function (source) {
       switch (source) {
         case 'AM':
@@ -576,7 +684,11 @@ SDL.AudioModel = Em.Object.extend({
         case 'MOBILE_APP': SDL.SDLMediaController.activateCurrentApp(); break;
       }
     },
-    state: true,
+    
+    /**
+     * @function setFalseStateModel
+     * @description set for all models inactive state
+     */
     setFalseStateModel: function () {
       SDL.SDLModel.set('data.limitedExist', false);
       SDL.RCModulesController.currentRadioModel.set('active', false);
@@ -587,7 +699,13 @@ SDL.AudioModel = Em.Object.extend({
       SDL.RCModulesController.currentAudioModel.bluetoothModel.set('active', false);
       SDL.RCModulesController.currentAudioModel.lineInModel.set('active', false);
     },
-    tempSource: '',
+    
+    /**
+     * @function setAudioControlDataWithKeepContext
+     * @param {Object} data 
+     * @param {Number} moduleId 
+     * @description set audio control data with keepContext parameter
+     */
     setAudioControlDataWithKeepContext: function (data, moduleId) {
       result = {};
       if (data.keepContext) {
@@ -705,14 +823,19 @@ SDL.AudioModel = Em.Object.extend({
           }
         }
         resultNew.equalizerSettings = SDL.deepCopy(this.lastRadioControlStruct.equalizerSettings);
-
-
         this.setLastData();
         result = SDL.deepCopy(resultNew);
       }
 
       return result;
     },
+
+    /**
+     * @function setAudioControlData
+     * @param {Object} data 
+     * @param {Number} moduleId 
+     * @description set audio control data
+     */
     setAudioControlData: function (data, moduleId) {
       result = {};
       var switchSource = SDL.RCModulesController.currentAudioModel.ID === moduleId && SDL.States.media.active;
@@ -765,6 +888,12 @@ SDL.AudioModel = Em.Object.extend({
       return result;
     },
 
+    /**
+     * @function setActiveState
+     * @param {String} source 
+     * @param {Number} moduleId
+     * @description set current state of audio source 
+     */
     setActiveState: function(source, moduleId) {
       switch (source) {
         case 'AM':
@@ -813,6 +942,10 @@ SDL.AudioModel = Em.Object.extend({
       }
     },
 
+    /**
+     * @function getAudioControlCapabilities
+     * @description get audio control capabilities
+     */
     getAudioControlCapabilities: function () {
       var result = [];
       var capabilities = {
@@ -826,26 +959,11 @@ SDL.AudioModel = Em.Object.extend({
       result.push(capabilities);
       return result;
     },
+
     /**
-     * turn on scan event
+     * @function update
+     * @description update all parameters for trigger bindings
      */
-    turnOnScan: function () {
-    },
-    /**
-     * turn on more info event
-     */
-    turnOnMoreInfo: function () {
-    },
-    /**
-     * turn on options event
-     */
-    turnOnOptions: function () {
-    },
-    /**
-     * turn on browse event
-     */
-    turnOnBrowse: function () {
-    },
     update: function() {
         var data = this.getAudioControlData();
         this.setAudioControlData(data, this.ID);

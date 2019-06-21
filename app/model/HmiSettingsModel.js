@@ -145,6 +145,10 @@ SDL.HmiSettingsModel = Em.Object.extend({
     SDL.remoteControlCapabilities.remoteControlCapability['hmiSettingsControlCapabilities'] = capabilities;
   },
 
+  /**
+   * @function toggleDisplayMode
+   * @description Callback for sending HMI settings notification with changed displayMode
+   */
   toggleDisplayMode: function() {
     var next = SDL.SDLController.nextElement(SDL.RCModulesController.currentHMISettingsModel.displayModeStruct, SDL.RCModulesController.currentHMISettingsModel.displayMode);
     SDL.RCModulesController.currentHMISettingsModel.set('displayMode',next);
@@ -154,6 +158,10 @@ SDL.HmiSettingsModel = Em.Object.extend({
     this.sendHMISettingsNotification(data);
   },
 
+  /**
+   * @function toggleDistanceUnit
+   * @description Callback for sending HMI settings notification with changed distanceUnit
+   */
  toggleDistanceUnit: function() {
     var next = SDL.SDLController.nextElement(SDL.RCModulesController.currentHMISettingsModel.distanceUnitStruct, SDL.RCModulesController.currentHMISettingsModel.distanceUnit);
     SDL.RCModulesController.currentHMISettingsModel.set('distanceUnit',next);
@@ -163,6 +171,10 @@ SDL.HmiSettingsModel = Em.Object.extend({
     this.sendHMISettingsNotification(data);
   },
 
+/**
+ * @function toggleDistanceUnit
+ * @description Callback for sending HMI settings notification with changed distanceUnit
+ */ 
  toggleTemperatureUnit: function() {
     var next = SDL.SDLController.nextElement(SDL.RCModulesController.currentHMISettingsModel.temperatureUnitStruct, SDL.RCModulesController.currentHMISettingsModel.temperatureUnit);
     SDL.RCModulesController.currentHMISettingsModel.set('temperatureUnit',next);
@@ -178,12 +190,21 @@ SDL.HmiSettingsModel = Em.Object.extend({
     this.sendHMISettingsNotification(data);
   },
 
+  /**
+   * @function sendHMISettingsNotification
+   * @param {Object} data
+   * @description Sending OnInteriorVehicleData notification
+   */
   sendHMISettingsNotification: function(data){
     if (Object.keys(data).length > 0) {
       FFW.RC.onInteriorVehicleDataNotification({moduleType:'HMI_SETTINGS', moduleId: this.ID, hmiSettingsControlData: data});
     }
   },
 
+  /**
+   * @function update
+   * @description updating of all bind values
+   */
   update: function() {
     this.set('displayMode', this.displayMode);
     this.set('distanceUnit', this.distanceUnit);

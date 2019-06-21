@@ -271,7 +271,7 @@ SDL.SeatModel = Em.Object.extend({
             switch(data.memory.action){
                 case 'SAVE':
                     this.memory[data.memory.id]=SDL.deepCopy(this.seatControlData);
-                    this.resetCreatedMem();
+                    this.resetCreatedMemory();
                     return this.seatControlData;
                     break;
 
@@ -279,7 +279,7 @@ SDL.SeatModel = Em.Object.extend({
                     if (this.memory[data.memory.id]) {
                         this.set('tempSeatControlData', SDL.deepCopy(this.memory[data.memory.id]));
                         this.update();
-                        this.resetCreatedMem();
+                        this.resetCreatedMemory();
                         return this.seatControlData;
                     }
                     break;
@@ -331,8 +331,10 @@ SDL.SeatModel = Em.Object.extend({
             Em.Object.create(SDL.deepCopy(this.tempSeatControlData)));
     },
 
-
-
+    /**
+     * @function applyMemory
+     * @description callback to apply memory action on the SeatView by user
+     */
     applyMemory: function() {
         var action = this.tempSeatControlData.memory.action;
 
@@ -350,7 +352,7 @@ SDL.SeatModel = Em.Object.extend({
                         this.set('seatControlData',
                             SDL.deepCopy(this.tempSeatControlData)
                         );
-                        this.resetCreatedMem();
+                        this.resetCreatedMemory();
                         return;
                     }
                     SDL.SeatView.memory.memoryId.inputId.set('value',
@@ -369,7 +371,7 @@ SDL.SeatModel = Em.Object.extend({
                     this.set('tempSeatControlData',
                     this.memory[this.tempSeatControlData.memory.id]
                     );
-                    this.resetCreatedMem();
+                    this.resetCreatedMemory();
                     return;
                 }
                 SDL.SeatView.memory.memoryId.inputId.set('value',
@@ -393,7 +395,11 @@ SDL.SeatModel = Em.Object.extend({
         }
     },
 
-    resetCreatedMem: function() {
+    /**
+     * @function resetCreatedMemory
+     * @description function to reset string with created memory.
+     */
+    resetCreatedMemory: function() {
         this.createdMemory = '';
         var currentIndex = '*'
         for(key in this.memory) {
