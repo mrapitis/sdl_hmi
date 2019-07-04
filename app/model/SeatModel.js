@@ -264,6 +264,7 @@ SDL.SeatModel = Em.Object.extend({
         result = Em.Object.create({});
         
         for (var key in data) {
+            this.set('tempSeatControlData.' + key, data[key]);
             this.set('seatControlData.' + key, data[key]);
             result.set(key,SDL.deepCopy(data[key]));
         }
@@ -296,7 +297,7 @@ SDL.SeatModel = Em.Object.extend({
 
     getSeatControlData: function() {
         this.update();
-        return this.tempSeatControlData;
+        return this.seatControlData;
     },
 
     applySettings: function () {

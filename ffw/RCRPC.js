@@ -130,7 +130,7 @@ FFW.RC = FFW.RPCObserver.create(
     onRPCNotification: function(notification) {
       Em.Logger.log('FFW.RC.onRPCNotification');
       this._super();
-      switch (notification.method) {  
+      switch (notification.method) {
         case 'RC.OnRCStatus':
           {
             Em.Logger.log(notification.method);
@@ -212,7 +212,7 @@ FFW.RC = FFW.RPCObserver.create(
                 }
               }
             };
-            
+
             var newControlData = SDL.RCModulesController.setInteriorVehicleData(request);
             if(newControlData) {
               var key = Object.keys(newControlData)[0];
@@ -232,6 +232,7 @@ FFW.RC = FFW.RPCObserver.create(
               'result': {
                 'code': SDL.SDLModel.data.resultCode.SUCCESS,
                 'method': request.method,
+                'isSubscribed': request.params.subscribe,
                 'moduleData': {
                   'moduleType': request.params.moduleType,
                   'moduleId': request.params.moduleId
@@ -253,7 +254,7 @@ FFW.RC = FFW.RPCObserver.create(
             SDL.SDLController.interiorDataConsent(request);
             break;
           }
-          case 'RC.SetGlobalProperties': 
+          case 'RC.SetGlobalProperties':
           {
             Em.Logger.log('FFW.' + request.method + ' Request');
             var JSONMessage = {

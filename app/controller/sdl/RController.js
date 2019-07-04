@@ -444,26 +444,36 @@ SDL.RController = SDL.SDLController.extend(
       }else if (request.params.moduleType == 'HMI_SETTINGS') {
         module = 'HMI settings';
       }
-
-      var popUp = SDL.PopUp.create().appendTo('body').popupActivate(
-        'Would you like to grant access for ' + appName +
-        ' application for module ' + module + '?',
-        function(result) {
-          FFW.RC.GetInteriorVehicleDataConsentResponse(request, result);
-        }
-      );
-
-      setTimeout(
-        function() {
-          if (popUp && popUp.active) {
-            popUp.deactivate();
-            FFW.RC.sendError(
-              SDL.SDLModel.data.resultCode['TIMED_OUT'], request.id,
-              request.method, 'The resource is in use and the driver did not respond in time'
-            );
+      var moduleIds = request.params.moduleIds;
+      var allowed = [];
+      var timedOutSended = false;
+      moduleIds.forEach(element => {
+        var popUp = SDL.PopUp.create().appendTo('body').popupActivate(
+          'Would you like to grant access for ' + appName +
+          ' application for module ' + module + ' and for module id ' + element + '?',
+          function(result) {
+            allowed.push(result);
+            if(allowed.length == moduleIds.length) {
+              FFW.RC.GetInteriorVehicleDataConsentResponse(request, allowed);
+            }
           }
-        }, 9500
-      ); //Magic number is timeout for RC consent popUp
+        );
+        
+        setTimeout(
+          function() {
+            if (popUp && popUp.active) {
+              popUp.deactivate();
+              if(!timedOutSended) {
+                FFW.RC.sendError(
+                  SDL.SDLModel.data.resultCode['TIMED_OUT'], request.id,
+                  request.method, 'The resource is in use and the driver did not respond in time'
+                );
+                timedOutSended = true;
+              }
+            }
+          }, 9500
+        ); //Magic number is timeout for RC consent popUp
+      });
     },
 
    /**

@@ -777,7 +777,7 @@ SDL.AudioModel = Em.Object.extend({
               this.lastRadioControlStruct.source :
               this.tempSource;
             if (value != 'MOBILE_APP') {
-              return this.setAudioControlData(data, true);
+              return this.setAudioControlData(data, moduleId);
             } else {
               this.set('lastRadioControlStruct.source', data.source);
 
