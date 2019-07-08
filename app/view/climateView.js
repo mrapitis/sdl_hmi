@@ -94,8 +94,10 @@ SDL.ClimateView = Em.ContainerView.create(
             }.property(
               'SDL.ClimateController.model.climateControlData.climateEnable'
             ),
-            action: 'toggleClimateEnable',
-            target: 'SDL.ClimateController.model',
+            model: 'currentClimateModel',
+            method: 'toggleClimateEnable',
+            action: 'action',
+            target: 'SDL.RCModulesController',
             onDown: false,
             textBinding: 'SDL.ClimateController.model.climateEnableButtonText'
           }

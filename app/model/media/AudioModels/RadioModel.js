@@ -542,7 +542,7 @@ SDL.RadioModel = Em.Object.extend({
       radioFrequencyAvailable: true,
       hdChannelAvailable: true,
       rdsDataAvailable: true,
-      availableHDsAvailable: true,
+      availableHdChannelsAvailable: true,
       hdRadioEnableAvailable: true,
       siriusxmRadioAvailable: true,
       stateAvailable: true,
@@ -929,7 +929,7 @@ SDL.RadioModel = Em.Object.extend({
       this.lastOptionParams.availableHdChannels.push(number);
       this.lastOptionParams.availableHdChannels.sort();
     } else {
-      var index = SDL.RadioModel.lastOptionParams.availableHdChannels.indexOf(number);
+      var index = this.lastOptionParams.availableHdChannels.indexOf(number);
       this.lastOptionParams.availableHdChannels.splice(index,1);
     }
     var length = this.lastOptionParams.availableHdChannels.length;
@@ -1363,9 +1363,6 @@ SDL.RadioModel = Em.Object.extend({
       );
 
       this.findStationPresets();
-
-      //FFW.VehicleInfo.sendVIResult(SDL.SDLModel.data.resultCode["SUCCESS"], FFW.VehicleInfo.VITuneRadioRequestID, "VehicleInfo.TuneRadio");
-      //FFW.CAN.send('frequency_set_' + Number(SDL.RadioModel.station)*1000);
     },
 
   tuneUpPress: function() {

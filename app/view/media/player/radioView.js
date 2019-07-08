@@ -1106,7 +1106,7 @@ SDL.RadioView = Em.ContainerView
             else if(!SDL.RCModulesController.currentRadioModel.radioControlStruct.hdRadioEnable){
               return false;
             }
-            SDL.RCModulesController.currentRadioModel.setHDRadioEnable(SDL.RCModulesController.currentAudioModel.radioModel.radioControlStruct.availableHdChannels.length >= 0);
+            SDL.RCModulesController.currentRadioModel.setHDRadioEnable(SDL.RCModulesController.currentRadioModel.radioControlStruct.availableHdChannels.length >= 0);
             return (SDL.RCModulesController.currentRadioModel.radioControlStruct.availableHdChannels.length >= 0);
           }.property('SDL.RCModulesController.currentRadioModel.radioControlStruct.band',
                      'SDL.RCModulesController.currentRadioModel.radioControlStruct.availableHdChannels.@each',

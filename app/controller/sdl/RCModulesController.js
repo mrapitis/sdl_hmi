@@ -488,7 +488,7 @@ SDL.RCModulesController = Em.Object.create({
             case 'RADIO': 
             {
                 if (data.params.moduleData.radioControlData) {
-                    if (data.params.moduleData.radioControlData.radioEnable == null
+                    if (data.params.moduleData.radioControlData.radioEnable == undefined
                         && this.radioModels[moduleId].radioControlStruct.radioEnable == false) {
                         FFW.RC.sendError(
                         SDL.SDLModel.data.resultCode.IGNORED,
@@ -496,6 +496,16 @@ SDL.RCModulesController = Em.Object.create({
                         'Radio module must be activated.'
                         );
                         return;
+                    }
+                    if(data.params.moduleData.radioControlData.hdChannel !== undefined
+                      && data.params.moduleData.radioControlData.hdRadioEnable == undefined
+                       && this.radioModels[moduleId].radioControlStruct.hdRadioEnable == false) {
+                        FFW.RC.sendError(
+                         SDL.SDLModel.data.resultCode.UNSUPPORTED_RESOURCE,
+                         data.id, data.method,
+                         'HD Radio module does not supported.'
+                       );
+                       return;
                     }
                     var result = this.radioModels[moduleId].checkRadioFrequencyBoundaries(
                         data.params.moduleData.radioControlData
@@ -537,6 +547,27 @@ SDL.RCModulesController = Em.Object.create({
             case 'CLIMATE':
             {
                 if (data.params.moduleData.climateControlData) {
+                    var currentClimateState = 
+                      this.climateModels[moduleId].getClimateControlData().climateEnable;
+                    var requestedClimateState = 
+                      data.params.moduleData.climateControlData.climateEnable;
+                    if(!currentClimateState) {
+                      if(requestedClimateState === undefined) {
+                        FFW.RC.sendError(
+                          SDL.SDLModel.data.resultCode.REJECTED,
+                          data.id, data.method,
+                          'Climate Control is disable. Turn Climate on.'
+                        );
+                        return;
+                      } else if(requestedClimateState === false) {
+                        FFW.RC.sendError(
+                          SDL.SDLModel.data.resultCode.REJECTED,
+                          data.id, data.method,
+                          'Climate Control is disabled already.'
+                        );
+                        return;
+                      }
+                    }
                     var climateControlData =
                         this.climateModels[moduleId].setClimateData(
                         data.params.moduleData.climateControlData);

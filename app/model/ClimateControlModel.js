@@ -56,6 +56,8 @@ SDL.ClimateControlModel = Em.Object.extend({
     this.set('climateControlData.heatedRearWindowEnable', false);
     this.set('climateControlData.heatedSteeringWheelEnable', false);
     this.set('climateControlData.heatedMirrorsEnable', false);
+    this.set('climateControlData.climateEnable', true);
+    this.set("climateEnableButtonText", "Climate ON");
 
     this.set('currentFanSpeed', 0);
     this.set('autoModeEnableString', 'OFF');
@@ -75,6 +77,7 @@ SDL.ClimateControlModel = Em.Object.extend({
 
     var capabilities = {
       moduleName: 'Climate Control Module',
+      climateEnableAvailable: true,
       currentTemperatureAvailable: true,
       fanSpeedAvailable: true,
       desiredTemperatureAvailable: true,
