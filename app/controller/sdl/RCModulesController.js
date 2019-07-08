@@ -359,6 +359,10 @@ SDL.RCModulesController = Em.Object.create({
       SDL.remoteControlCapabilities.remoteControlCapability['buttonCapabilities'] =
         SDL.remoteControlCapabilities.remoteControlCapability['buttonCapabilities']
           .concat(button_capabilities);
+      var buttonCapabilitiesLength = SDL.remoteControlCapabilities.remoteControlCapability.buttonCapabilities.length;
+      if(100 <= buttonCapabilitiesLength) {
+        SDL.remoteControlCapabilities.remoteControlCapability.buttonCapabilities.length = 100;
+      }
     },
 
     /**
