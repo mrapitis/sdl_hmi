@@ -513,7 +513,7 @@
 
 #app_controlButtons .RCModulesSelect{
     position: absolute;
-    width: 150px;
+    width: 175px;
     height: 30px;
     top: 20px;
     color: white;
@@ -522,7 +522,7 @@
 
 #app_controlButtons .imageModeSelect{
     position: absolute;
-    width: 150px;
+    width: 175px;
     height: 30px;
     top: 252px;
     left: 1215px;

@@ -366,6 +366,17 @@ SDL.RCModulesController = Em.Object.create({
     },
 
     /**
+     * Converts module name into the human readable module name
+     * @param {String} module_name
+     * @returns human readable module name 
+     */
+    getUserFriendlyModuleName: function(module_name) {
+      return module_name.replace('L', 'Level ')
+                        .replace('R', ', Row ')
+                        .replace('C', ', Col ');
+    },
+
+    /**
      * @description Function to generate user friendly names for a specified
      * strings in array and fill combobox with seat locations
      * @param {Array} content_binding 
@@ -378,15 +389,57 @@ SDL.RCModulesController = Em.Object.create({
       var user_friendly_content = [];
       var mapping = {};
       content_binding.forEach(element => {
-        var new_name = element.replace('L', 'Level ')
-                              .replace('R', ', Row ')
-                              .replace('C', ', Col ');
+        var new_name = this.getUserFriendlyModuleName(element);
         user_friendly_content.push(new_name);
-        mapping[new_name] = element;        
+        mapping[element] = new_name;        
       });
       
       this.set('seatKeyLabelMapping', mapping);
       SDL.ControlButtons.RCInfo.RCModules.set('content', user_friendly_content);
+    },
+
+    /**
+     * @description Function to update existing seat location names according to
+     * amount of registered applications and their userLocation
+     */
+    updateModuleSeatLocationContent: function() {
+      if (1 >= Object.keys(this.seatKeyLabelMapping).length) {
+        return;
+      }
+
+      var vehicle_representation = 
+        SDL.SDLModelData.vehicleSeatRepresentation[FLAGS.VehicleEmulationType];
+      var driver_location = vehicle_representation[0];
+      var module_apps_mapping = {};
+
+      Object.keys(this.seatKeyLabelMapping).forEach(
+        key => {
+          module_apps_mapping[key] = 0;
+      });
+
+      SDL.SDLModel.data.registeredApps.forEach(app => {
+        var app_user_location = driver_location;
+        if (app.userLocation) {
+          app_user_location = app.userLocation;  
+        }
+
+        var module_name =
+          SDL.VehicleModuleCoverageController.getModuleKeyName(app_user_location);
+        module_apps_mapping[module_name]++;
+      });
+
+      var new_content = []
+      Object.keys(this.seatKeyLabelMapping).forEach(
+        key => {
+          var new_name = this.getUserFriendlyModuleName(key);
+          if (module_apps_mapping[key] > 0) {
+            new_name = "[" + module_apps_mapping[key] + "] " + new_name;
+          }
+          this.seatKeyLabelMapping[key] = new_name;
+          new_content.push(new_name);
+      });
+
+      SDL.ControlButtons.RCInfo.RCModules.set('content', new_content);
     },
 
     /**
@@ -438,11 +491,16 @@ SDL.RCModulesController = Em.Object.create({
 
     /**
      * @description Function invoked when user changes a seat zone
-     * @param {String} module_key 
+     * @param {String} user_friendly_key 
      */
     changeCurrentModule: function(user_friendly_key) {
-      var module_key = this.seatKeyLabelMapping[user_friendly_key];
-      this.updateCurrentModels(module_key);        
+      Object.keys(this.seatKeyLabelMapping).forEach(
+        key => {
+          var value = this.seatKeyLabelMapping[key];
+          if (value == user_friendly_key) {
+            this.updateCurrentModels(key);
+          }
+      });
     },
 
     /**

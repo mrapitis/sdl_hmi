@@ -257,6 +257,25 @@ FFW.RC = FFW.RPCObserver.create(
           case 'RC.SetGlobalProperties':
           {
             Em.Logger.log('FFW.' + request.method + ' Request');
+
+            if (request.params.userLocation !== null) {
+              var user_location = request.params.userLocation.grid;
+              var app = SDL.SDLController.getApplicationModel(request.params.appID);
+
+              if (!app) {
+                this.sendError(
+                  SDL.SDLModel.data.resultCode.REJECTED,
+                  request.id,
+                  request.method,
+                  "Application is not registered"
+                );
+                return;
+              }
+
+              app.userLocation = user_location;
+              SDL.RCModulesController.updateModuleSeatLocationContent();
+            }
+
             var JSONMessage = {
               'jsonrpc': '2.0',
               'id': request.id,
