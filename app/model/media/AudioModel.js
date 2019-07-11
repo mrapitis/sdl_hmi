@@ -50,11 +50,11 @@ SDL.AudioModel = Em.Object.extend({
     init: function() {
         this.createDefaultData();
         this.createEqualizerSettings();
-        this.set('bluetoothModel', SDL.BluetoothModel.create({ID: this.ID}));
-        this.set('cdModel', SDL.CDModel.create({ID: this.ID}));
-        this.set('lineInModel', SDL.LineInModel.create({ID: this.ID}));
-        this.set('usbModel', SDL.USBModel.create({ID: this.ID}));
-        this.set('ipodModel', SDL.IPodModel.create({ID: this.ID}));
+        this.set('bluetoothModel', SDL.BluetoothModel.create({ID: this.ID, UUID: this.UUID}));
+        this.set('cdModel', SDL.CDModel.create({ID: this.ID,UUID: this.UUID}));
+        this.set('lineInModel', SDL.LineInModel.create({ID: this.ID, UUID: this.UUID}));
+        this.set('usbModel', SDL.USBModel.create({ID: this.ID, UUID: this.UUID}));
+        this.set('ipodModel', SDL.IPodModel.create({ID: this.ID, UUID: this.UUID}));
         this.set('currentSelectedPlayer', this.cdModel.player);          
     },
 
@@ -978,8 +978,7 @@ SDL.AudioModel = Em.Object.extend({
       if(element) {
         var moduleInfo = {
           'allowMultipleAccess': true,
-          'moduleId':
-            SDL.VehicleModuleCoverageController.getModuleKeyName(element),
+          'moduleId': this.UUID,
           'serviceArea': SDL.deepCopy(element),
           'location': SDL.deepCopy(element),
         };

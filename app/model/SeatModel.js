@@ -469,8 +469,7 @@ SDL.SeatModel = Em.Object.extend({
         if(element) {
             var moduleInfo = {
             'allowMultipleAccess': false,
-            'moduleId':
-                SDL.VehicleModuleCoverageController.getModuleKeyName(element),
+            'moduleId': this.UUID,
             'serviceArea': SDL.deepCopy(element),
             'location': SDL.deepCopy(element)
             };

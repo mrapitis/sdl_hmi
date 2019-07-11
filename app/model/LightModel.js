@@ -224,8 +224,7 @@ SDL.LightModel = Em.Object.extend({
         if(element) {
             var moduleInfo = {
                 'allowMultipleAccess': true,
-                'moduleId':
-                SDL.VehicleModuleCoverageController.getModuleKeyName(element),
+                'moduleId': this.UUID,
                 'serviceArea': SDL.deepCopy(element),
                 'location': SDL.deepCopy(element),
             };

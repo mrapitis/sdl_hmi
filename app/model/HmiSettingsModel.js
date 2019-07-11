@@ -131,8 +131,7 @@ SDL.HmiSettingsModel = Em.Object.extend({
     if(element) {
       var moduleInfo = {
         'allowMultipleAccess': true,
-        'moduleId':
-          SDL.VehicleModuleCoverageController.getModuleKeyName(element),
+        'moduleId': this.UUID,
         'serviceArea': SDL.deepCopy(element),
         'location': SDL.deepCopy(element),
       };
@@ -197,7 +196,7 @@ SDL.HmiSettingsModel = Em.Object.extend({
    */
   sendHMISettingsNotification: function(data){
     if (Object.keys(data).length > 0) {
-      FFW.RC.onInteriorVehicleDataNotification({moduleType:'HMI_SETTINGS', moduleId: this.ID, hmiSettingsControlData: data});
+      FFW.RC.onInteriorVehicleDataNotification({moduleType:'HMI_SETTINGS', moduleId: this.UUID, hmiSettingsControlData: data});
     }
   },
 

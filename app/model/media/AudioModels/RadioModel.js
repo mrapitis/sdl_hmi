@@ -874,7 +874,7 @@ SDL.RadioModel = Em.Object.extend({
     var data = this.getRadioControlData(false);
     data = SDL.SDLController.filterObjectProperty(data, properties);
     if (Object.keys(data).length > 0) {
-      FFW.RC.onInteriorVehicleDataNotification({moduleType:'RADIO',moduleId: this.ID ,radioControlData: data});
+      FFW.RC.onInteriorVehicleDataNotification({moduleType:'RADIO',moduleId: this.UUID ,radioControlData: data});
     }
     if(data.band != null){
       this.sendAudioNotification();
@@ -1643,7 +1643,7 @@ SDL.RadioModel = Em.Object.extend({
     this.setSource();
     var data = SDL.RCModulesController.currentAudioModel.getAudioControlData();
     if(data){
-    FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO',moduleId: this.ID ,audioControlData: {'source':this.radioControlStruct.band }});
+    FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO',moduleId: this.UUID ,audioControlData: {'source':this.radioControlStruct.band }});
   }
   },
   setSource:function()
@@ -1850,8 +1850,7 @@ SDL.RadioModel = Em.Object.extend({
     if(element) {
       var moduleInfo = {
         'allowMultipleAccess': true,
-        'moduleId':
-          SDL.VehicleModuleCoverageController.getModuleKeyName(element),
+        'moduleId': this.UUID,
         'serviceArea': SDL.deepCopy(element),
         'location': SDL.deepCopy(element),
       };

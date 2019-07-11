@@ -300,7 +300,7 @@ SDL.ClimateControlModel = Em.Object.extend({
     var data = this.getClimateControlData();
     data = SDL.SDLController.filterObjectProperty(data, properties);
     if (Object.keys(data).length > 0) {
-      FFW.RC.onInteriorVehicleDataNotification({moduleType:'CLIMATE',moduleId: this.ID ,climateControlData: data});
+      FFW.RC.onInteriorVehicleDataNotification({moduleType:'CLIMATE',moduleId: this.UUID, climateControlData: data});
     }
   },
 
@@ -620,8 +620,7 @@ SDL.ClimateControlModel = Em.Object.extend({
     if(element) {
       var moduleInfo = {
         'allowMultipleAccess': true,
-        'moduleId':
-          SDL.VehicleModuleCoverageController.getModuleKeyName(element),
+        'moduleId': this.UUID,
         'serviceArea': SDL.deepCopy(element),
         'location': SDL.deepCopy(element),
       };
