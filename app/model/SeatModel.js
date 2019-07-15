@@ -51,7 +51,6 @@ SDL.SeatModel = Em.Object.extend({
     massageEnabledData: 'OFF',
 
     mandatoryField:[
-        'id',
         'memory.id',
         'memory.action'
     ],
@@ -311,6 +310,9 @@ SDL.SeatModel = Em.Object.extend({
 
         var temp = Em.Object.create(this.dfs(SDL.deepCopy(this.tempSeatControlData),
              SDL.deepCopy(this.seatControlData)));
+        if(this.isEmptyObject(temp)) {
+            return
+        }
 
         var length = this.mandatoryField.length;
         for (var i  = 0; i < length; ++i) {
@@ -326,7 +328,7 @@ SDL.SeatModel = Em.Object.extend({
             }
         }
 
-        FFW.RC.onInteriorVehicleDataNotification({moduleType:'SEAT',
+        FFW.RC.onInteriorVehicleDataNotification({moduleType:'SEAT', moduleId: this.UUID,
             seatControlData: temp});
         this.set('seatControlData',
             Em.Object.create(SDL.deepCopy(this.tempSeatControlData)));

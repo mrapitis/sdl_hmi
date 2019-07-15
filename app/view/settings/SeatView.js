@@ -916,8 +916,10 @@ SDL.SeatView = Em.ContainerView.create({
 
             text: 'Set',
             onDown: false,
-            target: 'SDL.RCModulesController.currentSeatModel',
-            action: 'applySettings'
+            model: 'currentSeatModel',
+            method: 'applySettings',
+            target: 'SDL.RCModulesController',
+            action: 'action'
     }),
 
     massageEnable: Em.ContainerView.extend({
