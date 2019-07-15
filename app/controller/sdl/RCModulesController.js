@@ -684,6 +684,9 @@ SDL.RCModulesController = Em.Object.create({
                             FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO', moduleId: moduleUUId,
                                                                     audioControlData: audioControlData});
                         }
+                        if(data.params.moduleData.audioControlData.source === 'MOBILE_APP') {
+                          FFW.RC.OnIVDNotificationWasSent = true;
+                        }
                         dataToReturn.audioControlData = audioControlData;
                     }
                 }

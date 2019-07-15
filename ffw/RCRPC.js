@@ -44,6 +44,14 @@ FFW.RC = FFW.RPCObserver.create(
      * If true then RC controller currently handles SetIVD request
      */
     isSetVdInProgress: false,
+
+    /**
+     * @param OnIVDNotificationWasSent
+     * @type {Boolean}
+     * @description If true MOBILE_APP has been activated by SetIVd reqeuest and has sent OnInterioirVehicleData
+     * notification
+     */
+    OnIVDNotificationWasSent: false,
     /**
      * Contains response codes for request that should be processed but there
      * were some kind of errors Error codes will be injected into response.

@@ -407,15 +407,21 @@ var StateManager = Em.StateManager.extend(
               this.model.currentAudioModel.deactivateCD();
               this.model.currentAudioModel.lastRadioControlStruct.source='MOBILE_APP';
               var data = this.model.currentAudioModel.getAudioControlData();
-              FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO',audioControlData:{'source':data.source}});
               if (SDL.SDLModel.data.mediaPlayerActive) {
                 SDL.SDLController.onEventChanged('player', false);
               }
-              SDL.SDLController.activateTBT();
-
+              SDL.SDLController.activateTBT();              
               this.model.currentAudioModel.set('activeState',
-                SDL.States.nextState);
+              SDL.States.nextState);
               this._super();
+              
+              if(FFW.RC.OnIVDNotificationWasSent) {
+                FFW.RC.OnIVDNotificationWasSent = false;
+                return;
+              }
+              var moduleUUID = this.model.currentAudioModel.UUID;
+              FFW.RC.onInteriorVehicleDataNotification({moduleType:'AUDIO', moduleId: moduleUUID, 
+              audioControlData:{'source':data.source}});
             },
             exit: function() {
               this._super();
