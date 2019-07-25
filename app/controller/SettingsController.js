@@ -297,25 +297,27 @@ SDL.SettingsController = Em.Object.create(
         if (urls.hasOwnProperty(i)) {
           url = urls[i];
           var appID = null;
-          if ('appID' in url) {
-            appID = url.appID;
-          } else {  //If
-            console.error(
-              'WARNING! No appID in GetURLs response'
-            );
+          if (typeof url === 'object') {
+            if('appID' in url) {
+              appID = url.appID;
+            } else {  //If
+              console.error(
+                'WARNING! No appID in GetURLs response'
+              );
+            }
           }
           if(FLAGS.ExternalPolicies === true) {
             FFW.ExternalPolicies.pack({
               type: 'PROPRIETARY',
               policyUpdateFile: SDL.SettingsController.policyUpdateFile,
-              url: url.url,
+              url: url.url ? url.url : url,
               appID: appID
             })
           } else {
             FFW.BasicCommunication.OnSystemRequest(
               'PROPRIETARY',
               SDL.SettingsController.policyUpdateFile,
-              url.url,
+              url.url ? url.url : url,
               appID
             );
           }
@@ -392,6 +394,21 @@ SDL.SettingsController = Em.Object.create(
         SDL.SeatModel.goToStates();
         SDL.States.goToStates('settings.seat');
         }
+    },
+
+    /**
+     * @function sendGetPolicyConfigurationDataRequest
+     * @description send GetPolicyConfigurationData request from HMI by user action
+     */
+    sendGetPolicyConfigurationDataRequest: function() {
+      var policyConfigurationData = {
+        policyType: SDL.SDLModel.data.policyType,
+        property: SDL.SDLModel.data.property
+      };
+      if('endpoint_properties' === policyConfigurationData.property) {
+        policyConfigurationData.nestedProperty = 'custom_vehicle_data_mapping_url';
+      }
+      FFW.BasicCommunication.GetPolicyConfigurationData(policyConfigurationData);
     }
   }
 );

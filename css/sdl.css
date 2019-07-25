@@ -751,11 +751,25 @@
 
 #VehicleInfo .vehicleDataChange {
     top: 125px;
-    width: 150px;
+    width: 125px;
     height: 38px;
-    left: 50px;
+    left: 10px;
     position: absolute;
     text-align: center;
+}
+
+#policies_settings_policyConfigList .policyConfigEditorButton {
+    top: 95px;
+    width: 125px;
+    height: 38px;
+    left: 25px;
+    position: absolute;
+    text-align: center;
+    font-size: 95%;
+}
+
+#policyConfigCodeEditor {
+    top: 10px !important;
 }
 
 #VehicleInfo .vehicleDataLabel {

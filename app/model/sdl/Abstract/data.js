@@ -110,6 +110,12 @@ SDL.SDLModelData = Em.Object.create(
      */
     activateAppRequestsList: {},
     /**
+     * List of GetPolicyConfiguration requests
+     *
+     * @type {Array}
+     */
+    getPolicyConfigurationDataRequestsList: [],
+    /**
      * ID of app in LIMITED HMI state
      */
     stateLimited: null,
@@ -652,6 +658,32 @@ SDL.SDLModelData = Em.Object.create(
       'Day mode',
       'Night mode',
       'Highlighted mode'
-    ]
+    ],
+    /**
+     * @name policyConfigData
+     * @type {Array}
+     * @description Policy config data version
+     */
+    policyConfigData: [
+      {
+        "custom_vehicle_data_mapping_url": {
+          "version": "0.0.0"
+        }
+      }
+    ],
+
+    /**
+     * @name policyType
+     * @type {String}
+     * @description policy type of PolicyConfigData
+     */
+    policyType: 'module_config',
+
+    /**
+     *@name property
+     *@type {String}
+     *@description property of PolicyConfigData 
+     */
+    property: 'endpoint_properties'
   }
 );

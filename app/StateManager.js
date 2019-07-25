@@ -174,6 +174,13 @@ var StateManager = Em.StateManager.extend(
                 }
               }
             ),
+            policyConfig: Em.State.create(
+              {
+                enter: function() {
+                  this._super();
+                }
+              }
+            ),
             deviceConfig: Em.State.create(
               {
                 enter: function() {
