@@ -67,6 +67,16 @@ SDL.PoliciesView = Em.ContainerView.create(
           {
             type: SDL.Button,
             params: {
+              goToState: 'policies.policyConfig',
+              text: 'Send GetPolicyConfigurationData request to SDL',              
+              target: 'SDL.SettingsController',
+              onDown: false,
+              action: 'onState',
+            }
+          },
+          {
+            type: SDL.Button,
+            params: {
               goToState: 'policies.deviceConfig',
               text: 'Allow SDL Functionality',
               action: 'onState',

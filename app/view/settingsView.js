@@ -57,7 +57,8 @@ SDL.SettingsView = Em.ContainerView.create(
       SDL.LocationLightView,
       SDL.InteriorLightView,
       SDL.ExteriorLightView,
-      SDL.SeatView
+      SDL.SeatView,
+      SDL.PolicyConfigListView
     ],
     /** Left menu */
     leftMenu: Em.ContainerView.extend(
