@@ -409,6 +409,19 @@ SDL.SettingsController = Em.Object.create(
         policyConfigurationData.nestedProperty = 'custom_vehicle_data_mapping_url';
       }
       FFW.BasicCommunication.GetPolicyConfigurationData(policyConfigurationData);
+    },
+
+    /**
+     * @function checkPolicyVersionButtonPress
+     * @description send GetPolicyConfigurationData request from HMI by user action
+     */
+    checkPolicyVersionButtonPress: function() {
+      var policyConfigurationData = {
+        policyType: 'module_config',
+        property: 'endpoint_properties',
+        nestedProperty: 'custom_vehicle_data_mapping_url'
+      };
+      FFW.BasicCommunication.GetPolicyConfigurationData(policyConfigurationData);
     }
   }
 );

@@ -40,7 +40,8 @@ SDL.PolicyConfigListView = Em.ContainerView.create(
         'propertyLabel',
         'policyTypeInput',
         'propertyInput',
-        'sendRequestButton'
+        'sendRequestButton',
+        'getPolicyConfigVersion'
       ],
       label: SDL.Label.extend(
         {
@@ -70,7 +71,7 @@ SDL.PolicyConfigListView = Em.ContainerView.create(
         {
           elementId: 'policyConfigEditorButton',
           classNames: ['policyConfigEditorButton button'],
-          text: 'Policy config data',
+          text: 'Local custom vehicle data version',
           action: 'policyConfigDataChange',
           target: 'SDL.SDLController',
           onDown: false
@@ -112,6 +113,23 @@ SDL.PolicyConfigListView = Em.ContainerView.create(
           classNames: 'sendRequestButton button',
           text: 'Send request',
           action: 'sendGetPolicyConfigurationDataRequest',
+          target: 'SDL.SettingsController',
+          onDown: false
+        }
+      ),
+
+      getPolicyConfigVersion: SDL.Button.extend(
+        {
+          elementId: 'getPolicyConfigVersion',
+          classNames: 'getPolicyConfigVersion button',
+          attributeBindings: ['title:title'],
+          title: `Send GetPolicyConfigurationData with:
+            { 
+              policyType: module_config,
+              property: endpoint_properties
+            } ` ,
+          text: 'Custom vehicle data mapping update flow',
+          action: 'checkPolicyVersionButtonPress',
           target: 'SDL.SettingsController',
           onDown: false
         }

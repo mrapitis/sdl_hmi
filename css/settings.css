@@ -35,13 +35,13 @@
 }
 
 #settingsView .in_settings_separate_view .dataInput.policyTypeInput {
-    top: 170px;
+    top: 105px;
     left: 130px;
     width: 590px;
 }
 
 #settingsView .in_settings_separate_view .dataInput.propertyInput {
-    top: 220px;
+    top: 160px;
     left: 130px;
     width: 590px;
 }
@@ -69,21 +69,29 @@
 }
 
 #settingsView .in_settings_separate_view .sendRequestButton {
-    top: 280px;
+    top: 210px;
     left: 130px;
     width: 120px;
     text-align: center;
 }
 
+#settingsView .in_settings_separate_view .getPolicyConfigVersion {
+    top: 327px;
+    left: 25px;
+    width: 235px;
+    text-align: center;
+    font-size: 12px;
+}
+
 #settingsView .in_settings_separate_view .label.polciyTypeLabel {
-    top: 165px;
+    top: 100px;
     background: black;
     left: inherit;
     width: 100px;
 }
 
 #settingsView .in_settings_separate_view .label.propertyLabel {
-    top: 215px;
+    top: 155px;
     background: black;
     left: 10px;
     width: 80px;
